@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/icons": "^1.0.14",
     "@chakra-ui/react": "^1.6.5",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
@@ -10,6 +11,7 @@
     "@testing-library/react": "^10.4.9",
     "@testing-library/user-event": "^12.8.3",
     "framer-motion": "^4.1.17",
+    "nanoid": "^3.1.23",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^3.11.0",
