@@ -6,9 +6,11 @@ import {
   Heading,
   Text,
   Spacer,
+  IconButton,
 } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
 
-function BlogList({ blogs, title }) {
+function BlogList({ blogs, title, handleDelete }) {
   return (
     <VStack
       divider={<StackDivider borderColor="grey.100" />}
@@ -19,7 +21,7 @@ function BlogList({ blogs, title }) {
       borderColor="gray.400"
       borderRadius="xl"
       w="100%"
-      maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
+      maxW={{ base: '90vw', sm: '80vw', lg: '80vw', xl: '70vw' }}
       alignItems="stretch"
     >
       <Heading color="teal">{title}</Heading>
@@ -40,7 +42,16 @@ function BlogList({ blogs, title }) {
             {blog.title}
           </Text>
           <Spacer />
-          <Text fontSize="xs"> written by {blog.author}</Text>
+          <Text fontSize="s"> written by {blog.author}</Text>
+          <IconButton
+            size="sm"
+            isRound="true"
+            colorScheme="teal"
+            aria-label="Delete Post"
+            icon={<DeleteIcon />}
+            _hover={{ colorScheme: 'red' }}
+            onClick={() => handleDelete(blog.id)}
+          ></IconButton>
         </HStack>
       ))}
     </VStack>

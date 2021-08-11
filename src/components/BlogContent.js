@@ -14,6 +14,11 @@ function BlogContent() {
       author: 'Naruto',
     },
   ]);
+
+  const handleDelete = id => {
+    const newBlogs = blogs.filter(blog => blog.id !== id);
+    setBlogs(newBlogs);
+  };
   return (
     <VStack
       mx="4"
@@ -30,6 +35,7 @@ function BlogContent() {
       <BlogList
         blogs={blogs.filter(blog => blog.author === 'Akhil')}
         title={'Posts by Akhil !'}
+        handleDelete={handleDelete}
       />
     </VStack>
   );
