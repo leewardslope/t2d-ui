@@ -9,27 +9,11 @@ import {
   Button,
 } from '@chakra-ui/react';
 // import { useState } from 'react';
+import { envVariables } from './globalDynamicVariables';
 
 function DokkuENV() {
   // lets use use state when it is needed, that is when need in a render.
   //const [envVariables, setEnvVariables] = useState([]);
-  const envVariables = [
-    {
-      id: 0,
-      name: 'APP NAME',
-      value: 'forem',
-    },
-    {
-      id: 1,
-      name: 'APP_DOMAIN',
-      value: 'app.leewardslope.com',
-    },
-    {
-      id: 2,
-      name: 'PROTOCOL',
-      value: 'https://',
-    },
-  ];
 
   const handleChange = (e, id) => {
     let editENV = envVariables.filter(env => id === env.id);
