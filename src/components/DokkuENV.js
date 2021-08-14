@@ -7,9 +7,12 @@ import {
   FormLabel,
   Input,
   Button,
+  Divider,
 } from '@chakra-ui/react';
 // import { useState } from 'react';
 import { envVariables } from './globalDynamicVariables';
+
+import { ENV } from './config';
 
 function DokkuENV() {
   // lets use use state when it is needed, that is when need in a render.
@@ -27,6 +30,10 @@ function DokkuENV() {
     console.log(
       `dokku config:set ${envVariables[0].value} ${envVariables[1].name}=${envVariables[1].value} ${envVariables[2].name}=${envVariables[2].value}`
     );
+  };
+
+  const addNewENV = e => {
+    console.log(`Domain Name: ${ENV.APP_DOMAIN}`);
   };
 
   return (
@@ -47,6 +54,15 @@ function DokkuENV() {
           <Button type="submit">Submit</Button>
         </Box>
       </form>
+      <Divider />
+
+      <HStack>
+        <Input onChange={e => handleChange(e)} placeholder="ENV_NAME " />
+        <Input onChange={e => handleChange(e)} placeholder="ENV_VALUE" />
+        <Button onClick={() => addNewENV()}>Add</Button>
+      </HStack>
+
+      <Divider />
     </VStack>
   );
 }

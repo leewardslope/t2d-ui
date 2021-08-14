@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 export const dynamic = {
   heading: 'Talk to Dokku',
   button: 'Click Here',
@@ -12,7 +15,7 @@ export const envVariables = [
   {
     id: 1,
     name: 'APP_DOMAIN',
-    value: 'app.leewardslope.com',
+    value: process.env.APP_DOMAIN,
   },
   {
     id: 2,

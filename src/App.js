@@ -8,16 +8,18 @@ import BlogContent from './components/BlogContent';
 import Footer from './components/Footer';
 
 import DokkuENV from './components/DokkuENV';
+// import NewApp from './components/NewApp';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Navbar />
+      {/* <Navbar />
+
+      <NewApp />
+      <BlogContent /> */}
+
       <TopMenu />
-
       <DokkuENV />
-
-      <BlogContent />
 
       {/* <MainBody /> */}
       <Footer />
