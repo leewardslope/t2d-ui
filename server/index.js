@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import studentRoutes from './routes/student.js';
 
 const app = express();
 
@@ -9,6 +10,9 @@ const app = express();
 app.use(bodyParser.json({ limit: '20mb', extended: 'true' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: 'true' }));
 app.use(cors());
+
+// Routes with middleware
+app.use('/students', studentRoutes);
 
 const CONNECTION_URL =
   'mongodb+srv://leewardslope:iwillhack@cluster0.stpm7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
