@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, componentDidMount } from 'react';
 import {
   Table,
   Thead,
@@ -18,29 +18,43 @@ import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 
 function ShowStudent() {
-  const [studentsList, setStudentList] = useState([]);
   const toast = useToast();
 
-  // I'm not sure whether to use the setState in useEffect function.
-  const updateSite = () => {
-    axios.get('http://75.119.143.54:5000/students').then(allStudents => {
-      setStudentList(allStudents.data);
+  const [studentsList, setStudentList] = useState([]);
+
+  const getStudent = () => {
+    axios.get('http://75.119.143.54:5000/students').then(student => {
+      setStudentList(student.data);
+      console.log('axios');
     });
   };
 
-  updateSite();
-
   const deleteStudent = id => {
-    axios.delete(`http://75.119.143.54:5000/students/${id}`).then(() =>
-      toast({
-        title: 'Deleted User',
-        status: 'success',
-        position: 'top',
-        isClosable: true,
+    axios
+      .delete(`http://75.119.143.54:5000/students/${id}`)
+      .then(() => {
+        toast({
+          title: 'Deleted User',
+          status: 'success',
+          position: 'top',
+          isClosable: true,
+        });
+        getStudent();
       })
-    );
+      .catch(err =>
+        toast({
+          title: `${err}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        })
+      );
   };
 
+  useEffect(() => {
+    getStudent();
+    console.log('use Effect');
+  }, []);
   // For some reason I don't feel like using setStudentList in a useEffect, so added the function updateSite
 
   return (

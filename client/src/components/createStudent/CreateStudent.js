@@ -15,27 +15,29 @@ import {
 import axios from 'axios';
 
 function CreateStudent() {
-  const [student, setStudent] = useState({
+  const toast = useToast();
+
+  const fillData = {
     regNo: '',
     name: '',
     grade: '',
     section: '',
-  });
+  };
 
-  const toast = useToast();
+  const [student, setStudent] = useState(fillData);
 
   const createStudent = e => {
     e.preventDefault();
     axios
       .post('http://75.119.143.54:5000/students', student)
-      .then(() =>
+      .then(() => {
         toast({
           title: 'Added New User',
           status: 'success',
           position: 'top',
           isClosable: true,
-        })
-      )
+        });
+      })
       .catch(err => {
         toast({
           title: 'Check your Registration Number',
