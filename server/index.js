@@ -11,9 +11,10 @@ app.use(bodyParser.json({ limit: '20mb', extended: 'true' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: 'true' }));
 app.use(cors());
 
-// Routes with middleware
+// Routes with middleware (index to route to controller)
 app.use('/students', studentRoutes);
 
+// Configuring and Connecting to mongoDB
 const CONNECTION_URL =
   'mongodb+srv://leewardslope:iwillhack@cluster0.stpm7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const NODE_PORT = process.env.NODE_PORT || 5000;
