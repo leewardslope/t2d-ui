@@ -23,9 +23,7 @@ function CreateStudent() {
 
   const createStudent = e => {
     e.preventDefault();
-    axios.post('http://75.119.143.54:5000/students', student).then(() => {
-      window.location.reload(false);
-    });
+    axios.post('http://75.119.143.54:5000/students', student);
     // console.log(student);
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   Thead,
@@ -19,28 +19,20 @@ import axios from 'axios';
 function ShowStudent() {
   const [studentsList, setStudentList] = useState([]);
 
-  // const updateSite = () => {
-  //   axios.get('http://75.119.143.54:5000/students').then(allStudents => {
-  //     setStudentList(allStudents.data);
-  //   });
-  // };
-
-  // updateSite();
-
-  const deleteStudent = id => {
-    axios.delete(`http://75.119.143.54:5000/students/${id}`).then(() => {
-      window.location.reload(false);
+  // I'm not sure whether to use the setState in useEffect function.
+  const updateSite = () => {
+    axios.get('http://75.119.143.54:5000/students').then(allStudents => {
+      setStudentList(allStudents.data);
     });
   };
 
+  updateSite();
+
+  const deleteStudent = id => {
+    axios.delete(`http://75.119.143.54:5000/students/${id}`);
+  };
+
   // For some reason I don't feel like using setStudentList in a useEffect, so added the function updateSite
-  useEffect(() => {
-    axios.get('http://75.119.143.54:5000/students').then(allStudents => {
-      setStudentList(allStudents.data);
-      // console.log(studentsList);
-    });
-    console.log('form use effect');
-  }, []);
 
   return (
     <VStack boxShadow="md" borderRadius="xl" m="4">
