@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 
 import DokkuENV from './components/DokkuENV';
 // import NewApp from './components/NewApp';
+import Student from './components/Student';
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
       <BlogContent /> */}
 
       <TopMenu />
-      <DokkuENV />
+      <Student />
+      {/* <DokkuENV /> */}
 
       {/* <MainBody /> */}
       <Footer />
