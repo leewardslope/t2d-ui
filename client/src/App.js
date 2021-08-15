@@ -1,13 +1,13 @@
 import React from 'react';
 import { ChakraProvider, theme } from '@chakra-ui/react';
 // import { ColorModeSwitcher } from './ColorModeSwitcher';
-import Navbar from './components/Navbar';
+// import Navbar from './components/Navbar';
 import TopMenu from './components/TopMenu';
-import BlogContent from './components/BlogContent';
+// import BlogContent from './components/BlogContent';
 // import MainBody from './components/MainBody';
 import Footer from './components/Footer';
 
-import DokkuENV from './components/DokkuENV';
+// import DokkuENV from './components/DokkuENV';
 // import NewApp from './components/NewApp';
 import Student from './components/Student';
 

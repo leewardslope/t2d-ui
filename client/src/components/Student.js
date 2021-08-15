@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack, Flex, Heading, HStack, Box, Spacer } from '@chakra-ui/react';
+import { VStack, Flex, HStack, Box, Spacer } from '@chakra-ui/react';
 import ShowStudent from './showStudent/ShowStudent';
 import CreateStudent from './createStudent/CreateStudent';
 
