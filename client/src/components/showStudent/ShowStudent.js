@@ -10,17 +10,36 @@ import {
   TableCaption,
   Heading,
   VStack,
+  IconButton,
+  HStack,
 } from '@chakra-ui/react';
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 
 function ShowStudent() {
   const [studentsList, setStudentList] = useState([]);
 
+  // const updateSite = () => {
+  //   axios.get('http://75.119.143.54:5000/students').then(allStudents => {
+  //     setStudentList(allStudents.data);
+  //   });
+  // };
+
+  // updateSite();
+
+  const deleteStudent = id => {
+    axios.delete(`http://75.119.143.54:5000/students/${id}`).then(() => {
+      window.location.reload(false);
+    });
+  };
+
+  // For some reason I don't feel like using setStudentList in a useEffect, so added the function updateSite
   useEffect(() => {
     axios.get('http://75.119.143.54:5000/students').then(allStudents => {
       setStudentList(allStudents.data);
       // console.log(studentsList);
     });
+    console.log('form use effect');
   }, []);
 
   return (
@@ -33,7 +52,8 @@ function ShowStudent() {
             <Th>Name</Th>
             <Th>Grade</Th>
             <Th>Section</Th>
-            <Th isNumeric>Reg. No.</Th>
+            <Th>Reg. No.</Th>
+            <Th isNumeric>Action</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -42,7 +62,26 @@ function ShowStudent() {
               <Td>{student.name}</Td>
               <Td>{student.grade}</Td>
               <Td>{student.section}</Td>
-              <Td isNumeric>{student.regNo}</Td>
+              <Td>{student.regNo}</Td>
+              <Td isNumeric>
+                <HStack>
+                  <IconButton
+                    size="sm"
+                    isRound
+                    colorScheme="teal"
+                    icon={<EditIcon />}
+                    variant="outline"
+                  ></IconButton>
+                  <IconButton
+                    onClick={() => deleteStudent(student._id)}
+                    size="sm"
+                    isRound
+                    colorScheme="red"
+                    variant="outline"
+                    icon={<DeleteIcon />}
+                  ></IconButton>
+                </HStack>
+              </Td>
             </Tr>
           ))}
         </Tbody>
@@ -52,6 +91,7 @@ function ShowStudent() {
             <Th>Grade</Th>
             <Th>Section</Th>
             <Th isNumeric>Reg. No.</Th>
+            <Th isNumeric>Action</Th>
           </Tr>
         </Tfoot>
       </Table>
