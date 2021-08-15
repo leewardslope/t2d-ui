@@ -14,8 +14,8 @@ const studentSchema = mongoose.Schema({
 });
 
 // Creating Models
-const student = mongoose.model('student', studentSchema);
+const Student = mongoose.model('student', studentSchema);
 
-export default student;
+export default Student;
 
 // Now using this model we can create our CRUD operations.
