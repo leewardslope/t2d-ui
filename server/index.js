@@ -3,30 +3,27 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
-// const path = require('path');
 const app = express();
 
 // app.use(express.static(path.join(__dirname, 'build')));
+app.use(bodyParser.json({ limit: '20mb', extended: 'true' }));
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: 'true' }));
+app.use(cors());
 
-app.get('/', (req, res) => {
-  return res.send('Hello Nodejs');
-});
+const CONNECTION_URL =
+  'mongodb+srv://leewardslope:iwillhack@cluster0.stpm7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const NODE_PORT = process.env.NODE_PORT || 5000;
 
-app.get('/ping', (req, res) => {
-  return res.send('pong');
-});
+mongoose
+  .connect(CONNECTION_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() =>
+    app.listen(NODE_PORT, () => {
+      console.log(`Connection established and running on PORT: ${NODE_PORT}`);
+    })
+  )
+  .catch(err => console.error(err.message));
 
-app.post('/post', (req, res) => {
-  console.log('Connected to React');
-  res.redirect('/');
-});
-
-app.get('/post', (req, res) => {
-  console.log('Connected to React');
-  res.redirect('/');
-});
-
-// const PORT = process.env.PORT || 5000;
-const PORT = 5000;
-
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
+mongoose.set('useFindAndModify', false);
