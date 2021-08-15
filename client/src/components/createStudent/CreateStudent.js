@@ -10,6 +10,7 @@ import {
   Radio,
   Heading,
   Button,
+  useToast,
 } from '@chakra-ui/react';
 import axios from 'axios';
 
@@ -21,9 +22,34 @@ function CreateStudent() {
     section: '',
   });
 
+  const toast = useToast();
+
   const createStudent = e => {
     e.preventDefault();
-    axios.post('http://75.119.143.54:5000/students', student);
+    axios
+      .post('http://75.119.143.54:5000/students', student)
+      .then(() =>
+        toast({
+          title: 'Added New User',
+          status: 'success',
+          position: 'top',
+          isClosable: true,
+        })
+      )
+      .catch(err => {
+        toast({
+          title: 'Check your Registration Number',
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+        toast({
+          title: `${err}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+      });
     // console.log(student);
   };
 

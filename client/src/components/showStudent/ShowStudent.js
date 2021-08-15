@@ -12,12 +12,14 @@ import {
   VStack,
   IconButton,
   HStack,
+  useToast,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 
 function ShowStudent() {
   const [studentsList, setStudentList] = useState([]);
+  const toast = useToast();
 
   // I'm not sure whether to use the setState in useEffect function.
   const updateSite = () => {
@@ -29,7 +31,14 @@ function ShowStudent() {
   updateSite();
 
   const deleteStudent = id => {
-    axios.delete(`http://75.119.143.54:5000/students/${id}`);
+    axios.delete(`http://75.119.143.54:5000/students/${id}`).then(() =>
+      toast({
+        title: 'Deleted User',
+        status: 'success',
+        position: 'top',
+        isClosable: true,
+      })
+    );
   };
 
   // For some reason I don't feel like using setStudentList in a useEffect, so added the function updateSite
