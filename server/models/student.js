@@ -1,15 +1,16 @@
 import mongoose from 'mongoose';
 
 // Creating Schema
+// Always keep these names similar to that of the names we use in frontEnd
 const studentSchema = mongoose.Schema({
-  registrationNumber: Number,
+  regNo: Number,
   name: String,
   grade: String,
   section: {
     type: String,
     default: 'A',
   },
-  subjects: [String],
+  // subjects: [String],
 });
 
 // Creating Models
