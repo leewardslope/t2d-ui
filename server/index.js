@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import studentRoutes from './routes/student.js';
+import testRoutes from './routes/test.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use('/', express.static('../client/build'));
 
 // Routes with middleware (index to route to controller)
 app.use('/students', studentRoutes);
+app.use('/test', testRoutes);
 
 // Configuring and Connecting to mongoDB
 const CONNECTION_URL = process.env.MONGO_DB_URL;
