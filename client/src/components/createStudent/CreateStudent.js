@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   FormControl,
   FormLabel,
@@ -10,51 +10,9 @@ import {
   Radio,
   Heading,
   Button,
-  useToast,
 } from '@chakra-ui/react';
-import axios from 'axios';
 
-function CreateStudent() {
-  const toast = useToast();
-
-  const fillData = {
-    regNo: '',
-    name: '',
-    grade: '',
-    section: '',
-  };
-
-  const [student, setStudent] = useState(fillData);
-
-  const createStudent = e => {
-    e.preventDefault();
-    axios
-      .post('http://75.119.143.54:5000/students', student)
-      .then(() => {
-        toast({
-          title: 'Added New User',
-          status: 'success',
-          position: 'top',
-          isClosable: true,
-        });
-      })
-      .catch(err => {
-        toast({
-          title: 'Check your Registration Number',
-          status: 'error',
-          position: 'top',
-          isClosable: true,
-        });
-        toast({
-          title: `${err}`,
-          status: 'error',
-          position: 'top',
-          isClosable: true,
-        });
-      });
-    // console.log(student);
-  };
-
+function CreateStudent({ student, createStudent, setStudent }) {
   return (
     <VStack boxShadow="md" borderRadius="xl">
       <form onSubmit={e => createStudent(e)}>
@@ -94,7 +52,7 @@ function CreateStudent() {
           <FormControl id="section" as="fieldset">
             <FormLabel as="legend">Section</FormLabel>
             <RadioGroup
-              defaultValue={student.section}
+              value={student.section}
               onChange={radio => {
                 setStudent({ ...student, section: radio });
               }}
@@ -106,9 +64,7 @@ function CreateStudent() {
                 <Radio value="D">D</Radio>
               </HStack>
             </RadioGroup>
-            <FormHelperText>
-              Select only if you're know your section.
-            </FormHelperText>
+            <FormHelperText>Section D is for Heros.</FormHelperText>
           </FormControl>
           <Button mt="4" type="submit">
             Submit
