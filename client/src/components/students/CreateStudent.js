@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -10,9 +10,55 @@ import {
   Radio,
   Heading,
   Button,
+  useToast,
 } from '@chakra-ui/react';
+import axios from 'axios';
+import { GetStudentContext } from '../Student';
 
-function CreateStudent({ student, createStudent, setStudent }) {
+function CreateStudent() {
+  const toast = useToast();
+  // const { getStudent, studentsList } = useContext(GetStudentContext);
+  const { getStudent } = useContext(GetStudentContext);
+
+  // Related to Create Student
+  const fillData = {
+    regNo: '',
+    name: '',
+    grade: '',
+    section: 'A',
+  };
+
+  const [student, setStudent] = useState(fillData);
+  const createStudent = e => {
+    e.preventDefault();
+    axios
+      .post('http://75.119.143.54:5000/students', student)
+      .then(() => {
+        toast({
+          title: 'Added New User',
+          status: 'success',
+          position: 'top',
+          isClosable: true,
+        });
+        getStudent(); // To use this function, we created this parent component containing the complete logic
+        setStudent(fillData); // reset
+      })
+      .catch(err => {
+        toast({
+          title: 'Check your Registration Number',
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+        toast({
+          title: `${err}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+      });
+  };
+
   return (
     <VStack boxShadow="md" borderRadius="xl">
       <form onSubmit={e => createStudent(e)}>

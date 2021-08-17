@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Table,
   Thead,
@@ -12,10 +12,39 @@ import {
   VStack,
   IconButton,
   HStack,
+  useToast,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import axios from 'axios';
+import { GetStudentContext } from '../Student';
 
-function ShowStudent({ studentsList, deleteStudent }) {
+function ShowStudent() {
+  const toast = useToast();
+
+  const { getStudent, studentsList } = useContext(GetStudentContext);
+
+  const deleteStudent = id => {
+    axios
+      .delete(`http://75.119.143.54:5000/students/${id}`)
+      .then(() => {
+        toast({
+          title: 'Deleted User',
+          status: 'success',
+          position: 'top',
+          isClosable: true,
+        });
+        getStudent();
+      })
+      .catch(err =>
+        toast({
+          title: `${err}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        })
+      );
+  };
+
   return (
     <VStack boxShadow="md" borderRadius="xl" m="4">
       <Heading>Show Students</Heading>
