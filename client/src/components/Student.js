@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { VStack, Flex, Box, Spacer, useToast } from '@chakra-ui/react';
-import ShowStudent from './showStudent/ShowStudent';
-import CreateStudent from './createStudent/CreateStudent';
+import ShowStudent from './students/ShowStudent';
+import CreateStudent from './students/CreateStudent';
 import axios from 'axios';
 
 function Student() {
@@ -49,11 +49,6 @@ function Student() {
 
   // Related to show and delete students
   const [studentsList, setStudentList] = useState([]);
-  const getStudent = () => {
-    axios.get('http://75.119.143.54:5000/students').then(student => {
-      setStudentList(student.data);
-    });
-  };
 
   const deleteStudent = id => {
     axios
@@ -75,6 +70,12 @@ function Student() {
           isClosable: true,
         })
       );
+  };
+
+  const getStudent = () => {
+    axios.get('http://75.119.143.54:5000/students').then(student => {
+      setStudentList(student.data);
+    });
   };
 
   useEffect(() => {
