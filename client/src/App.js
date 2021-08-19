@@ -21,6 +21,8 @@ import MainNavigation from './shared/components/Navigation/MainNavigation';
 
 import Users from './user/pages/Users';
 import NewApp from './app/pages/NewApp';
+import UserApps from './app/pages/UserApps';
+import SignIn from './shared/components/UIElements/Modals/SignIn';
 
 function App() {
   return (
@@ -43,6 +45,12 @@ function App() {
           </Route>
           <Route path="/app/new" exact>
             <NewApp />
+          </Route>
+          <Route path="/:userId/apps" exact>
+            <UserApps />
+          </Route>
+          <Route path="/auth" exact>
+            <SignIn />
           </Route>
           <Redirect to="/" />
         </Switch>

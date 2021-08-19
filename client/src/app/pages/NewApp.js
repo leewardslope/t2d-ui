@@ -1,7 +1,7 @@
 import React from 'react';
 
-function NewApp() {
-  return <div>This is where we create new App</div>;
-}
+const NewApp = () => {
+  return <div>Here come the new apps</div>;
+};
 
 export default NewApp;

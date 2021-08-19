@@ -17,12 +17,12 @@ const NavLinks = () => {
           <NavLink key={links.id} to={links.url}>
             <Box
               p="2"
+              ml="8"
               _hover={{
                 background: 'teal.500',
                 borderRadius: 'md',
                 color: 'white',
               }}
-              ml="8"
             >
               {links.name}
             </Box>

@@ -10,6 +10,12 @@ function Users() {
       image: 'https://bit.ly/dan-abramov',
       apps: 3,
     },
+    {
+      id: 'u2',
+      name: 'Naruto Uzumaki',
+      image: 'https://bit.ly/dan-abramov',
+      apps: 3,
+    },
   ];
 
   return <UserList items={USERS} />;
