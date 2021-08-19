@@ -1,31 +1,9 @@
 import React from 'react';
 import { Spacer, Box } from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
+import { navLinks } from './components/navLinks';
 
 const NavLinks = () => {
-  const navLinks = [
-    {
-      id: 1,
-      name: 'Apps',
-      url: '/u1/apps',
-    },
-    {
-      id: 2,
-      name: 'All Users',
-      url: '/',
-    },
-    {
-      id: 3,
-      name: 'Quick Setup',
-      url: '/setup',
-    },
-    {
-      id: 4,
-      name: 'New App',
-      url: '/app/new',
-    },
-  ];
-
   return (
     <>
       <Spacer />
