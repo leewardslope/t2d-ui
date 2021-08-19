@@ -22,7 +22,7 @@ import MainNavigation from './shared/components/Navigation/MainNavigation';
 import Users from './user/pages/Users';
 import NewApp from './app/pages/NewApp';
 import UserApps from './app/pages/UserApps';
-import SignIn from './shared/components/UIElements/Modals/SignIn';
+import SignIn from './shared/components/UIElements/FormElements/FormikAuth';
 
 function App() {
   return (
@@ -39,6 +39,7 @@ function App() {
         {/* <TopMenu /> */}
 
         <MainNavigation />
+
         <Switch>
           <Route path="/" exact>
             <Users />

@@ -1,7 +1,8 @@
 import React from 'react';
+import FormikApp from '../../shared/components/UIElements/FormElements/FormikApp';
 
 const NewApp = () => {
-  return <div>Here come the new apps</div>;
+  return <FormikApp />;
 };
 
 export default NewApp;
