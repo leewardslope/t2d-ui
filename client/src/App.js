@@ -7,15 +7,15 @@ import {
   Switch,
 } from 'react-router-dom';
 // import { ColorModeSwitcher } from './ColorModeSwitcher';
-// import Navbar from './components/Navbar';
-// import TopMenu from './components/TopMenu';
-// import BlogContent from './components/BlogContent';
-// import MainBody from './components/MainBody';
-// import Footer from './components/Footer';
+// import Navbar from './shared/components/Navbar';
+// import TopMenu from './shared/components/TopMenu';
+// import BlogContent from './shared/components/BlogContent';
+// import MainBody from './shared/components/MainBody';
+// import Footer from './shared/components/Footer';
 
-// import DokkuENV from './components/DokkuENV';
-// import NewApp from './components/NewApp';
-// import Student from './components/Student';
+// import DokkuENV from './shared/components/DokkuENV';
+// import NewApp from './shared/components/NewApp';
+// import Student from './shared/components/Student';
 
 import Users from './user/pages/Users';
 import NewApp from './app/pages/NewApp';
@@ -24,17 +24,16 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <Router>
-        <Switch>
-          {/* <Navbar />
+        {/* <Navbar />
           <NewApp />
           <BlogContent />
           <DokkuENV />
-         <MainBody />
-          <Footer /> */}
+          <MainBody />
+        <Footer /> */}
 
-          {/* <TopMenu />
-          <Student /> */}
-
+        {/* <Student /> */}
+        {/* <TopMenu /> */}
+        <Switch>
           <Route path="/" exact>
             <Users />
           </Route>

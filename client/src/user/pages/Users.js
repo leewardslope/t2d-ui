@@ -6,8 +6,8 @@ function Users() {
   const USERS = [
     {
       id: 'u1',
-      name: 'Akhil',
-      image: 'https://picsum.photos/200/300',
+      name: 'Akhil Naidu',
+      image: 'https://bit.ly/dan-abramov',
       apps: 3,
     },
   ];
