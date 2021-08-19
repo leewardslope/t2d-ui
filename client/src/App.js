@@ -17,6 +17,8 @@ import {
 // import NewApp from './shared/components/NewApp';
 // import Student from './shared/components/Student';
 
+import MainNavigation from './shared/components/Navigation/MainNavigation';
+
 import Users from './user/pages/Users';
 import NewApp from './app/pages/NewApp';
 
@@ -33,6 +35,8 @@ function App() {
 
         {/* <Student /> */}
         {/* <TopMenu /> */}
+
+        <MainNavigation />
         <Switch>
           <Route path="/" exact>
             <Users />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Heading, Spacer, Flex, Box, Button } from '@chakra-ui/react';
-import { dynamic } from './globalDynamicVariables';
+import { dynamic } from '../globalDynamicVariables';
 
 function Navbar() {
   return (
