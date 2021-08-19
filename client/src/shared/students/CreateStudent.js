@@ -13,7 +13,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { GetStudentContext } from '../Student';
+import { GetStudentContext } from '../components/Student';
 
 function CreateStudent() {
   const toast = useToast();

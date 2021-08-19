@@ -2,7 +2,7 @@ import React from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
 import Status from './Status';
 import BodyBox from './BodyBox';
-import TerminalStatus from './TermninalStatus';
+import TerminalStatus from './TerminalStatus';
 import TestSkeleton from './TestSkeleton';
 
 function Body() {

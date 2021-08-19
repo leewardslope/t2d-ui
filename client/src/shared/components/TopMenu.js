@@ -22,7 +22,7 @@ import {
   EditIcon,
   RepeatIcon,
 } from '@chakra-ui/icons';
-import { ColorModeSwitcher } from '../ColorModeSwitcher';
+import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 
 function TopMenu() {
   return (
