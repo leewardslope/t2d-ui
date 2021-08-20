@@ -19,6 +19,14 @@ const DUMMY_APPS = [
     creatorId: 'u2',
     image: 'https://picsum.photos/200',
   },
+  {
+    id: 'a3',
+    name: 'forem',
+    title: 'DEV',
+    description: 'An OpenSource community builder based upon DEV',
+    creatorId: 'u1',
+    image: 'https://picsum.photos/200',
+  },
 ];
 
 const UserApps = props => {

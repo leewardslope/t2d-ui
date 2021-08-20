@@ -19,7 +19,7 @@ const AppItem = props => {
   const cancelRef = React.useRef();
 
   const afterDeleteConfirm = () => {
-    console.log('pressed on delete');
+    console.log(`pressed on delete: ${props.title} ${props.id}`);
     onClose();
   };
 
