@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { ChakraProvider, theme } from '@chakra-ui/react';
 import {
   BrowserRouter as Router,
@@ -6,6 +6,7 @@ import {
   Redirect,
   Switch,
 } from 'react-router-dom';
+
 // import { ColorModeSwitcher } from './ColorModeSwitcher';
 // import Navbar from './shared/components/Navbar';
 // import TopMenu from './shared/components/TopMenu';
@@ -22,40 +23,74 @@ import MainNavigation from './shared/components/Navigation/MainNavigation';
 import Users from './user/pages/Users';
 import NewApp from './app/pages/NewApp';
 import UserApps from './app/pages/UserApps';
-import SignIn from './shared/components/UIElements/FormElements/FormikAuth';
+import UpdateApp from './app/pages/UpdateApp';
+import Auth from './user/pages/Auth';
+
+import { AuthContext } from './shared/context/auth-context';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+  }, []);
+
+  let routes;
+
+  if (isLoggedIn) {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Users />
+        </Route>
+        <Route path="/:userId/apps" exact>
+          <UserApps />
+        </Route>
+        <Route path="/app/new" exact>
+          <NewApp />
+        </Route>
+        <Route path="/:apps/appsId" exact>
+          <UpdateApp />
+        </Route>
+
+        <Redirect to="/" />
+      </Switch>
+    );
+  } else {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Users />
+        </Route>
+        <Route path="/:userId/apps" exact>
+          <UserApps />
+        </Route>
+        <Route path="/auth" exact>
+          <Auth />
+        </Route>
+        <Redirect to="/auth" />
+      </Switch>
+    );
+  }
+
+  // value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+  // value={{ isLoggedIn, login, logout }}>
+
   return (
     <ChakraProvider theme={theme}>
-      <Router>
-        {/* <Navbar />
-          <NewApp />
-          <BlogContent />
-          <DokkuENV />
-          <MainBody />
-        <Footer /> */}
+      <AuthContext.Provider
+        value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+      >
+        <Router>
+          <MainNavigation />
 
-        {/* <Student /> */}
-        {/* <TopMenu /> */}
-
-        <MainNavigation />
-
-        <Switch>
-          <Route path="/" exact>
-            <Users />
-          </Route>
-          <Route path="/app/new" exact>
-            <NewApp />
-          </Route>
-          <Route path="/:userId/apps" exact>
-            <UserApps />
-          </Route>
-          <Route path="/auth" exact>
-            <SignIn />
-          </Route>
-          <Redirect to="/" />
-        </Switch>
-      </Router>
+          {routes}
+        </Router>
+      </AuthContext.Provider>
     </ChakraProvider>
   );
 }

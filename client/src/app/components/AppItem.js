@@ -1,3 +1,4 @@
+// import React, {useContext} from 'react';
 import React from 'react';
 import {
   Avatar,
@@ -12,8 +13,11 @@ import {
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import AlertInput from '../../shared/components/UIElements/Modals/AlertInput';
+// import { AuthContext } from '../../shared/context/auth-context'
 
 const AppItem = props => {
+  // const auth = useContext(AuthContext)
+
   const [isOpen, setIsOpen] = React.useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef();

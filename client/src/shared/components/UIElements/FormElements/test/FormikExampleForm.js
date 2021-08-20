@@ -20,7 +20,8 @@ const FormikExampleForm = () => {
           <Flex>
             <Spacer />
             <VStack
-              p="2"
+              p="4"
+              m="8"
               boxShadow="md"
               // borderColor="gray.200"
               // borderWidth="2px"
