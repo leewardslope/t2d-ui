@@ -1,5 +1,7 @@
 import express from 'express';
 
+import HttpError from '../models/https-error.js';
+
 const router = express.Router();
 
 const DUMMY_APPS = [
@@ -32,10 +34,8 @@ router.get('/:aid', (req, res, next) => {
     return e.id === appId;
   });
 
-  // If we return here, the next code will not run. or else create an else statement.
   if (!apps) {
-    const error = new Error('could not find an app for the app id');
-    error.code = 404;
+    const error = new HttpError('could not find an app for the app id', 404);
     throw error;
   }
 
@@ -50,10 +50,11 @@ router.get('/user/:uid', (req, res, next) => {
 
   // For some reason, filter method cannot use !apps to give error
   if (apps.length === 0) {
-    const error = new Error('could not find an app for the user id');
-    error.code = 404;
-    return next(error);
+    // const error = new Error('could not find an app for the user id');
+    // error.code = 404;
+    // return next(error);
     // throw error;
+    return next(new HttpError('could not find an app for the user id', 404));
   }
 
   res.json({ apps });
