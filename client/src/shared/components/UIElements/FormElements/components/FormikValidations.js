@@ -1,9 +1,22 @@
+export function validateRequire(value) {
+  let error;
+  if (!value) {
+    error = 'Required';
+  } else if (value === 'admin') {
+    error = 'Nice try!';
+  } else if (value.length <= 4) {
+    error = 'minimum 5 letters';
+  }
+  return error;
+}
 export function validateName(value) {
   let error;
   if (!value) {
     error = 'Required';
   } else if (value === 'admin') {
     error = 'Nice try!';
+  } else if (value.length <= 7) {
+    error = 'minimum 8 letters';
   }
   return error;
 }
