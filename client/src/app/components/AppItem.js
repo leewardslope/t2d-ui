@@ -1,3 +1,4 @@
+// import React, {useContext} from 'react';
 import React from 'react';
 import {
   Avatar,
@@ -11,11 +12,19 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import AlertInput from '../../shared/components/UIElements/Modals/AlertInput';
+// import { AuthContext } from '../../shared/context/auth-context'
 
 const AppItem = props => {
-  const deleteHandle = () => {
-    // Should make user to confirm things.
-    console.log('pressed on delete');
+  // const auth = useContext(AuthContext)
+
+  const [isOpen, setIsOpen] = React.useState(false);
+  const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef();
+
+  const afterDeleteConfirm = () => {
+    console.log(`pressed on delete: ${props.title} ${props.id}`);
+    onClose();
   };
 
   return (
@@ -57,9 +66,25 @@ const AppItem = props => {
             <Link to={`/apps/${props.id}`}>
               <Button variant="outline">Edit</Button>
             </Link>
-            <Button colorScheme="red" variant="solid" onClick={deleteHandle}>
+            <Button
+              colorScheme="red"
+              variant="solid"
+              onClick={() => setIsOpen(true)}
+            >
               Delete
             </Button>
+
+            <AlertInput
+              isOpen={isOpen}
+              onClose={onClose}
+              cancelRef={cancelRef}
+              alertHeader="Delete App"
+              alertBody="Are you sure? You can't undo this action afterwards."
+              alertFooter1="Cancel"
+              alertFooter2="Delete"
+              alertFooter2Color="red"
+              todo={afterDeleteConfirm}
+            />
           </HStack>
         </VStack>
       </VStack>

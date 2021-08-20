@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Heading, Flex, Box } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { ColorModeSwitcher } from '../../../ColorModeSwitcher';
 import MainHeader from './MainHeader';
 import NavLinks from './NavLinks';
+import { AuthContext } from '../../context/auth-context';
 
 const MainNavigation = props => {
+  const auth = useContext(AuthContext);
   return (
     <MainHeader>
       {/* What ever we add here will act as props children for our MainHeader file */}
@@ -36,18 +38,23 @@ const MainNavigation = props => {
 
         <NavLinks />
 
-        <Box>
-          <Link to="/auth">
-            <Button colorScheme="teal" mr="4">
-              Sign Up
+        {!auth.isLoggedIn && (
+          <Box>
+            <Link to="/auth">
+              <Button colorScheme="teal" mr="4">
+                Authenticate
+              </Button>
+            </Link>
+          </Box>
+        )}
+
+        {auth.isLoggedIn && (
+          <Box>
+            <Button onClick={auth.logout} colorScheme="teal" mr="4">
+              Logout
             </Button>
-          </Link>
-          <Link to="/auth">
-            <Button colorScheme="teal" mr="2">
-              Log in
-            </Button>
-          </Link>
-        </Box>
+          </Box>
+        )}
         <Box>
           <ColorModeSwitcher />
         </Box>

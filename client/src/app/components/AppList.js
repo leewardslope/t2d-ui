@@ -3,10 +3,15 @@ import React from 'react';
 import InfoCard from '../../shared/components/UIElements/InfoCard';
 import { Button } from '@chakra-ui/react';
 import AppItem from './AppItem';
+import { Link } from 'react-router-dom';
 
 const AppList = props => {
   if (props.items.length === 0) {
-    const anotherItem = <Button>Create New App</Button>;
+    const anotherItem = (
+      <Link to="/app/new">
+        <Button>Create New App</Button>
+      </Link>
+    );
     return (
       <>
         <InfoCard message="No Apps" anotherItem={anotherItem} />
