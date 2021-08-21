@@ -1,5 +1,7 @@
-import HttpError from '../models/https-error.js';
 import { v4 as uuidv4 } from 'uuid';
+import { validationResult } from 'express-validator';
+
+import HttpError from '../models/https-error.js';
 
 // With the delete method => I will overwrite the array => so to negate assignment errors, I changed it to let from const.
 let DUMMY_APPS = [
@@ -62,6 +64,13 @@ export const getAppsByUserId = (req, res, next) => {
 // First post request
 // I wanna add a body-parser and that should be in the main routes folder, and before the url.
 export const createApp = (req, res, next) => {
+  // Using the Validation result of the middleware created in the routes file.
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    // For more detailed error, check the errors related stuff here => console.log(errors)
+    throw new HttpError('Invalid inputs passed, please check your data!', 422);
+  }
+
   // Here I will use object destructuring.
   const { name, title, description, creator } = req.body;
   // const props = req.body;
@@ -83,6 +92,13 @@ export const createApp = (req, res, next) => {
 };
 
 export const updateApp = (req, res, next) => {
+  // Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    // For more detailed error, check the errors related stuff here => console.log(errors)
+    throw new HttpError('Invalid inputs passed, please check your data!', 422);
+  }
+
   // For patch request we will also have a body
   const { title, description } = req.body;
   const appId = req.params.aid;
