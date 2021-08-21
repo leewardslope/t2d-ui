@@ -1,8 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { validationResult } from 'express-validator';
+import mongoose from 'mongoose';
 
 import HttpError from '../models/https-error.js';
 import App from '../models/app-schema.js';
+import User from '../models/user-schema.js';
 
 // With the delete method => I will overwrite the array => so to negate assignment errors, I changed it to let from const.
 let DUMMY_APPS = [
@@ -75,19 +77,40 @@ export const createApp = async (req, res, next) => {
   // Using the Validation result of the middleware created in the routes file.
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data!', 422);
+    return next(
+      new HttpError('Invalid inputs passed, please check your data!', 422)
+    );
   }
 
   const app = req.body;
 
+  let user;
+  try {
+    user = await User.findById(app.creator);
+
+    if (!user) {
+      return next(new HttpError('Could not find user for provided ID!', 404));
+    }
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+
   const createdApp = new App(app);
   try {
-    await createdApp.save();
-    res.status(201).json(createdApp);
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    await createdApp.save({ session: session });
+    user.apps.push(createdApp);
+
+    // Mongo defined push, will only add the app ID to user.
+    await user.save({ session: session });
+    await session.commitTransaction();
   } catch (err) {
-    // res.status(409).json({ message: err.message });
     return next(new HttpError('Creating app failed, please try again!', 409));
   }
+
+  res.status(201).json(createdApp);
 };
 
 export const updateApp = async (req, res, next) => {
@@ -126,20 +149,30 @@ export const updateApp = async (req, res, next) => {
 
 export const deleteApp = async (req, res, next) => {
   const appId = req.params.aid;
-  let app;
 
+  let app;
   try {
-    app = await App.findById(appId);
+    app = await App.findById(appId).populate('creator'); // in order to use populate we need to configure ref first
   } catch (err) {
     return next(
       new HttpError('Could not delete the app, please try again!', 500)
     );
   }
 
+  if (!app) {
+    return next(new HttpError('Could not find app for this ID!', 404));
+  }
+
   try {
-    await app.remove();
-    res.status(200).json({ message: 'deleted app' });
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    await app.remove({ session: session });
+    app.creator.apps.pull(app);
+    await app.creator.save({ session: session });
+    await session.commitTransaction();
   } catch (err) {
     res.status(505).json({ message: err.message });
   }
+  res.status(200).json({ message: 'deleted app' });
 };
