@@ -42,12 +42,13 @@ export const getAppById = (req, res, next) => {
 
 export const getAppsByUserId = (req, res, next) => {
   const userId = req.params.uid;
+  // Filter method will gives me an array
   const apps = DUMMY_APPS.filter(e => {
     return e.creator === userId;
   });
 
   // For some reason, filter method cannot use !apps to give error
-  if (apps.length === 0) {
+  if (!apps || apps.length === 0) {
     // const error = new Error('could not find an app for the user id');
     // error.code = 404;
     // return next(error);

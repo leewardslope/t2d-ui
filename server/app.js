@@ -2,8 +2,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 // This is not the default import model supported by nodejs, so I should add the .js suffix
-import appsRoutes from './routes/apps-routes.js';
 import HttpError from './models/https-error.js';
+import appsRoutes from './routes/apps-routes.js';
+import usersRoutes from './routes/users-routes.js';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(bodyParser.json({ limit: '20mb', extended: 'true' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: 'true' }));
 
 app.use('/api/apps', appsRoutes);
+app.use('/api/users', usersRoutes);
 
 // This is another middleware which I want to run after all routes
 // Put in other words, this middleware will be reached, if the above middleware fails
