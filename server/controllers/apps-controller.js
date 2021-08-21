@@ -119,6 +119,10 @@ export const updateApp = (req, res, next) => {
 
 export const deleteApp = (req, res, next) => {
   const appId = req.params.aid;
+
+  if (!DUMMY_APPS.find(e => e.id === appId)) {
+    throw new HttpError('Could not find an app for that id', 404);
+  }
   // Filter gives me a new array with the given conditions, but I'm overwriting the new array with the old array
   DUMMY_APPS = DUMMY_APPS.filter(e => e.id != appId);
   res.status(200).json({ message: 'deleted app' });
