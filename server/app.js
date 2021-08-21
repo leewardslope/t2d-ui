@@ -1,10 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 // This is not the default import model supported by nodejs, so I should add the .js suffix
 import HttpError from './models/https-error.js';
 import appsRoutes from './routes/apps-routes.js';
 import usersRoutes from './routes/users-routes.js';
+
+// Loading ENV variables
+dotenv.config();
 
 const app = express();
 
@@ -37,4 +42,21 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || 'An Unknown Error Occurred!' });
 });
 
-app.listen(5000);
+// Configuring and Connecting to mongoDB
+const CONNECTION_URL = process.env.MONGO_DB_URL;
+const NODE_PORT = process.env.NODE_PORT || 5000;
+
+mongoose
+  .connect(CONNECTION_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
+  .then(() =>
+    app.listen(NODE_PORT, () => {
+      console.log(`Connection established and running on PORT: ${NODE_PORT}`);
+    })
+  )
+  .catch(err => console.error(err.message));
+
+mongoose.set('useFindAndModify', false);
