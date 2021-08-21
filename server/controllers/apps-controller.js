@@ -1,7 +1,8 @@
 import HttpError from '../models/https-error.js';
 import { v4 as uuidv4 } from 'uuid';
 
-const DUMMY_APPS = [
+// With the delete method => I will overwrite the array => so to negate assignment errors, I changed it to let from const.
+let DUMMY_APPS = [
   {
     id: 'a1',
     name: 'Forem',
@@ -99,4 +100,9 @@ export const updateApp = (req, res, next) => {
   res.status(200).json({ app: updatedApp });
 };
 
-export const deleteApp = (req, res, next) => {};
+export const deleteApp = (req, res, next) => {
+  const appId = req.params.aid;
+  // Filter gives me a new array with the given conditions, but I'm overwriting the new array with the old array
+  DUMMY_APPS = DUMMY_APPS.filter(e => e.id != appId);
+  res.status(200).json({ message: 'deleted app' });
+};
