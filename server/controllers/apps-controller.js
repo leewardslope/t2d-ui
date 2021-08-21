@@ -1,4 +1,5 @@
 import HttpError from '../models/https-error.js';
+import { v4 as uuidv4 } from 'uuid';
 
 const DUMMY_APPS = [
   {
@@ -54,4 +55,27 @@ export const getAppsByUserId = (req, res, next) => {
   }
 
   res.json({ apps });
+};
+
+// First post request
+// I wanna add a body-parser and that should be in the main routes folder, and before the url.
+export const createApp = (req, res, next) => {
+  // Here I will use object destructuring.
+  const { name, title, description, creator } = req.body;
+  // const props = req.body;
+
+  // Creating an object literal, and
+  // We could also create a class[modal] and use it as a blue print => but I will ; later replace it wil some mongodb logic
+  const createdApp = {
+    // id: props.id
+    id: uuidv4(),
+    name: name,
+    title, // JS know this
+    description,
+    creator,
+  };
+
+  // Now this created app can be pushed to our DUMMY_APPS
+  DUMMY_APPS.push(createdApp); // or with unshift() method to add first
+  res.status(201).json({ app: createdApp });
 };

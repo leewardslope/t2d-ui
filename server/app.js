@@ -5,6 +5,10 @@ import appsRoutes from './routes/apps-routes.js';
 
 const app = express();
 
+// adding this body-parser to help post requests => and should be before the respective request.
+app.use(bodyParser.json({ limit: '20mb', extended: 'true' }));
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: 'true' }));
+
 app.use('/api/apps', appsRoutes);
 
 // 4 variable middleware, express detects it as a special middle ware to handle, errors.
