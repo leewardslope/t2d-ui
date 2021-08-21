@@ -79,3 +79,24 @@ export const createApp = (req, res, next) => {
   DUMMY_APPS.push(createdApp); // or with unshift() method to add first
   res.status(201).json({ app: createdApp });
 };
+
+export const updateApp = (req, res, next) => {
+  // For patch request we will also have a body
+  const { title, description } = req.body;
+  const appId = req.params.aid;
+
+  const updatedApp = { ...DUMMY_APPS.find(e => e.id === appId) };
+  // I want update it in an immutable way, i.e., I don't want to work on properties individually, so in the above to create a copy and update => I'm using a spread operator
+
+  // Updating the copy with new values
+  updatedApp.title = title; // updating the copy with what I got from the body
+  updatedApp.description = description;
+
+  // We need to store this value in our database too
+  const appIndex = DUMMY_APPS.findIndex(e => e.id === appId);
+  DUMMY_APPS[appIndex] = updatedApp;
+
+  res.status(200).json({ app: updatedApp });
+};
+
+export const deleteApp = (req, res, next) => {};
