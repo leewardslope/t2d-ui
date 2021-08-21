@@ -1,17 +1,7 @@
-import { v4 as uuidv4 } from 'uuid';
 import { validationResult } from 'express-validator';
 
 import HttpError from '../models/https-error.js';
 import User from '../models/user-schema.js';
-
-const DUMMY_USERS = [
-  {
-    id: 'u1',
-    name: 'Akhil Naidu',
-    email: 'kaparapu.akhilnaidu@gmail.com',
-    password: 'iwillhack',
-  },
-];
 
 export const getUsers = async (req, res, next) => {
   try {

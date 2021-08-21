@@ -1,35 +1,9 @@
-import { v4 as uuidv4 } from 'uuid';
 import { validationResult } from 'express-validator';
 import mongoose from 'mongoose';
 
 import HttpError from '../models/https-error.js';
 import App from '../models/app-schema.js';
 import User from '../models/user-schema.js';
-
-// With the delete method => I will overwrite the array => so to negate assignment errors, I changed it to let from const.
-let DUMMY_APPS = [
-  {
-    id: 'a1',
-    name: 'Forem',
-    title: 'Leewardslope',
-    description: 'An open source platform to build community based on DEV',
-    creator: 'u1',
-  },
-  {
-    id: 'a2',
-    name: 'Forem',
-    title: 'DEV',
-    description: 'An open source platform to build community based on DEV',
-    creator: 'u2',
-  },
-  {
-    id: 'a3',
-    name: 'Forem',
-    title: 'DEV',
-    description: 'An open source platform to build community based on DEV',
-    creator: 'u1',
-  },
-];
 
 export const getAppById = async (req, res, next) => {
   const appId = req.params.aid;
