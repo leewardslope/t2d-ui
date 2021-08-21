@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { validationResult } from 'express-validator';
 
 import HttpError from '../models/https-error.js';
+import App from '../models/app-schema.js';
 
 // With the delete method => I will overwrite the array => so to negate assignment errors, I changed it to let from const.
 let DUMMY_APPS = [
@@ -28,70 +29,68 @@ let DUMMY_APPS = [
   },
 ];
 
-export const getAppById = (req, res, next) => {
+export const getAppById = async (req, res, next) => {
   const appId = req.params.aid;
-  const apps = DUMMY_APPS.find(e => {
-    return e.id === appId;
-  });
+
+  try {
+    const apps = await App.findById(appId);
+    // To make life easier and convert _id to id
+    res.json({ apps: apps.toObject({ getters: true }) });
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not find an App!',
+      500
+    );
+    return next(error);
+  }
 
   if (!apps) {
     const error = new HttpError('could not find an app for the app id', 404);
-    throw error;
+    return next(error);
   }
-
-  res.json({ apps });
 };
 
-export const getAppsByUserId = (req, res, next) => {
+export const getAppsByUserId = async (req, res, next) => {
   const userId = req.params.uid;
-  // Filter method will gives me an array
-  const apps = DUMMY_APPS.filter(e => {
-    return e.creator === userId;
-  });
+  let apps;
 
-  // For some reason, filter method cannot use !apps to give error
+  try {
+    apps = await App.find({ creator: userId });
+    // This will not return an object to use `toObject` method
+    res.json({ apps: apps.map(e => e.toObject({ getters: true })) });
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching apps failed, please try again later!',
+      500
+    );
+    return next(error);
+  }
+
   if (!apps || apps.length === 0) {
-    // const error = new Error('could not find an app for the user id');
-    // error.code = 404;
-    // return next(error);
-    // throw error;
     return next(new HttpError('could not find an app for the user id', 404));
   }
-
-  res.json({ apps });
 };
 
-// First post request
-// I wanna add a body-parser and that should be in the main routes folder, and before the url.
-export const createApp = (req, res, next) => {
+export const createApp = async (req, res, next) => {
   // Using the Validation result of the middleware created in the routes file.
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    // For more detailed error, check the errors related stuff here => console.log(errors)
     throw new HttpError('Invalid inputs passed, please check your data!', 422);
   }
 
-  // Here I will use object destructuring.
-  const { name, title, description, creator } = req.body;
-  // const props = req.body;
+  const app = req.body;
 
-  // Creating an object literal, and
-  // We could also create a class[modal] and use it as a blue print => but I will ; later replace it wil some mongodb logic
-  const createdApp = {
-    // id: props.id
-    id: uuidv4(),
-    name: name,
-    title, // JS know this
-    description,
-    creator,
-  };
-
-  // Now this created app can be pushed to our DUMMY_APPS
-  DUMMY_APPS.push(createdApp); // or with unshift() method to add first
-  res.status(201).json({ app: createdApp });
+  const createdApp = new App(app);
+  try {
+    await createdApp.save();
+    res.status(201).json(createdApp);
+  } catch (err) {
+    // res.status(409).json({ message: err.message });
+    return next(new HttpError('Creating app failed, please try again!', 409));
+  }
 };
 
-export const updateApp = (req, res, next) => {
+export const updateApp = async (req, res, next) => {
   // Validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -102,28 +101,45 @@ export const updateApp = (req, res, next) => {
   // For patch request we will also have a body
   const { title, description } = req.body;
   const appId = req.params.aid;
+  let app;
 
-  const updatedApp = { ...DUMMY_APPS.find(e => e.id === appId) };
-  // I want update it in an immutable way, i.e., I don't want to work on properties individually, so in the above to create a copy and update => I'm using a spread operator
+  try {
+    app = await App.findById(appId);
+    // I need one more try catch, so came out by using let
+  } catch (err) {
+    return next(
+      new HttpError('Something went wrong, could not update app', 500)
+    );
+  }
 
-  // Updating the copy with new values
-  updatedApp.title = title; // updating the copy with what I got from the body
-  updatedApp.description = description;
+  app.title = title;
+  app.description = description;
 
-  // We need to store this value in our database too
-  const appIndex = DUMMY_APPS.findIndex(e => e.id === appId);
-  DUMMY_APPS[appIndex] = updatedApp;
-
-  res.status(200).json({ app: updatedApp });
+  try {
+    await app.save();
+    res.status(200).json({ app: app.toObject({ getters: true }) });
+  } catch (err) {
+    // Just to show that we can also use this, rather than hard coding errors every time.
+    res.status(505).json({ message: err.message });
+  }
 };
 
-export const deleteApp = (req, res, next) => {
+export const deleteApp = async (req, res, next) => {
   const appId = req.params.aid;
+  let app;
 
-  if (!DUMMY_APPS.find(e => e.id === appId)) {
-    throw new HttpError('Could not find an app for that id', 404);
+  try {
+    app = await App.findById(appId);
+  } catch (err) {
+    return next(
+      new HttpError('Could not delete the app, please try again!', 500)
+    );
   }
-  // Filter gives me a new array with the given conditions, but I'm overwriting the new array with the old array
-  DUMMY_APPS = DUMMY_APPS.filter(e => e.id != appId);
-  res.status(200).json({ message: 'deleted app' });
+
+  try {
+    await app.remove();
+    res.status(200).json({ message: 'deleted app' });
+  } catch (err) {
+    res.status(505).json({ message: err.message });
+  }
 };
