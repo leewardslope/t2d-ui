@@ -29,12 +29,12 @@ export const signup = async (req, res, next) => {
       return next(
         new HttpError(
           'There is an existing user with the same email address',
-          500
+          409
         )
       );
     }
   } catch (err) {
-    return next(new HttpError('SignUp failed, please try again later', 500));
+    return next(new HttpError('SignUp failed, please try again later', 400));
   }
 
   const createdUser = new User(user);
@@ -53,6 +53,7 @@ export const login = async (req, res, next) => {
 
   try {
     const identifier = await User.findOne({ email: user.email });
+
     if (!identifier || identifier.password !== user.password) {
       return next(
         new HttpError(

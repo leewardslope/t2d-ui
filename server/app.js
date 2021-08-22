@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 // This is not the default import model supported by nodejs, so I should add the .js suffix
 import HttpError from './models/https-error.js';
@@ -16,6 +17,7 @@ const app = express();
 // adding this body-parser to help post requests => and should be before the respective request.
 app.use(bodyParser.json({ limit: '20mb', extended: 'true' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: 'true' }));
+app.use(cors());
 
 app.use('/api/apps', appsRoutes);
 app.use('/api/users', usersRoutes);
