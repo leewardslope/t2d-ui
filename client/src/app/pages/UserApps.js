@@ -1,40 +1,37 @@
-import React from 'react';
-import PlaceList from '../components/AppList';
+import React, { useState, useEffect } from 'react';
+import { useToast } from '@chakra-ui/react';
+import AppList from '../components/AppList';
 import { useParams } from 'react-router-dom';
-
-const DUMMY_APPS = [
-  {
-    id: 'a1',
-    name: 'forem',
-    title: 'Leewardslope',
-    description: 'An OpenSource community builder based upon DEV',
-    creatorId: 'u1',
-    image: 'https://picsum.photos/200',
-  },
-  {
-    id: 'a2',
-    name: 'forem',
-    title: 'DEV',
-    description: 'An OpenSource community builder based upon DEV',
-    creatorId: 'u2',
-    image: 'https://picsum.photos/200',
-  },
-  {
-    id: 'a3',
-    name: 'forem',
-    title: 'DEV',
-    description: 'An OpenSource community builder based upon DEV',
-    creatorId: 'u1',
-    image: 'https://picsum.photos/200',
-  },
-];
+import axios from 'axios';
 
 const UserApps = props => {
   // Getting the userId from the react routes: <Route path="/:userId/apps" exact> from App.js
   const userId = useParams().userId;
-  const loadedApps = DUMMY_APPS.filter(apps => apps.creatorId === userId);
+  const toast = useToast();
+  const [loadedApps, setLoadedApps] = useState();
+  // const loadedApps = DUMMY_APPS.filter(apps => apps.creatorId === userId);
 
-  return <PlaceList items={loadedApps} />;
+  // let loadedApps;
+  useEffect(() => {
+    const getApps = async () => {
+      try {
+        const getData = await axios.get(
+          `http://75.119.143.54:5000/api/apps/user/${userId}/`
+        );
+        setLoadedApps(getData.data.apps);
+      } catch (error) {
+        toast({
+          title: `${error.response.data.message}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+      }
+    };
+    getApps();
+  }, [toast, userId]);
+
+  return <AppList items={loadedApps} />;
 };
 
 export default UserApps;

@@ -5,6 +5,7 @@ const appSchema = mongoose.Schema({
   app: { type: String, required: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
+
   creator: { type: mongoose.Types.ObjectId, required: true, ref: 'user' },
 });
 

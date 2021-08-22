@@ -69,7 +69,8 @@ export const createApp = async (req, res, next) => {
     res.status(500).json({ message: err });
   }
 
-  const createdApp = new App(app);
+  let createdApp = new App(app);
+  // createdApp = { ...createdApp, image: 'https://picsum.photos/200' };
   try {
     const session = await mongoose.startSession();
     session.startTransaction();
