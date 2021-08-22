@@ -1,6 +1,15 @@
-import React from 'react';
-import { Button, VStack, Flex, Spacer, Heading } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import {
+  Button,
+  VStack,
+  Flex,
+  Spacer,
+  Heading,
+  useToast,
+} from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
+import axios from 'axios';
+import { AuthContext } from '../../../context/auth-context';
 
 import { validateRequire } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
@@ -8,6 +17,9 @@ import FormikInput from './components/FormikInput';
 import FormikSelect from './components/FormikSelect';
 
 const FormikApp = () => {
+  const toast = useToast();
+  const auth = useContext(AuthContext);
+
   return (
     <Formik
       initialValues={{
@@ -17,10 +29,27 @@ const FormikApp = () => {
         description: '',
       }}
       onSubmit={(values, actions) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          actions.setSubmitting(false);
-        }, 1000);
+        const sendData = async () => {
+          try {
+            await axios.post('http://75.119.143.54:5000/api/apps', {
+              ...values,
+              creator: auth.userId,
+            });
+
+            // Redirect the user to different page
+          } catch (error) {
+            toast({
+              title: `${error.response.data.message}`,
+              status: 'error',
+              position: 'top',
+              isClosable: true,
+            });
+          } finally {
+            actions.resetForm();
+            actions.setSubmitting(false);
+          }
+        };
+        sendData();
       }}
     >
       {props => (
