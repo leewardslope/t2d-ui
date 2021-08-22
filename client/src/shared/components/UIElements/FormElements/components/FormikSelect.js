@@ -19,7 +19,7 @@ const FormikSelect = props => {
 
           <Select {...field} id={uniqueField} placeholder={placeholder}>
             {options.map(e => (
-              <option>{e}</option>
+              <option key={e}>{e}</option>
             ))}
           </Select>
 

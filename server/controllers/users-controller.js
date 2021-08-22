@@ -51,9 +51,9 @@ export const signup = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   const user = req.body;
-
+  let identifier;
   try {
-    const identifier = await User.findOne({ email: user.email });
+    identifier = await User.findOne({ email: user.email });
 
     if (!identifier || identifier.password !== user.password) {
       return next(
@@ -67,5 +67,8 @@ export const login = async (req, res, next) => {
     return next(new HttpError('Login failed, try again!', 409));
   }
 
-  res.json({ message: 'logged in!' });
+  res.json({
+    message: 'logged in!',
+    user: identifier.toObject({ getters: true }),
+  });
 };

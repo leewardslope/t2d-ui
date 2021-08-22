@@ -47,7 +47,7 @@ const FormikAuth = () => {
         const sendDetails = async () => {
           if (isLoginMode) {
             try {
-              await axios.post(
+              const receivedDetails = await axios.post(
                 'http://75.119.143.54:5000/api/users/login',
                 values
               );
@@ -60,8 +60,10 @@ const FormikAuth = () => {
                 position: 'top',
                 isClosable: true,
               });
+              // console.log(receivedDetails.data.user.id);
 
-              auth.login();
+              // auth.login(receivedDetails.response.data.user.id);
+              auth.login(receivedDetails.data.user.id);
             } catch (error) {
               toast({
                 title: `${error.response.data.message}`,
