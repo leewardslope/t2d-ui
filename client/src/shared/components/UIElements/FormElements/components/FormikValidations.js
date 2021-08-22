@@ -2,10 +2,8 @@ export function validateRequire(value) {
   let error;
   if (!value) {
     error = 'Required';
-  } else if (value === 'admin') {
-    error = 'Nice try!';
-  } else if (value.length <= 4) {
-    error = 'minimum 5 letters';
+  } else if (value === 'Wordpress') {
+    error = 'We are Working on it';
   }
   return error;
 }

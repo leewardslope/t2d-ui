@@ -38,60 +38,67 @@ const FormikAuth = () => {
   return (
     <Formik
       // initialValues={giveInitialValues}
-      initialValues={{ name: '', email: '', password: '' }}
-      onSubmit={async (values, actions) => {
-        if (isLoginMode) {
-          try {
-            await axios.post(
-              'http://75.119.143.54:5000/api/users/login',
-              values
-            );
+      initialValues={{
+        name: '',
+        email: '',
+        password: '',
+      }}
+      onSubmit={(values, actions) => {
+        const sendDetails = async () => {
+          if (isLoginMode) {
+            try {
+              await axios.post(
+                'http://75.119.143.54:5000/api/users/login',
+                values
+              );
 
-            actions.setSubmitting(false);
+              actions.setSubmitting(false);
+              actions.resetForm();
+              toast({
+                title: `Logged In`,
+                status: 'success',
+                position: 'top',
+                isClosable: true,
+              });
+
+              auth.login();
+            } catch (error) {
+              toast({
+                title: `${error.response.data.message}`,
+                status: 'error',
+                position: 'top',
+                isClosable: true,
+              });
+            }
             actions.resetForm();
-            toast({
-              title: `Logged In`,
-              status: 'success',
-              position: 'top',
-              isClosable: true,
-            });
+          } else {
+            try {
+              await axios.post(
+                'http://75.119.143.54:5000/api/users/signup',
+                values
+              );
 
-            auth.login();
-          } catch (error) {
-            toast({
-              title: `${error.response.data.message}`,
-              status: 'error',
-              position: 'top',
-              isClosable: true,
-            });
+              actions.setSubmitting(false);
+              toast({
+                title: `Account Created, you can SignIn now`,
+                status: 'success',
+                position: 'top',
+                isClosable: true,
+              });
+              actions.resetForm();
+            } catch (error) {
+              toast({
+                title: `${error.response.data.message}`,
+                status: 'error',
+                position: 'top',
+                isClosable: true,
+              });
+              actions.setSubmitting(false);
+              actions.resetForm();
+            }
           }
-          actions.resetForm();
-        } else {
-          try {
-            await axios.post(
-              'http://75.119.143.54:5000/api/users/signup',
-              values
-            );
-
-            actions.setSubmitting(false);
-            toast({
-              title: `Account Created, you can SignIn now`,
-              status: 'success',
-              position: 'top',
-              isClosable: true,
-            });
-            actions.resetForm();
-          } catch (error) {
-            toast({
-              title: `${error.response.data.message}`,
-              status: 'error',
-              position: 'top',
-              isClosable: true,
-            });
-            actions.setSubmitting(false);
-            actions.resetForm();
-          }
-        }
+        };
+        sendDetails();
       }}
     >
       {props => (
