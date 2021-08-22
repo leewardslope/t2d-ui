@@ -11,6 +11,10 @@ const UserApps = props => {
   const [loadedApps, setLoadedApps] = useState();
   // const loadedApps = DUMMY_APPS.filter(apps => apps.creatorId === userId);
 
+  const appFilter = e => {
+    setLoadedApps(prevApps => prevApps.filter(app => app.id !== e));
+  };
+
   // let loadedApps;
   useEffect(() => {
     const getApps = async () => {
@@ -31,7 +35,7 @@ const UserApps = props => {
     getApps();
   }, [toast, userId]);
 
-  return <AppList items={loadedApps} />;
+  return <AppList items={loadedApps} filterApps={appFilter} />;
 };
 
 export default UserApps;

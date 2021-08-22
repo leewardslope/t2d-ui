@@ -10,21 +10,39 @@ import {
   HStack,
   StackDivider,
   Button,
+  useToast,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import AlertInput from '../../shared/components/UIElements/Modals/AlertInput';
 import { AuthContext } from '../../shared/context/auth-context';
+import axios from 'axios';
 
 const AppItem = props => {
   const auth = useContext(AuthContext);
+  const toast = useToast();
 
   const [isOpen, setIsOpen] = React.useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef();
 
   const afterDeleteConfirm = () => {
-    console.log(`pressed on delete: ${props.title} ${props.id}`);
-    onClose();
+    // console.log(`pressed on delete: ${props.title} ${props.id}`);
+    const deleteApp = async () => {
+      try {
+        onClose();
+        await axios.delete(`http://75.119.143.54:5000/api/apps/${props.id}`);
+        props.onDelete(props.id);
+      } catch (error) {
+        onClose();
+        toast({
+          title: `${error.response.data.message}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+      }
+    };
+    deleteApp();
   };
 
   return (

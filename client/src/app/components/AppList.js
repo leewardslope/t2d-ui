@@ -17,6 +17,11 @@ const AppList = props => {
       </>
     );
   }
+
+  const onDeleteApp = e => {
+    props.filterApps(e);
+    // Go to UserApp.js
+  };
   // props.items && => Helps in not showing no-apps
   return (
     <ul>
@@ -31,6 +36,7 @@ const AppList = props => {
             title={app.title}
             description={app.description}
             creatorId={app.creator}
+            onDelete={e => onDeleteApp(e)}
           />
         ))}
     </ul>
