@@ -20,7 +20,8 @@ export const signup = async (req, res, next) => {
     next(new HttpError('Invalid inputs passed, please check your data!', 422));
   }
 
-  const user = req.body;
+  let user = req.body;
+  user = { ...user, image: 'https://bit.ly/dan-abramov' };
 
   //Checking for unique email address
   try {

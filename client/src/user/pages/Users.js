@@ -1,24 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useToast } from '@chakra-ui/react';
+
 import UserList from '../components/UsersList';
 
-function Users() {
-  // Dummy constant for front-end testing
-  const USERS = [
-    {
-      id: 'u1',
-      name: 'Akhil Naidu',
-      image: 'https://bit.ly/dan-abramov',
-      apps: 3,
-    },
-    {
-      id: 'u2',
-      name: 'Naruto Uzumaki',
-      image: 'https://bit.ly/dan-abramov',
-      apps: 3,
-    },
-  ];
+const Users = () => {
+  const toast = useToast();
+  const [USERS, SetUSERS] = useState([]);
 
-  return <UserList items={USERS} />;
-}
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await axios.get('http://75.119.143.54:5000/api/users');
+        SetUSERS(response.data.users);
+      } catch (error) {
+        toast({
+          title: `${error.response.data.message}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+      }
+    };
+    getUsers();
+  }, [toast]);
+
+  return <>{USERS.length && <UserList items={USERS} />}</>;
+};
 
 export default Users;
