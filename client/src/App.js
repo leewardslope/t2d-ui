@@ -56,7 +56,7 @@ function App() {
         <Route path="/app/new" exact>
           <NewApp />
         </Route>
-        <Route path="/:apps/appsId" exact>
+        <Route path="/apps/:appsId" exact>
           <UpdateApp />
         </Route>
 

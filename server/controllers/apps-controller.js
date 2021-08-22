@@ -8,8 +8,9 @@ import User from '../models/user-schema.js';
 export const getAppById = async (req, res, next) => {
   const appId = req.params.aid;
 
+  let apps;
   try {
-    const apps = await App.findById(appId);
+    apps = await App.findById(appId);
     // To make life easier and convert _id to id
     res.json({ apps: apps.toObject({ getters: true }) });
   } catch (err) {
@@ -97,7 +98,7 @@ export const updateApp = async (req, res, next) => {
   }
 
   // For patch request we will also have a body
-  const { title, description } = req.body;
+  const { title, description, repo } = req.body;
   const appId = req.params.aid;
   let app;
 
