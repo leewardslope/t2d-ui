@@ -9,8 +9,9 @@ import {
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
 import axios from 'axios';
-import { AuthContext } from '../../../context/auth-context';
+import { useHistory } from 'react-router-dom';
 
+import { AuthContext } from '../../../context/auth-context';
 import { validateRequire } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
 // import FormikRadio from './components/FormikRadio';
@@ -19,6 +20,9 @@ import FormikSelect from './components/FormikSelect';
 const FormikApp = () => {
   const toast = useToast();
   const auth = useContext(AuthContext);
+
+  const history = useHistory();
+  const redirectTo = `/${auth.userId}/apps`;
 
   return (
     <Formik
@@ -35,7 +39,14 @@ const FormikApp = () => {
               ...values,
               creator: auth.userId,
             });
+            toast({
+              title: `New App Created`,
+              status: 'success',
+              position: 'top',
+              isClosable: true,
+            });
 
+            history.push(redirectTo);
             // Redirect the user to different page
           } catch (error) {
             toast({

@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
-
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { Link, useHistory } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import {
   Button,
   VStack,
@@ -73,7 +71,7 @@ const UpdateApp = () => {
             // await actions.resetForm();
             history.push(redirectTo);
 
-            // alert(JSON.stringify(values, null, 2));
+            // alert(JSON.stringify({ ...values }, null, 2));
             toast({
               title: `Updated Successfully`,
               status: 'success',

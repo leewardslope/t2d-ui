@@ -31,6 +31,12 @@ const AppItem = props => {
       try {
         onClose();
         await axios.delete(`http://75.119.143.54:5000/api/apps/${props.id}`);
+        toast({
+          title: `Deleted`,
+          status: 'success',
+          position: 'top',
+          isClosable: true,
+        });
         props.onDelete(props.id);
       } catch (error) {
         onClose();

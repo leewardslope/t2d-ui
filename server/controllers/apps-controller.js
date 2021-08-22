@@ -113,6 +113,7 @@ export const updateApp = async (req, res, next) => {
 
   app.title = title;
   app.description = description;
+  app.repo = repo;
 
   try {
     await app.save();
