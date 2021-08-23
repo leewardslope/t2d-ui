@@ -69,7 +69,7 @@ export const login = async (req, res, next) => {
   try {
     identifier = await User.findOne({ email: user.email });
 
-    if (!identifier || identifier.password !== user.password) {
+    if (!identifier) {
       return next(
         new HttpError(
           'could not identify the user, credentials seems to be wrong!',
@@ -79,6 +79,23 @@ export const login = async (req, res, next) => {
     }
   } catch (err) {
     return next(new HttpError('Login failed, try again!', 409));
+  }
+
+  let isValidPassword = false;
+  try {
+    isValidPassword = await bcrypt.compare(user.password, identifier.password);
+  } catch (err) {
+    // What ever is the case, the above Comparison produces a boolean true or false
+    return next(new HttpError('Creating User failed, please try again!', 500));
+  }
+
+  if (!isValidPassword) {
+    return next(
+      new HttpError(
+        'could not identify the user, credentials seems to be wrong!',
+        401
+      )
+    );
   }
 
   res.json({
