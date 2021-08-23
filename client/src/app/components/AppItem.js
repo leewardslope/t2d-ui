@@ -83,7 +83,7 @@ const AppItem = props => {
         </HStack>
         <VStack>
           <Text fontSize="md">{props.description}</Text>
-          {auth.isLoggedIn && (
+          {auth.userId === props.creatorId && (
             <HStack>
               <Button colorScheme="teal" variant="outline">
                 Terminal

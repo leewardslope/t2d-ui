@@ -20,7 +20,7 @@ const NavLinks = () => {
         )}
 
         {auth.isLoggedIn && (
-          <NavLink to="/u1/apps">
+          <NavLink to={`/${auth.userId}/apps`}>
             <Box
               p="2"
               ml="8"

@@ -104,16 +104,15 @@ export const updateApp = async (req, res, next) => {
 
   try {
     app = await App.findById(appId);
+    app.title = title;
+    app.description = description;
+    app.repo = repo;
     // I need one more try catch, so came out by using let
   } catch (err) {
     return next(
       new HttpError('Something went wrong, could not update app', 500)
     );
   }
-
-  app.title = title;
-  app.description = description;
-  app.repo = repo;
 
   try {
     await app.save();
