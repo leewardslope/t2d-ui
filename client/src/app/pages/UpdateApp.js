@@ -62,14 +62,17 @@ const UpdateApp = () => {
       onSubmit={(values, actions) => {
         const sendData = async () => {
           try {
-            await axios.patch(`http://75.119.143.54:5000/api/apps/${appId}`, {
-              ...values,
-              creator: auth.userId, // I should think about it more, to remove would be better!
-            });
+            await axios.patch(
+              `http://75.119.143.54:5000/api/apps/${appId}`,
+              {
+                ...values,
+                creator: auth.userId,
+              },
+              { headers: { Authorization: `Bearer ${auth.token}` } }
+            );
 
-            // actions.setSubmitting(false);
+            actions.setSubmitting(false);
             // await actions.resetForm();
-            history.push(redirectTo);
 
             // alert(JSON.stringify({ ...values }, null, 2));
             toast({
@@ -78,6 +81,7 @@ const UpdateApp = () => {
               position: 'top',
               isClosable: true,
             });
+            history.push(redirectTo);
 
             // Redirect the user to different page
           } catch (error) {

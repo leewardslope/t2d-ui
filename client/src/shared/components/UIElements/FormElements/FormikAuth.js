@@ -52,6 +52,9 @@ const FormikAuth = () => {
                 values
               );
 
+              // { headers: { Authorization: `Bearer ${auth.token}` } }
+              // For login and signup this will be generated.
+
               actions.setSubmitting(false);
               actions.resetForm();
               toast({
