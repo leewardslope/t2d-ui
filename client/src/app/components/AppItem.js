@@ -1,5 +1,5 @@
 // import React, {useContext} from 'react';
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Avatar,
   Heading,
@@ -10,21 +10,45 @@ import {
   HStack,
   StackDivider,
   Button,
+  useToast,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import AlertInput from '../../shared/components/UIElements/Modals/AlertInput';
-// import { AuthContext } from '../../shared/context/auth-context'
+import { AuthContext } from '../../shared/context/auth-context';
+import axios from 'axios';
 
 const AppItem = props => {
-  // const auth = useContext(AuthContext)
+  const auth = useContext(AuthContext);
+  const toast = useToast();
 
   const [isOpen, setIsOpen] = React.useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef();
 
   const afterDeleteConfirm = () => {
-    console.log(`pressed on delete: ${props.title} ${props.id}`);
-    onClose();
+    // console.log(`pressed on delete: ${props.title} ${props.id}`);
+    const deleteApp = async () => {
+      try {
+        onClose();
+        await axios.delete(`http://75.119.143.54:5000/api/apps/${props.id}`);
+        toast({
+          title: `Deleted`,
+          status: 'success',
+          position: 'top',
+          isClosable: true,
+        });
+        props.onDelete(props.id);
+      } catch (error) {
+        onClose();
+        toast({
+          title: `${error.response.data.message}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+      }
+    };
+    deleteApp();
   };
 
   return (
@@ -59,33 +83,35 @@ const AppItem = props => {
         </HStack>
         <VStack>
           <Text fontSize="md">{props.description}</Text>
-          <HStack>
-            <Button colorScheme="teal" variant="outline">
-              Terminal
-            </Button>
-            <Link to={`/apps/${props.id}`}>
-              <Button variant="outline">Edit</Button>
-            </Link>
-            <Button
-              colorScheme="red"
-              variant="solid"
-              onClick={() => setIsOpen(true)}
-            >
-              Delete
-            </Button>
+          {auth.userId === props.creatorId && (
+            <HStack>
+              <Button colorScheme="teal" variant="outline">
+                Terminal
+              </Button>
+              <Link to={`/apps/${props.id}`}>
+                <Button variant="outline">Edit</Button>
+              </Link>
+              <Button
+                colorScheme="red"
+                variant="solid"
+                onClick={() => setIsOpen(true)}
+              >
+                Delete
+              </Button>
 
-            <AlertInput
-              isOpen={isOpen}
-              onClose={onClose}
-              cancelRef={cancelRef}
-              alertHeader="Delete App"
-              alertBody="Are you sure? You can't undo this action afterwards."
-              alertFooter1="Cancel"
-              alertFooter2="Delete"
-              alertFooter2Color="red"
-              todo={afterDeleteConfirm}
-            />
-          </HStack>
+              <AlertInput
+                isOpen={isOpen}
+                onClose={onClose}
+                cancelRef={cancelRef}
+                alertHeader="Delete App"
+                alertBody="Are you sure? You can't undo this action afterwards."
+                alertFooter1="Cancel"
+                alertFooter2="Delete"
+                alertFooter2Color="red"
+                todo={afterDeleteConfirm}
+              />
+            </HStack>
+          )}
         </VStack>
       </VStack>
     </Flex>

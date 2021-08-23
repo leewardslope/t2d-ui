@@ -8,8 +8,9 @@ import User from '../models/user-schema.js';
 export const getAppById = async (req, res, next) => {
   const appId = req.params.aid;
 
+  let apps;
   try {
-    const apps = await App.findById(appId);
+    apps = await App.findById(appId);
     // To make life easier and convert _id to id
     res.json({ apps: apps.toObject({ getters: true }) });
   } catch (err) {
@@ -69,7 +70,8 @@ export const createApp = async (req, res, next) => {
     res.status(500).json({ message: err });
   }
 
-  const createdApp = new App(app);
+  let createdApp = new App(app);
+  // createdApp = { ...createdApp, image: 'https://picsum.photos/200' };
   try {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -96,21 +98,21 @@ export const updateApp = async (req, res, next) => {
   }
 
   // For patch request we will also have a body
-  const { title, description } = req.body;
+  const { title, description, repo } = req.body;
   const appId = req.params.aid;
   let app;
 
   try {
     app = await App.findById(appId);
+    app.title = title;
+    app.description = description;
+    app.repo = repo;
     // I need one more try catch, so came out by using let
   } catch (err) {
     return next(
       new HttpError('Something went wrong, could not update app', 500)
     );
   }
-
-  app.title = title;
-  app.description = description;
 
   try {
     await app.save();

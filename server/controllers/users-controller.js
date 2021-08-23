@@ -20,7 +20,8 @@ export const signup = async (req, res, next) => {
     next(new HttpError('Invalid inputs passed, please check your data!', 422));
   }
 
-  const user = req.body;
+  let user = req.body;
+  user = { ...user, image: 'https://bit.ly/dan-abramov' };
 
   //Checking for unique email address
   try {
@@ -29,12 +30,12 @@ export const signup = async (req, res, next) => {
       return next(
         new HttpError(
           'There is an existing user with the same email address',
-          500
+          409
         )
       );
     }
   } catch (err) {
-    return next(new HttpError('SignUp failed, please try again later', 500));
+    return next(new HttpError('SignUp failed, please try again later', 400));
   }
 
   const createdUser = new User(user);
@@ -50,9 +51,10 @@ export const signup = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   const user = req.body;
-
+  let identifier;
   try {
-    const identifier = await User.findOne({ email: user.email });
+    identifier = await User.findOne({ email: user.email });
+
     if (!identifier || identifier.password !== user.password) {
       return next(
         new HttpError(
@@ -65,5 +67,8 @@ export const login = async (req, res, next) => {
     return next(new HttpError('Login failed, try again!', 409));
   }
 
-  res.json({ message: 'logged in!' });
+  res.json({
+    message: 'logged in!',
+    user: identifier.toObject({ getters: true }),
+  });
 };
