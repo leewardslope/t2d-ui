@@ -1,4 +1,5 @@
 import { validationResult } from 'express-validator';
+import bcrypt from 'bcryptjs';
 
 import HttpError from '../models/https-error.js';
 import User from '../models/user-schema.js';
@@ -21,7 +22,7 @@ export const signup = async (req, res, next) => {
   }
 
   let user = req.body;
-  user = { ...user, image: 'https://bit.ly/dan-abramov' };
+  // user = { ...user, image: 'https://bit.ly/dan-abramov' }; => Taking this a bit down
 
   //Checking for unique email address
   try {
@@ -35,8 +36,21 @@ export const signup = async (req, res, next) => {
       );
     }
   } catch (err) {
-    return next(new HttpError('SignUp failed, please try again later', 400));
+    return next(new HttpError('SignUp failed, please try again later', 500));
   }
+
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(user.password, 12);
+  } catch (err) {
+    return next(new HttpError('Creating User failed, please try again!', 500));
+  }
+
+  user = {
+    ...user,
+    image: 'https://bit.ly/dan-abramov',
+    password: hashedPassword,
+  };
 
   const createdUser = new User(user);
 
