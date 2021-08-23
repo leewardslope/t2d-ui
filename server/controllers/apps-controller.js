@@ -61,7 +61,7 @@ export const createApp = async (req, res, next) => {
 
   let user;
   try {
-    user = await User.findById(app.creator);
+    user = await User.findById(req.userData.userId);
 
     if (!user) {
       return next(new HttpError('Could not find user for provided ID!', 404));
@@ -70,8 +70,10 @@ export const createApp = async (req, res, next) => {
     res.status(500).json({ message: err });
   }
 
-  let createdApp = new App(app);
+  let createdApp = new App({ ...app, creator: req.userData.userId });
   // createdApp = { ...createdApp, image: 'https://picsum.photos/200' };
+  // createdApp = { ...createdApp, creator: req.userData.userId }; => This format is not working!
+
   try {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -104,7 +106,7 @@ export const updateApp = async (req, res, next) => {
 
   try {
     app = await App.findById(appId);
-    
+
     // I need one more try catch, so came out by using let
   } catch (err) {
     return next(
@@ -113,14 +115,14 @@ export const updateApp = async (req, res, next) => {
   }
 
   // req.userData.userId => came from token
-  // app.creator.toString() => as this is coming from mongoosedb; sometimes we need to make it a string for comaprisions.
+  // app.creator.toString() => as this is coming from mongodb; sometimes we need to make it a string for comparisons.
   if (app.creator !== req.userData.userId) {
-    new HttpError('You are not allowed to use/update this app', 403)
+    new HttpError('You are not allowed to use/update this app', 403);
   }
 
   app.title = title;
-    app.description = description;
-    app.repo = repo;
+  app.description = description;
+  app.repo = repo;
 
   try {
     await app.save();
@@ -149,7 +151,7 @@ export const deleteApp = async (req, res, next) => {
 
   // remember => creator here is a full object which has acess via populated content using ref
   if (app.creator.id !== req.userData.userId) {
-    new HttpError('You are not allowed to delete/update this app', 403)
+    new HttpError('You are not allowed to delete/update this app', 403);
   }
 
   try {

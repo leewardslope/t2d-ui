@@ -7,7 +7,6 @@ import HttpError from '../models/https-error.js';
 import User from '../models/user-schema.js';
 
 dotenv.config();
-console.log();
 
 export const getUsers = async (req, res, next) => {
   try {
@@ -53,7 +52,7 @@ export const signup = async (req, res, next) => {
 
   user = {
     ...user,
-    image: 'https://bit.ly/dan-abramov',
+    image: `https://i.pravatar.cc/150?u=${user.email}`,
     password: hashedPassword,
   };
 
