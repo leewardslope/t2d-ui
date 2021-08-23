@@ -35,10 +35,14 @@ const FormikApp = () => {
       onSubmit={(values, actions) => {
         const sendData = async () => {
           try {
-            await axios.post('http://75.119.143.54:5000/api/apps', {
-              ...values,
-              creator: auth.userId,
-            });
+            await axios.post(
+              'http://75.119.143.54:5000/api/apps',
+              {
+                ...values,
+                creator: auth.userId,
+              },
+              { headers: { Authorization: `Bearer ${auth.token}` } }
+            );
             toast({
               title: `New App Created`,
               status: 'success',

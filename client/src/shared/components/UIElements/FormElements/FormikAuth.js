@@ -60,11 +60,15 @@ const FormikAuth = () => {
                 position: 'top',
                 isClosable: true,
               });
-              // console.log(receivedDetails.data.user.id);
-
+              // console.log(receivedDetails.data.user);
+              auth.login(
+                receivedDetails.data.userId,
+                receivedDetails.data.token
+              );
               // auth.login(receivedDetails.response.data.user.id);
-              auth.login(receivedDetails.data.user.id);
+              // auth.login(receivedDetails.data.user.id);
             } catch (error) {
+              // console.log(error);
               toast({
                 title: `${error.response.data.message}`,
                 status: 'error',
@@ -75,7 +79,7 @@ const FormikAuth = () => {
             actions.resetForm();
           } else {
             try {
-              await axios.post(
+              const receivedDetails = await axios.post(
                 'http://75.119.143.54:5000/api/users/signup',
                 values
               );
@@ -88,6 +92,10 @@ const FormikAuth = () => {
                 isClosable: true,
               });
               actions.resetForm();
+              auth.login(
+                receivedDetails.data.userId,
+                receivedDetails.data.token
+              );
             } catch (error) {
               toast({
                 title: `${error.response.data.message}`,

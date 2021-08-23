@@ -6,6 +6,11 @@ import HttpError from '../models/https-error.js';
 dotenv.config();
 
 export default (req, res, next) => {
+  // This is not required but I can't stop myself :p
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+
   try {
     const token = req.headers.authorization.split(' ')[1]; //Authorization: 'Bearer TOKEN'
     if (!token) {
