@@ -35,11 +35,20 @@ function App() {
 
 
   // Let's store token in localstorage, i'm not ready for using cookies now!
-  const login = useCallback((uid, token) => {
+  const login = useCallback((uid, token, expirationDate) => {
     setToken(token);
     setUserId(uid);
+    
+    // need of token expration checks => date + 1hr
+    // either we have it or create it (have it, is in case of 'refresh' login)
+    const tokenExpirationDate = expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60)
     // Localstorage is gloabally available varibale and it stores in txt format.
-    localStorage.setItem('userData', JSON.stringify({userId: uid, token: token}))
+    localStorage.setItem('userData', JSON.stringify({
+      userId: uid, 
+      token: token, 
+      expiration: tokenExpirationDate.toISOString() 
+    }));
+
   }, []);
 
   const logout = useCallback(() => {
@@ -51,8 +60,9 @@ function App() {
   useEffect(() => {
    // Local storage is just a text, we neet to convert it into an object
     const storedData = JSON.parse(localStorage.getItem('userData'))
-    if (storedData && storedData.token) {
-      login(storedData.userId, storedData.token)
+    // Checking if +1 hr time > present time
+    if ( storedData && storedData.token && new Date(storedData.expiration > new Date())) {
+      login(storedData.userId, storedData.token, new Date(storedData.expiration))
     }
   }, [login])
 
