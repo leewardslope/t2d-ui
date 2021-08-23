@@ -1,8 +1,13 @@
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 import HttpError from '../models/https-error.js';
 import User from '../models/user-schema.js';
+
+dotenv.config();
+console.log();
 
 export const getUsers = async (req, res, next) => {
   try {
@@ -56,11 +61,27 @@ export const signup = async (req, res, next) => {
 
   try {
     await createdUser.save();
-    res.json({ user: createdUser.toObject({ getters: true }) });
   } catch (err) {
     // res.status(409).json({ message: err.message });
+
     return next(new HttpError('Creating User failed, please try again!', 409));
   }
+
+  let token;
+  try {
+    token = jwt.sign(
+      { userId: createdUser.id, email: createdUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+  } catch (err) {
+    return next(new HttpError('Creating User failed, please try again!', 409));
+  }
+
+  res
+    .status(201)
+    .json({ userId: createdUser.id, email: createdUser.email, token: token });
+  // res.json({ user: createdUser.toObject({ getters: true }) }); => I don't even want to send other details like even the hashed password.
 };
 
 export const login = async (req, res, next) => {
@@ -98,8 +119,20 @@ export const login = async (req, res, next) => {
     );
   }
 
-  res.json({
-    message: 'logged in!',
-    user: identifier.toObject({ getters: true }),
-  });
+  let token;
+  try {
+    token = jwt.sign(
+      { userId: identifier.id, email: identifier.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+  } catch (err) {
+    return next(new HttpError('Login failed, please try again!', 409));
+  }
+
+  res.json({ userId: identifier.id, email: identifier.email, token: token });
+  // res.json({
+  //   message: 'logged in!',
+  //   user: identifier.toObject({ getters: true }),
+  // });
 };
