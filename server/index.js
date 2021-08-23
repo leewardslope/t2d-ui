@@ -7,7 +7,6 @@ import testRoutes from './routes/test.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
-console.log();
 
 const app = express();
 

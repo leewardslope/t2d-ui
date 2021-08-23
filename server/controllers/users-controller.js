@@ -67,6 +67,7 @@ export const signup = async (req, res, next) => {
     return next(new HttpError('Creating User failed, please try again!', 409));
   }
 
+  // Once we have working token, we can add a middleware in routes to restrict certain things without this token
   let token;
   try {
     token = jwt.sign(
