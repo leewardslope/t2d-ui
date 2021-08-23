@@ -104,15 +104,23 @@ export const updateApp = async (req, res, next) => {
 
   try {
     app = await App.findById(appId);
-    app.title = title;
-    app.description = description;
-    app.repo = repo;
+    
     // I need one more try catch, so came out by using let
   } catch (err) {
     return next(
       new HttpError('Something went wrong, could not update app', 500)
     );
   }
+
+  // req.userData.userId => came from token
+  // app.creator.toString() => as this is coming from mongoosedb; sometimes we need to make it a string for comaprisions.
+  if (app.creator !== req.userData.userId) {
+    new HttpError('You are not allowed to use/update this app', 403)
+  }
+
+  app.title = title;
+    app.description = description;
+    app.repo = repo;
 
   try {
     await app.save();
@@ -137,6 +145,11 @@ export const deleteApp = async (req, res, next) => {
 
   if (!app) {
     return next(new HttpError('Could not find app for this ID!', 404));
+  }
+
+  // remember => creator here is a full object which has acess via populated content using ref
+  if (app.creator.id !== req.userData.userId) {
+    new HttpError('You are not allowed to delete/update this app', 403)
   }
 
   try {

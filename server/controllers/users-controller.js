@@ -36,12 +36,12 @@ export const signup = async (req, res, next) => {
       return next(
         new HttpError(
           'There is an existing user with the same email address',
-          409
+          403
         )
       );
     }
   } catch (err) {
-    return next(new HttpError('SignUp failed, please try again later', 500));
+    return next(new HttpError('SignUp failed, please try again later', 409));
   }
 
   let hashedPassword;

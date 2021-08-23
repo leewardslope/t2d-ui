@@ -79,7 +79,7 @@ const FormikAuth = () => {
                 isClosable: true,
               });
             }
-            actions.resetForm();
+            // actions.resetForm();
           } else {
             try {
               const receivedDetails = await axios.post(
