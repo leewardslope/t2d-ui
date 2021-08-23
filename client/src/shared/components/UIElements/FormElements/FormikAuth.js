@@ -72,6 +72,7 @@ const FormikAuth = () => {
               // auth.login(receivedDetails.data.user.id);
             } catch (error) {
               // console.log(error);
+              actions.setSubmitting(false);
               toast({
                 title: `${error.response.data.message}`,
                 status: 'error',
@@ -100,14 +101,14 @@ const FormikAuth = () => {
                 receivedDetails.data.token
               );
             } catch (error) {
+              actions.setSubmitting(false);
+              actions.resetForm();
               toast({
                 title: `${error.response.data.message}`,
                 status: 'error',
                 position: 'top',
                 isClosable: true,
               });
-              actions.setSubmitting(false);
-              actions.resetForm();
             }
           }
         };

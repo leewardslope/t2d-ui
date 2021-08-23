@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { ChakraProvider, theme } from '@chakra-ui/react';
 import {
   BrowserRouter as Router,
@@ -32,6 +32,8 @@ function App() {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(false);
 
+
+
   // Let's store token in localstorage, i'm not ready for using cookies now!
   const login = useCallback((uid, token) => {
     setToken(token);
@@ -43,7 +45,16 @@ function App() {
   const logout = useCallback(() => {
     setToken(null);
     setUserId(null);
+    localStorage.removeItem('userData')
   }, []);
+
+  useEffect(() => {
+   // Local storage is just a text, we neet to convert it into an object
+    const storedData = JSON.parse(localStorage.getItem('userData'))
+    if (storedData && storedData.token) {
+      login(storedData.userId, storedData.token)
+    }
+  }, [login])
 
   let routes;
 
