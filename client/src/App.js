@@ -32,9 +32,12 @@ function App() {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(false);
 
+  // Let's store token in localstorage, i'm not ready for using cookies now!
   const login = useCallback((uid, token) => {
     setToken(token);
     setUserId(uid);
+    // Localstorage is gloabally available varibale and it stores in txt format.
+    localStorage.setItem('userData', JSON.stringify({userId: uid, token: token}))
   }, []);
 
   const logout = useCallback(() => {
