@@ -9,12 +9,16 @@ import {
   updateApp,
   deleteApp,
 } from '../controllers/apps-controller.js';
+import checkAuth from '../middleware/check-auth.js';
 
 const router = express.Router();
 
 router.get('/:aid', getAppById);
 
 router.get('/user/:uid', getAppsByUserId);
+
+// Added middleware here, so anything above can be accessed without the token
+router.use(checkAuth);
 
 router.post(
   '/',

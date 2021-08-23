@@ -30,7 +30,9 @@ const AppItem = props => {
     const deleteApp = async () => {
       try {
         onClose();
-        await axios.delete(`http://75.119.143.54:5000/api/apps/${props.id}`);
+        await axios.delete(`http://75.119.143.54:5000/api/apps/${props.id}`, {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        });
         toast({
           title: `Deleted`,
           status: 'success',
