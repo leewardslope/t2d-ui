@@ -13,7 +13,7 @@ const NavLinks = () => {
       <Box display="flex" alignItems="center" justifyContent="space-between">
         {auth.isLoggedIn && (
           <NavLink to="/" exact>
-            <Box p="2" ml="8">
+            <Box p="2" mx="4">
               Dashboard
             </Box>
           </NavLink>
@@ -23,7 +23,7 @@ const NavLinks = () => {
           <NavLink to={`/${auth.userId}/apps`}>
             <Box
               p="2"
-              ml="8"
+              mx="4"
               _hover={{
                 background: 'teal.500',
                 borderRadius: 'md',
@@ -38,7 +38,7 @@ const NavLinks = () => {
         <NavLink to="/">
           <Box
             p="2"
-            ml="8"
+            mx="4"
             _hover={{
               background: 'teal.500',
               borderRadius: 'md',
@@ -52,7 +52,7 @@ const NavLinks = () => {
         <NavLink to="/setup">
           <Box
             p="2"
-            ml="8"
+            mx="4"
             _hover={{
               background: 'teal.500',
               borderRadius: 'md',
@@ -67,7 +67,7 @@ const NavLinks = () => {
           <NavLink to="/app/new">
             <Box
               p="2"
-              ml="8"
+              mx="4"
               _hover={{
                 background: 'teal.500',
                 borderRadius: 'md',

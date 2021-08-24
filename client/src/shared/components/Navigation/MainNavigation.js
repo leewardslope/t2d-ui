@@ -22,7 +22,7 @@ const MainNavigation = props => {
         // w="100%"
         // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
       >
-        <Box>
+        <Box mx="2">
           <Link to="/">
             <Heading
               fontWeight="extrabold"
@@ -39,23 +39,21 @@ const MainNavigation = props => {
         <NavLinks />
 
         {!auth.isLoggedIn && (
-          <Box>
+          <Box mx="2">
             <Link to="/auth">
-              <Button colorScheme="teal" mr="4">
-                Authenticate
-              </Button>
+              <Button colorScheme="teal">Authenticate</Button>
             </Link>
           </Box>
         )}
 
         {auth.isLoggedIn && (
-          <Box>
-            <Button onClick={auth.logout} colorScheme="teal" mr="4">
+          <Box mx="2">
+            <Button onClick={auth.logout} colorScheme="teal">
               Logout
             </Button>
           </Box>
         )}
-        <Box>
+        <Box mx="2">
           <ColorModeSwitcher />
         </Box>
       </Flex>
