@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true, minlength: 8 },
   image: { type: String, required: true },
   apps: [{ type: mongoose.Types.ObjectId, required: true, ref: 'app' }],
+  keys: [{ type: mongoose.Types.ObjectId, ref: 'ssh' }],
 });
 
 userSchema.plugin(uniqueValidator);
