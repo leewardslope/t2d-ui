@@ -63,7 +63,8 @@ const AppItem = props => {
         my="2"
         p="2"
         // w="100%"
-        maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '30vw' }}
+        // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '30vw' }}
+        w="300px"
         boxShadow="base"
         _hover={{
           boxShadow: 'md',

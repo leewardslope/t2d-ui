@@ -1,4 +1,6 @@
 import React from 'react';
+import { SimpleGrid } from '@chakra-ui/react';
+
 import UserItem from './UserItem';
 import InfoCard from '../../shared/components/UIElements/InfoCard';
 
@@ -9,7 +11,7 @@ const UsersList = props => {
   }
 
   return (
-    <ul>
+    <SimpleGrid minChildWidth="300px" spacing="0px">
       {props.items.map(user => (
         <UserItem
           key={user.id}
@@ -19,7 +21,7 @@ const UsersList = props => {
           appsCount={user.apps.length}
         />
       ))}
-    </ul>
+    </SimpleGrid>
   );
 };
 

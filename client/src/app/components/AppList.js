@@ -1,6 +1,6 @@
 import React from 'react';
 import InfoCard from '../../shared/components/UIElements/InfoCard';
-import { Button } from '@chakra-ui/react';
+import { Button, SimpleGrid } from '@chakra-ui/react';
 import AppItem from './AppItem';
 import { Link } from 'react-router-dom';
 
@@ -23,8 +23,10 @@ const AppList = props => {
     // Go to UserApp.js
   };
   // props.items && => Helps in not showing no-apps
+
+  // <SimpleGrid columns={[2, null, 3]} spacing="40px">
   return (
-    <ul>
+    <SimpleGrid minChildWidth="300px" spacing="0px">
       {props.items.map(app => (
         <AppItem
           key={app.id}
@@ -38,7 +40,7 @@ const AppList = props => {
           onDelete={e => onDeleteApp(e)}
         />
       ))}
-    </ul>
+    </SimpleGrid>
   );
 };
 
