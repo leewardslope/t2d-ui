@@ -25,6 +25,7 @@ import NewApp from './app/pages/NewApp';
 import UserApps from './app/pages/UserApps';
 import UpdateApp from './app/pages/UpdateApp';
 import Auth from './user/pages/Auth';
+import Setup from './ssh/Setup';
 
 import { AuthContext } from './shared/context/auth-context';
 import useAuth from './shared/hooks/auth-hook';
@@ -39,6 +40,9 @@ function App() {
       <Switch>
         <Route path="/" exact>
           <Users />
+        </Route>
+        <Route path="/setup" exact>
+          <Setup />
         </Route>
         <Route path="/:userId/apps" exact>
           <UserApps />
