@@ -33,8 +33,6 @@ export const getAppsByUserId = async (req, res, next) => {
 
   try {
     apps = await App.find({ creator: userId });
-    // This will not return an object to use `toObject` method
-    res.json({ apps: apps.map(e => e.toObject({ getters: true })) });
   } catch (err) {
     const error = new HttpError(
       'Fetching apps failed, please try again later!',
@@ -44,8 +42,11 @@ export const getAppsByUserId = async (req, res, next) => {
   }
 
   if (!apps || apps.length === 0) {
-    return next(new HttpError('could not find an app for the user id', 404));
+    // Intentionally added 203, so that it will not be considered as an error!
+    return next(new HttpError('could not find an app for the user id', 203));
   }
+
+  res.json({ apps: apps.map(e => e.toObject({ getters: true })) });
 };
 
 export const createApp = async (req, res, next) => {
