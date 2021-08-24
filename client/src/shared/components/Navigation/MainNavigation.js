@@ -1,13 +1,23 @@
 import React, { useContext } from 'react';
-import { Button, Heading, Flex, Box } from '@chakra-ui/react';
+import {
+  Button,
+  Heading,
+  Flex,
+  Box,
+  Spacer,
+  useMediaQuery,
+} from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+
 import { ColorModeSwitcher } from '../../../ColorModeSwitcher';
 import MainHeader from './MainHeader';
 import NavLinks from './NavLinks';
 import { AuthContext } from '../../context/auth-context';
+import NavMenu from './components/NavMenu';
 
 const MainNavigation = props => {
   const auth = useContext(AuthContext);
+  const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)');
   return (
     <MainHeader>
       {/* What ever we add here will act as props children for our MainHeader file */}
@@ -35,8 +45,8 @@ const MainNavigation = props => {
             </Heading>
           </Link>
         </Box>
-
-        <NavLinks />
+        <Spacer />
+        {isLargerThan1280 && <NavLinks />}
 
         {!auth.isLoggedIn && (
           <Box mx="2">
@@ -53,6 +63,7 @@ const MainNavigation = props => {
             </Button>
           </Box>
         )}
+        {!isLargerThan1280 && <NavMenu />}
         <Box mx="2">
           <ColorModeSwitcher />
         </Box>

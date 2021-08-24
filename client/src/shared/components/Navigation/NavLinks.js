@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { Spacer, Box } from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
+
 // import { navLinks } from './components/navLinks';
+
 import { AuthContext } from '../../context/auth-context';
 
 const NavLinks = () => {
@@ -9,7 +11,6 @@ const NavLinks = () => {
 
   return (
     <>
-      <Spacer />
       <Box display="flex" alignItems="center" justifyContent="space-between">
         {auth.isLoggedIn && (
           <NavLink to="/" exact>

@@ -22,12 +22,14 @@ const UserItem = props => {
         p="2"
         // w="100%"
         // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '20vw' }}
-        alignItems="stretch"
+        w="300px"
+        // alignItems="stretch"
       >
         <Link to={`/${props.id}/apps`}>
           <HStack
-            p="4"
+            p="2"
             // borderWidth="1px"
+            w="300px"
             boxShadow="base"
             borderColor="gray.400"
             borderRadius="xl"
@@ -37,10 +39,10 @@ const UserItem = props => {
               borderColor: 'grey.800',
             }}
           >
-            <Box>
+            <Box mx="2">
               <Avatar name={props.name} src={props.image} />
             </Box>
-            <Spacer />
+
             <Box>
               <Heading size="md" color="teal">
                 {props.name}
@@ -49,6 +51,7 @@ const UserItem = props => {
                 {props.appsCount} {props.appsCount === 1 ? 'app' : 'apps'}
               </Text>
             </Box>
+            <Spacer />
           </HStack>
         </Link>
       </VStack>

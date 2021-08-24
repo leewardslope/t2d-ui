@@ -11,7 +11,7 @@ const UsersList = props => {
   }
 
   return (
-    <SimpleGrid minChildWidth="250px" spacing="0px">
+    <SimpleGrid minChildWidth="300px" spacing="0px">
       {props.items.map(user => (
         <UserItem
           key={user.id}
