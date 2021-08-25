@@ -26,10 +26,10 @@ const FormikSSH = () => {
   return (
     <Formik
       initialValues={{
-        app: '',
-        repo: '',
-        title: '',
-        description: '',
+        host: '',
+        username: '',
+        sshName: '',
+        identity: '',
       }}
       onSubmit={(values, actions) => {
         const sendData = async () => {
@@ -38,7 +38,7 @@ const FormikSSH = () => {
               headers: { Authorization: `Bearer ${auth.token}` },
             });
             toast({
-              title: `New App Created`,
+              title: `New SSH Key connected`,
               status: 'success',
               position: 'top',
               isClosable: true,
@@ -83,10 +83,26 @@ const FormikSSH = () => {
 
               <FormikInput
                 validation={validateRequire}
+                uniqueField="username"
+                label="Server Host Name"
+                placeholder="ubuntu"
+                formHelper="Comparison ref => ssh ubuntu@176.52.63.112"
+              />
+
+              <FormikInput
+                validation={validateRequire}
+                uniqueField="host"
+                label="IP Address of Your Server"
+                placeholder="176.52.63.112"
+                formHelper="Comparison ref => ssh ubuntu@176.52.63.112"
+              />
+
+              <FormikInput
+                validation={validateRequire}
                 uniqueField="sshName"
                 label="SSH Key Name"
                 placeholder="Name your SSH Key"
-                formHelper=""
+                formHelper="Any Name, this will be useful when managing multiple keys"
               />
 
               {/* <Field type="radio" name="picked" value="One" />
@@ -102,10 +118,10 @@ const FormikSSH = () => {
 
               <FormikTextArea
                 validation={validateRequire}
-                uniqueField="sshKey"
+                uniqueField="identity"
                 label="SSH Key"
                 placeholder="Paste your SSH Private Key"
-                formHelper="This key will be encrypted and you can remove it at any time"
+                formHelper="To find your Key => cat .ssh/id_rsa"
               />
 
               <Button
