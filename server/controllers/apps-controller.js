@@ -150,7 +150,7 @@ export const deleteApp = async (req, res, next) => {
     return next(new HttpError('Could not find app for this ID!', 404));
   }
 
-  // remember => creator here is a full object which has acess via populated content using ref
+  // remember => creator here is a full object which has access via populated content using ref
   if (app.creator.id !== req.userData.userId) {
     new HttpError('You are not allowed to delete/update this app', 403);
   }
@@ -160,7 +160,9 @@ export const deleteApp = async (req, res, next) => {
     session.startTransaction();
 
     await app.remove({ session: session });
-    app.creator.apps.pull(app);
+
+    app.creator.apps.pull(app); // Mongodb Pull => Not Array Pull
+
     await app.creator.save({ session: session });
     await session.commitTransaction();
   } catch (err) {

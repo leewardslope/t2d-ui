@@ -89,7 +89,7 @@ const AppItem = props => {
           {auth.userId === props.creatorId && (
             <HStack>
               <Button colorScheme="teal" variant="outline">
-                Terminal
+                Build
               </Button>
               <Link to={`/apps/${props.id}`}>
                 <Button variant="outline">Edit</Button>

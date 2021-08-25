@@ -5,6 +5,7 @@ import {
   Button,
   VStack,
   HStack,
+  Box,
   Flex,
   Spacer,
   Heading,
@@ -58,7 +59,6 @@ const UpdateApp = () => {
 
   return (
     <SimpleGrid columns={[1, 1, 2, 2]} spacing="0px">
-      <Spacer />
       <Formik
         enableReinitialize
         initialValues={{ ...appData }}
@@ -168,12 +168,12 @@ const UpdateApp = () => {
 
       <Formik
         enableReinitialize
-        initialValues={{ ...appData }}
+        initialValues={{ env01: '', value01: '' }}
         onSubmit={(values, actions) => {
           const sendData = async () => {
             try {
               await axios.patch(
-                `http://75.119.143.54:5000/api/apps/${appId}`,
+                `http://75.119.143.54:5000/api/apps/${appId}/env`,
                 {
                   ...values,
                   creator: auth.userId,
@@ -218,53 +218,42 @@ const UpdateApp = () => {
                 // borderWidth="2px"
                 borderRadius="xl"
                 // w="50%"
-                w="400px"
+                w="500px"
                 // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
                 alignItems="stretch"
               >
                 <Heading align="center" size="lg">
-                  Editing App
+                  Add ENV Variables
                 </Heading>
 
-                <FormikInput
-                  validation={validateRequire}
-                  uniqueField="title"
-                  label="App Name"
-                  placeholder={appData.title}
-                  formHelper="Place Holder contains your previous value"
-                />
-
-                <FormikInput
-                  validation={validateRequire}
-                  uniqueField="description"
-                  label="Description"
-                  placeholder={appData.description}
-                  formHelper="Place Holder contains your previous value"
-                />
-
-                <FormikInput
-                  // validation={validateRequire}
-                  uniqueField="repo"
-                  label="Github URL"
-                  placeholder={appData.repo}
-                  formHelper="Place Holder contains your previous value"
-                />
-                <Divider />
-                <HStack>
-                  <Spacer />
-
-                  <Link to={redirectTo}>
-                    <Button>Cancel</Button>
-                  </Link>
-                  <Spacer />
-                  <Button
-                    colorScheme="teal"
-                    isLoading={props.isSubmitting}
-                    type="submit"
-                  >
-                    Submit
-                  </Button>
-                  <Spacer />
+                <HStack justifyContent="center">
+                  <Box>
+                    <FormikInput
+                      // validation={validateRequire}
+                      uniqueField="env01"
+                      // label="App Name"
+                      placeholder="DOMAIN_NAME"
+                      // formHelper="KEY"
+                    />
+                  </Box>
+                  <Box>
+                    <FormikInput
+                      // validation={validateRequire}
+                      uniqueField="value01"
+                      // label="Description"
+                      placeholder="app.example.com"
+                      // formHelper="VALUE"
+                    />
+                  </Box>
+                  <Box>
+                    <Button
+                      colorScheme="teal"
+                      isLoading={props.isSubmitting}
+                      type="submit"
+                    >
+                      Add
+                    </Button>
+                  </Box>
                 </HStack>
               </VStack>
               <Spacer />
