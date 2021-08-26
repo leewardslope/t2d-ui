@@ -5,19 +5,22 @@ import {
   Button,
   VStack,
   HStack,
-  Box,
   Flex,
   Spacer,
   Heading,
   useToast,
   Divider,
   SimpleGrid,
+  Box,
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
 
 import { AuthContext } from '../../../context/auth-context';
 import { validateRequire } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
+import FormikFieldArray from './components/FormikFieldArray';
+import Test from './components/Test';
+
 // import FormikRadio from './components/FormikRadio';
 // import FormikSelect from './components/FormikSelect';
 
@@ -164,103 +167,9 @@ const FormikAppUpdate = () => {
           </Form>
         )}
       </Formik>
-
-      <Formik
-        enableReinitialize
-        initialValues={{ env01: '', value01: '' }}
-        onSubmit={(values, actions) => {
-          const sendData = async () => {
-            try {
-              await axios.patch(
-                `http://75.119.143.54:5000/api/apps/${appId}/env`,
-                {
-                  ...values,
-                  creator: auth.userId,
-                },
-                { headers: { Authorization: `Bearer ${auth.token}` } }
-              );
-
-              actions.setSubmitting(false);
-              // await actions.resetForm();
-
-              // alert(JSON.stringify({ ...values }, null, 2));
-              toast({
-                title: `Updated Successfully`,
-                status: 'success',
-                position: 'top',
-                isClosable: true,
-              });
-              history.push(redirectTo);
-
-              // Redirect the user to different page
-            } catch (error) {
-              toast({
-                title: `${error.response.data.message}`,
-                status: 'error',
-                position: 'top',
-                isClosable: true,
-              });
-            }
-          };
-          sendData();
-        }}
-      >
-        {props => (
-          <Form>
-            <Flex>
-              <Spacer />
-              <VStack
-                p="4"
-                m="8"
-                boxShadow="md"
-                // borderColor="gray.200"
-                // borderWidth="2px"
-                borderRadius="xl"
-                // w="50%"
-                w="500px"
-                // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
-                alignItems="stretch"
-              >
-                <Heading align="center" size="lg">
-                  Add ENV Variables
-                </Heading>
-
-                <HStack justifyContent="center">
-                  <Box>
-                    <FormikInput
-                      // validation={validateRequire}
-                      uniqueField="env01"
-                      // label="App Name"
-                      placeholder="DOMAIN_NAME"
-                      // formHelper="KEY"
-                    />
-                  </Box>
-                  <Box>
-                    <FormikInput
-                      // validation={validateRequire}
-                      uniqueField="value01"
-                      // label="Description"
-                      placeholder="app.example.com"
-                      // formHelper="VALUE"
-                    />
-                  </Box>
-                  <Box>
-                    <Button
-                      colorScheme="teal"
-                      isLoading={props.isSubmitting}
-                      type="submit"
-                    >
-                      Add
-                    </Button>
-                  </Box>
-                </HStack>
-              </VStack>
-              <Spacer />
-            </Flex>
-          </Form>
-        )}
-      </Formik>
-      <Spacer />
+      <Box>
+        <Test />
+      </Box>
     </SimpleGrid>
   );
 };
