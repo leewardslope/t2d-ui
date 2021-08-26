@@ -84,13 +84,33 @@ const FormikAppUpdate = () => {
               });
             };
 
-            const saveData = () => {
+            const saveData = async values => {
               console.log('This should be a post/patch request with axios');
+              console.log(values);
+              try {
+                const status = await axios.post(
+                  `http://75.119.143.54:8081/api/env/${appId}`,
+                  values
+                );
+                toast({
+                  title: `${status.data.message}`,
+                  status: 'success',
+                  position: 'top',
+                  isClosable: true,
+                });
+              } catch (error) {
+                toast({
+                  title: `${error.response.data.message}`,
+                  status: 'error',
+                  position: 'top',
+                  isClosable: true,
+                });
+              }
             };
 
             const notFilled = await values.env.filter((e, index) => !e.val);
             console.log(notFilled);
-            notFilled.length ? errorToast() : saveData();
+            notFilled.length ? errorToast() : saveData(values);
           } catch (error) {
             console.log(error);
           }

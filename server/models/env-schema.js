@@ -4,7 +4,8 @@ import mongoose from 'mongoose';
 const envSchema = mongoose.Schema({
   var: [{ type: String, required: true }],
   val: [{ type: String, required: true }],
-  app: { type: mongoose.Types.ObjectId, ref: 'app' },
+  // env: [{ type: String, required: true }],
+  appID: { type: String, required: true },
 });
 
 const ENV = mongoose.model('env', envSchema);

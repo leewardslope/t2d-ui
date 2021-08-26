@@ -15,11 +15,7 @@ router.get('/:aid', getENVByAppId);
 
 // router.use(checkAuth);
 
-router.post(
-  '/',
-  [check('title').not().isEmpty(), check('description').isLength({ min: 5 })],
-  createENV
-);
+router.post('/:aid', createENV);
 
 router.patch(
   '/:aid',
