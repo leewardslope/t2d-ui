@@ -6,7 +6,26 @@ import App from '../models/app-schema.js';
 import User from '../models/user-schema.js';
 import Env from '../models/env-schema.js';
 
-export const getENVByAppId = async (req, res, next) => {};
+export const getENVByAppId = async (req, res, next) => {
+  const appId = req.params.aid;
+
+  let oldEnv;
+  try {
+    oldEnv = await Env.findOne({ appID: appId });
+  } catch (err) {
+    return next(
+      new HttpError('Could not delete the app, please try again!', 500)
+    );
+  }
+
+  if (!oldEnv) {
+    res
+      .status(200)
+      .json({ message: `You haven't configured your ENV variables` });
+  } else {
+    res.status(200).json({ env: oldEnv });
+  }
+};
 
 export const createENV = async (req, res, next) => {
   const appId = req.params.aid;
@@ -26,7 +45,6 @@ export const createENV = async (req, res, next) => {
 
   if (!oldEnv) {
     let createdENV = new Env({ var: vars, val: vals, appID: appId });
-    console.log(createdENV);
 
     try {
       const session = await mongoose.startSession();

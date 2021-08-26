@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, Link, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Button, VStack, HStack, Heading, useToast } from '@chakra-ui/react';
 import { Formik, Form, FieldArray } from 'formik';
 
-import { AuthContext } from '../../../context/auth-context';
 // import { validateRequire } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
 
@@ -16,10 +15,10 @@ const FormikAppUpdate = () => {
   const appId = useParams().appsId;
 
   const toast = useToast();
-  const auth = useContext(AuthContext);
-  const history = useHistory();
-  const redirectTo = `/${auth.userId}/apps`;
-  const [envData, setAppData] = useState({
+  // const auth = useContext(AuthContext);
+  // const history = useHistory();
+  // const redirectTo = `/${auth.userId}/apps`;
+  const [envData, setEnvData] = useState({
     env: [
       {
         var: 'COMMUNITY_NAME',
@@ -32,25 +31,47 @@ const FormikAppUpdate = () => {
     ],
   });
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     try {
-  //       const loadedData = await axios.get(
-  //         `http://75.119.143.54:5000/api/apps/${appId}`
-  //       );
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const loadedData = await axios.get(
+          `http://75.119.143.54:5000/api/env/${appId}`
+        );
 
-  //       setAppData(loadedData.data.apps);
-  //     } catch (error) {
-  //       toast({
-  //         title: `${error.response.data.message}`,
-  //         status: 'error',
-  //         position: 'top',
-  //         isClosable: true,
-  //       });
-  //     }
-  //   };
-  //   getData();
-  // }, [toast, appId]);
+        if (loadedData.data.message) {
+          console.log('loaded data');
+          toast({
+            title: `${loadedData.data.message}`,
+            status: 'info',
+            position: 'top',
+            isClosable: true,
+          });
+          // setEnvData(loadedData.data.env);
+        } else {
+          const all = loadedData.data.env;
+
+          const newEnv = [];
+          for (var i = 0; i < all.var.length; i++) {
+            newEnv.push({
+              var: all.var[i],
+              val: all.val[i],
+            });
+          }
+          setEnvData({ env: newEnv });
+
+          // setEnvData(loadedData.data);
+        }
+      } catch (error) {
+        toast({
+          title: `${error.response.data.message}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+      }
+    };
+    getData();
+  }, [toast, appId]);
 
   return (
     <VStack
@@ -70,6 +91,7 @@ const FormikAppUpdate = () => {
       </Heading>
 
       <Formik
+        enableReinitialize
         initialValues={envData}
         onSubmit={async values => {
           // await new Promise(r => setTimeout(r, 500));
