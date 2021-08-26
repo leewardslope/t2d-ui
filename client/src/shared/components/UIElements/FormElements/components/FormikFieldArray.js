@@ -2,8 +2,6 @@ import React from 'react';
 import { Formik, Form, FieldArray } from 'formik';
 import { HStack, VStack, Button, Heading } from '@chakra-ui/react';
 
-// import { validateRequire } from './FormikValidations';
-
 import FormikInput from './FormikInput';
 
 const FormikFieldArray = () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Button, VStack, HStack, Heading, useToast } from '@chakra-ui/react';
@@ -6,7 +6,7 @@ import { Formik, Form, FieldArray } from 'formik';
 
 // import { validateRequire } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
-
+import { AuthContext } from '../../../context/auth-context';
 // import FormikRadio from './components/FormikRadio';
 // import FormikSelect from './components/FormikSelect';
 
@@ -15,7 +15,7 @@ const FormikAppUpdate = () => {
   const appId = useParams().appsId;
 
   const toast = useToast();
-  // const auth = useContext(AuthContext);
+  const auth = useContext(AuthContext);
   // const history = useHistory();
   // const redirectTo = `/${auth.userId}/apps`;
   const [envData, setEnvData] = useState({
@@ -35,11 +35,13 @@ const FormikAppUpdate = () => {
     const getData = async () => {
       try {
         const loadedData = await axios.get(
-          `http://75.119.143.54:5000/api/env/${appId}`
+          `http://75.119.143.54:5000/api/env/${appId}?creator=${auth.userId}`,
+          {
+            headers: { Authorization: `Bearer ${auth.token}` },
+          }
         );
 
         if (loadedData.data.message) {
-          console.log('loaded data');
           toast({
             title: `${loadedData.data.message}`,
             status: 'info',
@@ -71,7 +73,7 @@ const FormikAppUpdate = () => {
       }
     };
     getData();
-  }, [toast, appId]);
+  }, [toast, appId, auth]);
 
   return (
     <VStack
@@ -107,13 +109,16 @@ const FormikAppUpdate = () => {
             };
 
             const saveData = async values => {
-              console.log('This should be a post/patch request with axios');
-              console.log(values);
               try {
                 const status = await axios.post(
                   `http://75.119.143.54:8081/api/env/${appId}`,
-                  values
+                  {
+                    ...values,
+                    creator: auth.userId,
+                  },
+                  { headers: { Authorization: `Bearer ${auth.token}` } }
                 );
+
                 toast({
                   title: `${status.data.message}`,
                   status: 'success',
@@ -131,7 +136,7 @@ const FormikAppUpdate = () => {
             };
 
             const notFilled = await values.env.filter((e, index) => !e.val);
-            console.log(notFilled);
+
             notFilled.length ? errorToast() : saveData(values);
           } catch (error) {
             console.log(error);

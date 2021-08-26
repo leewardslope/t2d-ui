@@ -11,10 +11,8 @@ import checkAuth from '../middleware/check-auth.js';
 
 const router = express.Router();
 
+router.use(checkAuth);
 router.get('/:aid', getENVByAppId);
-
-// router.use(checkAuth);
-
 router.post('/:aid', createENV);
 
 router.patch(
