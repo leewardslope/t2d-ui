@@ -53,6 +53,15 @@ const AppItem = props => {
     deleteApp();
   };
 
+  const buildApp = () => {
+    const appId = props.id; // can be used to confirm and extract ENV data
+    const creator = props.creatorId; // can be used to confirm and establish SSH connection
+    const appName = props.name;
+    console.log('App ID: ' + appId);
+    console.log('Creator ID: ' + creator);
+    console.log('App to Install: ' + appName);
+  };
+
   return (
     <Flex m="2" justifyContent="center">
       <VStack
@@ -88,7 +97,7 @@ const AppItem = props => {
           <Text fontSize="md">{props.description}</Text>
           {auth.userId === props.creatorId && (
             <HStack>
-              <Button colorScheme="teal" variant="outline">
+              <Button onClick={buildApp} colorScheme="teal" variant="outline">
                 Build
               </Button>
               <Link to={`/apps/${props.id}`}>
