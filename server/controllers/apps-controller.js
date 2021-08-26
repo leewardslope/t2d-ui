@@ -86,6 +86,7 @@ export const createApp = async (req, res, next) => {
     await user.save({ session: session });
     await session.commitTransaction();
   } catch (err) {
+    console.log(err);
     return next(new HttpError('Creating app failed, please try again!', 409));
   }
 
