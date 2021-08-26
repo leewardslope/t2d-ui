@@ -21,7 +21,8 @@ const FormikSSH = () => {
   const auth = useContext(AuthContext);
 
   const history = useHistory();
-  const redirectTo = `/${auth.userId}/apps`;
+  // const redirectTo = `/${auth.userId}/apps`;
+  const redirectTo = `/app/new`;
 
   return (
     <Formik
