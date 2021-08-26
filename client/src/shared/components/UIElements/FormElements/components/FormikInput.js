@@ -5,6 +5,7 @@ import {
   FormLabel,
   Box,
   FormHelperText,
+  Stack,
 } from '@chakra-ui/react';
 import { Field, ErrorMessage } from 'formik';
 
@@ -22,10 +23,12 @@ const FormikInput = props => {
             type={type}
             placeholder={placeholder}
           />
-          <FormHelperText>{formHelper}</FormHelperText>
-          <Box color="red">
-            <ErrorMessage name={uniqueField} />
-          </Box>
+          <Stack>
+            <Box color="red" size="xs">
+              <ErrorMessage name={uniqueField} />
+            </Box>
+            <FormHelperText>{formHelper}</FormHelperText>
+          </Stack>
         </FormControl>
       )}
     </Field>

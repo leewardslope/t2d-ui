@@ -1,16 +1,16 @@
 import React from 'react';
 import { Formik, Form, FieldArray } from 'formik';
-import { HStack, VStack, Button, Heading } from '@chakra-ui/react';
+import { HStack, VStack, Stack, Button, Heading } from '@chakra-ui/react';
 
 import { validateRequire } from './FormikValidations';
 
 import FormikInput from './FormikInput';
 
 const initialValues = {
-  friends: [
+  env: [
     {
-      name: '',
-      email: '',
+      var: '',
+      val: '',
     },
   ],
 };
@@ -41,14 +41,14 @@ const Test = () => (
     >
       {({ values }) => (
         <Form>
-          <FieldArray name="friends">
+          <FieldArray name="env">
             {({ insert, remove, push }) => (
               <VStack>
-                {values.friends.length > 0 &&
-                  values.friends.map((friend, index) => (
+                {values.env.length > 0 &&
+                  values.env.map((friend, index) => (
                     <HStack key={index}>
                       <FormikInput
-                        uniqueField={`friends.${index}.name`}
+                        uniqueField={`env.${index}.var`}
                         validation={validateRequire}
                         // label="Name"
                         placeholder="DOMAIN_NAME"
@@ -56,22 +56,21 @@ const Test = () => (
                       />
 
                       <FormikInput
-                        uniqueField={`friends.${index}.email`}
+                        uniqueField={`env.${index}.val`}
                         validation={validateRequire}
                         // label="Email"
                         placeholder="app.example.com"
                         type="text"
                       />
-
                       <Button
                         type="button"
                         className="secondary"
-                        onClick={() => push({ name: '', email: '' })}
+                        onClick={() => push({ var: '', val: '' })}
                       >
                         +
                       </Button>
 
-                      {values.friends.length !== 1 && (
+                      {values.env.length !== 1 && (
                         <Button
                           type="button"
                           className="secondary"
@@ -82,13 +81,6 @@ const Test = () => (
                       )}
                     </HStack>
                   ))}
-                {/* <Button
-                  type="button"
-                  className="secondary"
-                  onClick={() => push({ name: '', email: '' })}
-                >
-                  +
-                </Button> */}
               </VStack>
             )}
           </FieldArray>
