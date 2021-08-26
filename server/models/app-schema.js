@@ -7,6 +7,7 @@ const appSchema = mongoose.Schema({
   description: { type: String, required: true },
   repo: { type: String },
   creator: { type: mongoose.Types.ObjectId, required: true, ref: 'user' },
+  env: { type: mongoose.Types.ObjectId, ref: 'env' },
 });
 
 const App = mongoose.model('app', appSchema);

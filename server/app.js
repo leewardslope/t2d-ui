@@ -9,6 +9,7 @@ import HttpError from './models/https-error.js';
 import appsRoutes from './routes/apps-routes.js';
 import usersRoutes from './routes/users-routes.js';
 import keysRoutes from './routes/ssh-keys-routes.js';
+import envRoutes from './routes/env-routes.js';
 
 // Loading ENV variables
 dotenv.config();
@@ -23,6 +24,7 @@ app.use(cors());
 app.use('/api/apps', appsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/ssh', keysRoutes);
+app.use('/api/env', envRoutes);
 
 // This is another middleware which I want to run after all routes
 // Put in other words, this middleware will be reached, if the above middleware fails
