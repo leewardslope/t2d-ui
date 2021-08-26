@@ -19,7 +19,6 @@ import { AuthContext } from '../../../context/auth-context';
 import { validateRequire } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
 import FormikFieldArray from './components/FormikFieldArray';
-import Test from './components/Test';
 
 // import FormikRadio from './components/FormikRadio';
 // import FormikSelect from './components/FormikSelect';
@@ -168,7 +167,7 @@ const FormikAppUpdate = () => {
         )}
       </Formik>
       <Box>
-        <Test />
+        <FormikFieldArray />
       </Box>
     </SimpleGrid>
   );
