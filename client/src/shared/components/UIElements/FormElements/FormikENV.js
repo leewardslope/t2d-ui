@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
+import { useParams, Link, useHistory } from 'react-router-dom';
+import { Button, VStack, HStack, Heading, useToast } from '@chakra-ui/react';
 import { Formik, Form, FieldArray } from 'formik';
-import { HStack, VStack, Button, Heading, useToast } from '@chakra-ui/react';
 
-// import { validateRequire } from './FormikValidations';
+import { AuthContext } from '../../../context/auth-context';
+// import { validateRequire } from './components/FormikValidations';
+import FormikInput from './components/FormikInput';
 
-import FormikInput from './FormikInput';
+// import FormikRadio from './components/FormikRadio';
+// import FormikSelect from './components/FormikSelect';
 
-const FormikFieldArray = () => {
-  const initialValues = {
+const FormikAppUpdate = () => {
+  // Getting the userId from the react routes: <Route path="/apps/:appsId" exact> from App.js
+  const appId = useParams().appsId;
+
+  const toast = useToast();
+  const auth = useContext(AuthContext);
+  const history = useHistory();
+  const redirectTo = `/${auth.userId}/apps`;
+  const [envData, setAppData] = useState({
     env: [
       {
         var: 'COMMUNITY_NAME',
@@ -18,7 +30,27 @@ const FormikFieldArray = () => {
         val: '',
       },
     ],
-  };
+  });
+
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const loadedData = await axios.get(
+  //         `http://75.119.143.54:5000/api/apps/${appId}`
+  //       );
+
+  //       setAppData(loadedData.data.apps);
+  //     } catch (error) {
+  //       toast({
+  //         title: `${error.response.data.message}`,
+  //         status: 'error',
+  //         position: 'top',
+  //         isClosable: true,
+  //       });
+  //     }
+  //   };
+  //   getData();
+  // }, [toast, appId]);
 
   return (
     <VStack
@@ -38,16 +70,27 @@ const FormikFieldArray = () => {
       </Heading>
 
       <Formik
-        initialValues={initialValues}
+        initialValues={envData}
         onSubmit={async values => {
           // await new Promise(r => setTimeout(r, 500));
           // console.log(values);
           try {
+            const errorToast = () => {
+              toast({
+                title: `"ENV_VALUE" fields can't be empty`,
+                status: 'error',
+                position: 'top',
+                isClosable: true,
+              });
+            };
+
+            const saveData = () => {
+              console.log('This should be a post/patch request with axios');
+            };
+
             const notFilled = await values.env.filter((e, index) => !e.val);
             console.log(notFilled);
-            notFilled.length
-              ? console.log('not filled')
-              : console.log('all filled');
+            notFilled.length ? errorToast() : saveData();
           } catch (error) {
             console.log(error);
           }
@@ -106,5 +149,4 @@ const FormikFieldArray = () => {
   );
 };
 
-export default FormikFieldArray;
-// ReactDOM.render(<InviteFriends />, document.getElementById('root'));
+export default FormikAppUpdate;
