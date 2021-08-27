@@ -26,6 +26,8 @@ const AppItem = props => {
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef();
 
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const afterDeleteConfirm = () => {
     // console.log(`pressed on delete: ${props.title} ${props.id}`);
     const deleteApp = async () => {
@@ -55,6 +57,7 @@ const AppItem = props => {
   };
 
   const buildApp = async () => {
+    setIsLoading(true);
     // const creator = props.creatorId; // can be used to confirm and establish SSH connection
     // const appName = props.name;
 
@@ -89,6 +92,8 @@ const AppItem = props => {
 
     await baseStep('check');
     await baseStep('connect');
+
+    setIsLoading(false);
   };
 
   return (
@@ -126,7 +131,12 @@ const AppItem = props => {
           <Text fontSize="md">{props.description}</Text>
           {auth.userId === props.creatorId && (
             <HStack>
-              <Button onClick={buildApp} colorScheme="teal" variant="outline">
+              <Button
+                isLoading={isLoading}
+                onClick={buildApp}
+                colorScheme="teal"
+                variant="outline"
+              >
                 Build
               </Button>
               <Link to={`/apps/${props.id}`}>
