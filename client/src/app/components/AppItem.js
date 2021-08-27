@@ -13,9 +13,11 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 import AlertInput from '../../shared/components/UIElements/Modals/AlertInput';
 import { AuthContext } from '../../shared/context/auth-context';
-import axios from 'axios';
+import Connect from '../../shared/build/Connect';
 
 const AppItem = props => {
   const auth = useContext(AuthContext);
@@ -57,9 +59,8 @@ const AppItem = props => {
     const appId = props.id; // can be used to confirm and extract ENV data
     const creator = props.creatorId; // can be used to confirm and establish SSH connection
     const appName = props.name;
-    console.log('App ID: ' + appId);
-    console.log('Creator ID: ' + creator);
-    console.log('App to Install: ' + appName);
+
+    Connect(appId, creator, appName); // It would be better this way!
   };
 
   return (
