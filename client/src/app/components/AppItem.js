@@ -17,7 +17,6 @@ import axios from 'axios';
 
 import AlertInput from '../../shared/components/UIElements/Modals/AlertInput';
 import { AuthContext } from '../../shared/context/auth-context';
-import Connect from '../../shared/build/Connect';
 
 const AppItem = props => {
   const auth = useContext(AuthContext);
@@ -55,12 +54,30 @@ const AppItem = props => {
     deleteApp();
   };
 
-  const buildApp = () => {
+  const buildApp = async () => {
     const appId = props.id; // can be used to confirm and extract ENV data
     const creator = props.creatorId; // can be used to confirm and establish SSH connection
     const appName = props.name;
 
-    Connect(appId, creator, appName); // It would be better this way!
+    // Step 01
+    try {
+      const check = await axios.get(
+        `http://75.119.143.54:8081/api/build/${appId}/check`
+      );
+      toast({
+        title: `${check.data.message}`,
+        status: 'success',
+        position: 'top',
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: `${error.response.data.message}`,
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      });
+    }
   };
 
   return (

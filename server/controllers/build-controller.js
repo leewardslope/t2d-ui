@@ -12,13 +12,16 @@ let app;
 // I can essentially make it as a middleware => After check-auth and before rest of the routes.
 export const checkConnection = async (req, res, next) => {
   const appId = req.params.aid;
+  const userId = req.userData.userId;
+
+  // Checking existence of App
   try {
     app = await App.findById(appId);
   } catch (error) {
     console.log(error);
   }
 
-  res.status(200).json({ app: app.toObject({ getters: true }) });
+  res.status(200).json({ message: 'Checking Passed, moving to Step 02' });
 };
 
 export const establishConnection = async (req, res, next) => {};
