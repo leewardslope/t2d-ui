@@ -82,6 +82,7 @@ const AppItem = props => {
         position: 'top',
         isClosable: true,
       });
+      return error; // This will stop moving forward!
     }
 
     // Step 02
