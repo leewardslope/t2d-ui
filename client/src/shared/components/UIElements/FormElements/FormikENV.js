@@ -111,7 +111,7 @@ const FormikAppUpdate = () => {
             const saveData = async values => {
               try {
                 const status = await axios.post(
-                  `http://75.119.143.54:8081/api/env/${appId}`,
+                  `http://75.119.143.54:5000/api/env/${appId}`,
                   values,
                   { headers: { Authorization: `Bearer ${auth.token}` } }
                 );

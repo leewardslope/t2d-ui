@@ -22,6 +22,8 @@ app.use(bodyParser.json({ limit: '20mb', extended: 'true' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: 'true' }));
 app.use(cors());
 
+app.use('/', express.static('../client/build'));
+
 app.use('/api/apps', appsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/ssh', keysRoutes);

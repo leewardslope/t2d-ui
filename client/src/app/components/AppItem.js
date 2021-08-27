@@ -66,7 +66,7 @@ const AppItem = props => {
     // Step 01
     try {
       const check = await axios.get(
-        `http://75.119.143.54:8081/api/build/${appId}/check`,
+        `http://75.119.143.54:5000/api/build/${appId}/check`,
         token
       );
       await toast({
@@ -88,7 +88,7 @@ const AppItem = props => {
     // Step 02
     try {
       const check = await axios.get(
-        `http://75.119.143.54:8081/api/build/${appId}/connect`,
+        `http://75.119.143.54:5000/api/build/${appId}/connect`,
         token
       );
       toast({
