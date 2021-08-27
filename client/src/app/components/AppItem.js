@@ -63,50 +63,32 @@ const AppItem = props => {
       headers: { Authorization: `Bearer ${auth.token}` },
     };
 
-    // Step 01
-    try {
-      const check = await axios.get(
-        `http://75.119.143.54:5000/api/build/${appId}/check`,
-        token
-      );
-      await toast({
-        title: `${check.data.message}`,
-        status: 'success',
-        position: 'top',
-        isClosable: true,
-      });
-    } catch (error) {
-      toast({
-        title: `${error.response.data.message}`,
-        status: 'error',
-        position: 'top',
-        isClosable: true,
-      });
-      return error; // This will stop moving forward!
-    }
+    // Base Step
+    const baseStep = async step => {
+      try {
+        const check = await axios.get(
+          `http://75.119.143.54:5000/api/build/${appId}/${step}`,
+          token
+        );
+        await toast({
+          title: `${check.data.message}`,
+          status: 'success',
+          position: 'top',
+          isClosable: true,
+        });
+      } catch (error) {
+        toast({
+          title: `${error.response.data.message}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+        return error; // This will stop moving forward!
+      }
+    };
 
-    // Step 02
-    try {
-      const check = await axios.get(
-        `http://75.119.143.54:5000/api/build/${appId}/connect`,
-        token
-      );
-      toast({
-        title: `${check.data.message}`,
-        status: 'success',
-        position: 'top',
-        isClosable: true,
-      });
-    } catch (error) {
-      toast({
-        title: `${error.response.data.message}`,
-        status: 'error',
-        position: 'top',
-        isClosable: true,
-      });
-    }
-
-    // Step 03
+    await baseStep('check');
+    await baseStep('connect');
   };
 
   return (
