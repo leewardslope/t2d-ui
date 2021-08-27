@@ -7,6 +7,7 @@ dotenv.config();
 
 export default (req, res, next) => {
   // This is not required but I can't stop myself :p
+
   if (req.method === 'OPTIONS') {
     return next();
   }
@@ -22,6 +23,7 @@ export default (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     // Now I will dynamically add the data to the request, even GET request will have a body
     req.userData = { userId: decodedToken.userId };
+
     next();
   } catch (err) {
     return next(new HttpError('Authentication Failed', 403));

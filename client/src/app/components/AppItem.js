@@ -58,11 +58,15 @@ const AppItem = props => {
     const appId = props.id; // can be used to confirm and extract ENV data
     const creator = props.creatorId; // can be used to confirm and establish SSH connection
     const appName = props.name;
+    const token = {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    };
 
     // Step 01
     try {
       const check = await axios.get(
-        `http://75.119.143.54:8081/api/build/${appId}/check`
+        `http://75.119.143.54:8081/api/build/${appId}/check`,
+        token
       );
       toast({
         title: `${check.data.message}`,

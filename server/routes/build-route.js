@@ -10,7 +10,7 @@ import checkAuth from '../middleware/check-auth.js';
 
 const router = express.Router();
 
-// router.use(checkAuth);
+router.use(checkAuth);
 router.get('/:aid/check', checkConnection);
 router.get('/:aid/connect', establishConnection);
 
