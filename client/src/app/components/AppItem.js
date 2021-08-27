@@ -55,9 +55,10 @@ const AppItem = props => {
   };
 
   const buildApp = async () => {
+    // const creator = props.creatorId; // can be used to confirm and establish SSH connection
+    // const appName = props.name;
+
     const appId = props.id; // can be used to confirm and extract ENV data
-    const creator = props.creatorId; // can be used to confirm and establish SSH connection
-    const appName = props.name;
     const token = {
       headers: { Authorization: `Bearer ${auth.token}` },
     };
@@ -66,6 +67,27 @@ const AppItem = props => {
     try {
       const check = await axios.get(
         `http://75.119.143.54:8081/api/build/${appId}/check`,
+        token
+      );
+      await toast({
+        title: `${check.data.message}`,
+        status: 'success',
+        position: 'top',
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: `${error.response.data.message}`,
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      });
+    }
+
+    // Step 02
+    try {
+      const check = await axios.get(
+        `http://75.119.143.54:8081/api/build/${appId}/connect`,
         token
       );
       toast({
@@ -82,6 +104,8 @@ const AppItem = props => {
         isClosable: true,
       });
     }
+
+    // Step 03
   };
 
   return (

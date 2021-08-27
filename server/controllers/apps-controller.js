@@ -118,8 +118,10 @@ export const updateApp = async (req, res, next) => {
 
   // req.userData.userId => came from token
   // app.creator.toString() => as this is coming from mongodb; sometimes we need to make it a string for comparisons.
-  if (app.creator !== req.userData.userId) {
-    new HttpError('You are not allowed to use/update this app', 403);
+  if (app.creator.toString() !== req.userData.userId) {
+    return next(
+      new HttpError('You are not allowed to use/update this app', 403)
+    );
   }
 
   app.title = title;
@@ -153,7 +155,9 @@ export const deleteApp = async (req, res, next) => {
 
   // remember => creator here is a full object which has access via populated content using ref
   if (app.creator.id !== req.userData.userId) {
-    new HttpError('You are not allowed to delete/update this app', 403);
+    return next(
+      new HttpError('You are not allowed to delete/update this app', 403)
+    );
   }
 
   try {
