@@ -35,7 +35,7 @@ const FormikAppUpdate = () => {
     const getData = async () => {
       try {
         const loadedData = await axios.get(
-          `http://75.119.143.54:5000/api/env/${appId}?creator=${auth.userId}`,
+          `http://75.119.143.54:5000/api/env/${appId}`,
           {
             headers: { Authorization: `Bearer ${auth.token}` },
           }
@@ -112,10 +112,7 @@ const FormikAppUpdate = () => {
               try {
                 const status = await axios.post(
                   `http://75.119.143.54:8081/api/env/${appId}`,
-                  {
-                    ...values,
-                    creator: auth.userId,
-                  },
+                  values,
                   { headers: { Authorization: `Bearer ${auth.token}` } }
                 );
 

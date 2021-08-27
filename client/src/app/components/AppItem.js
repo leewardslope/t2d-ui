@@ -13,9 +13,10 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 import AlertInput from '../../shared/components/UIElements/Modals/AlertInput';
 import { AuthContext } from '../../shared/context/auth-context';
-import axios from 'axios';
 
 const AppItem = props => {
   const auth = useContext(AuthContext);
@@ -53,6 +54,61 @@ const AppItem = props => {
     deleteApp();
   };
 
+  const buildApp = async () => {
+    // const creator = props.creatorId; // can be used to confirm and establish SSH connection
+    // const appName = props.name;
+
+    const appId = props.id; // can be used to confirm and extract ENV data
+    const token = {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    };
+
+    // Step 01
+    try {
+      const check = await axios.get(
+        `http://75.119.143.54:8081/api/build/${appId}/check`,
+        token
+      );
+      await toast({
+        title: `${check.data.message}`,
+        status: 'success',
+        position: 'top',
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: `${error.response.data.message}`,
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      });
+      return error; // This will stop moving forward!
+    }
+
+    // Step 02
+    try {
+      const check = await axios.get(
+        `http://75.119.143.54:8081/api/build/${appId}/connect`,
+        token
+      );
+      toast({
+        title: `${check.data.message}`,
+        status: 'success',
+        position: 'top',
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: `${error.response.data.message}`,
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      });
+    }
+
+    // Step 03
+  };
+
   return (
     <Flex m="2" justifyContent="center">
       <VStack
@@ -88,7 +144,7 @@ const AppItem = props => {
           <Text fontSize="md">{props.description}</Text>
           {auth.userId === props.creatorId && (
             <HStack>
-              <Button colorScheme="teal" variant="outline">
+              <Button onClick={buildApp} colorScheme="teal" variant="outline">
                 Build
               </Button>
               <Link to={`/apps/${props.id}`}>
