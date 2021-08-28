@@ -74,7 +74,7 @@ const FormikApp = () => {
               // borderWidth="2px"
               borderRadius="xl"
               // w="50%"
-              w="400px"
+              w="500px"
               // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
               alignItems="stretch"
             >
@@ -120,10 +120,10 @@ const FormikApp = () => {
 
               <FormikInput
                 // validation={validateRequire}
-                uniqueField="repo"
-                label="Github URL"
-                placeholder="https://github.com/akhil-naidu/myapp"
-                formHelper="If not provided, we will use the official and the latest repository"
+                uniqueField="url"
+                label="Domain Name"
+                placeholder="https://app.example.com"
+                formHelper="If not provided, we will create a subdomain for you"
               />
 
               <Button

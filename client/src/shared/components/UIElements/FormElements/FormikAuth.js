@@ -25,11 +25,6 @@ const FormikAuth = () => {
   const auth = useContext(AuthContext);
 
   const [isLoginMode, setIsLoginMode] = useState(true);
-  // const [giveInitialValues, setGiveInitialValues] = useState({
-  //   name: '',
-  //   email: '',
-  //   password: '',
-  // });
 
   const switchModeHandler = () => {
     setIsLoginMode(prevMode => !prevMode);
@@ -37,7 +32,6 @@ const FormikAuth = () => {
 
   return (
     <Formik
-      // initialValues={giveInitialValues}
       initialValues={{
         name: '',
         email: '',
@@ -127,7 +121,7 @@ const FormikAuth = () => {
               // borderWidth="2px"
               borderRadius="xl"
               // w="50%"
-              w="400px"
+              w="500px"
               // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
               alignItems="stretch"
             >

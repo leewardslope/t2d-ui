@@ -22,14 +22,14 @@ const MainNavigation = props => {
     <MainHeader>
       {/* What ever we add here will act as props children for our MainHeader file */}
       <Flex
-        mx="4"
+        //mx="4"
         my="2"
         p="2"
-        boxShadow="md"
+        boxShadow="sm"
         // borderColor="gray.200"
         // borderWidth="2px"
         borderRadius="xl"
-        // w="100%"
+        w="100%"
         // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
       >
         <Box mx="2">
