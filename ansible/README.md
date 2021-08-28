@@ -188,7 +188,7 @@ A more holistic way of using this would be, something like this.
 
 ## Other useful resources.
 
-https://packagecloud.io/dokku/dokku
-https://galaxy.ansible.com/dokku_bot/ansible_dokku
-https://mikebian.co/using-ansible-to-deploy-elixir-applications-on-dokku/
-https://dokku.github.io/general/automating-dokku-setup
+- https://packagecloud.io/dokku/dokku
+- https://galaxy.ansible.com/dokku_bot/ansible_dokku
+- https://mikebian.co/using-ansible-to-deploy-elixir-applications-on-dokku/
+- https://dokku.github.io/general/automating-dokku-setup
