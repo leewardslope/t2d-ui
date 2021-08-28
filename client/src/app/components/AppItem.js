@@ -79,6 +79,7 @@ const AppItem = props => {
           position: 'top',
           isClosable: true,
         });
+        return;
       } catch (error) {
         toast({
           title: `${error.response.data.message}`,
@@ -92,6 +93,7 @@ const AppItem = props => {
 
     await baseStep('check');
     await baseStep('connect');
+    await baseStep('dokku');
 
     setIsLoading(false);
   };
