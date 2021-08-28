@@ -126,3 +126,59 @@ export const establishConnection = async (req, res, next) => {
     message: 'Establish Connection to your SSH Server, Moving to Step 03',
   });
 };
+
+export const installDokku = async (req, res, next) => {
+  const appId = req.params.aid;
+  const userId = req.userData.userId;
+
+  // const app = await App.findById(appId);
+  const user = await User.findById(userId).populate('keys');
+  const serverKey = user.keys[0];
+  // const env = await Env.findOne({ appID: appId });
+
+  // SSH Details
+  const sshconfig = {
+    host: serverKey.host,
+    username: serverKey.username,
+    identity: `./ssh_keys/${serverKey.host}`,
+    //password: '',
+  };
+
+  // Connecting to the server using
+  const ssh = new SSH2Promise(sshconfig);
+
+  const isDokku = await ssh.exec('which dokku');
+  let failed = false;
+  if (!isDokku) {
+    try {
+      await ssh.exec('mkdir akhil');
+    } catch (err) {
+      failed = true;
+      return next(new HttpError(`Unable to create folder akhil`, 403));
+    }
+
+    try {
+      await ssh.exec('mkdir naidu');
+    } catch (err) {
+      failed = true;
+      return next(new HttpError(`Unable to create folder naidu`, 403));
+    }
+
+    try {
+      await ssh.exec('rm -r akhil');
+    } catch (err) {
+      failed = true;
+      return next(new HttpError(`Unable to remove folder akhil`, 403));
+    }
+  } else {
+    res.status(200).json({
+      message: 'Dokku Already Installed, skipping Dokku Installation',
+    });
+  }
+
+  if (!failed && !isDokku) {
+    res.status(200).json({
+      message: 'Installation Done',
+    });
+  }
+};
