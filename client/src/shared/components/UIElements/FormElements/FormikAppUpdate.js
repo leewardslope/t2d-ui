@@ -112,7 +112,7 @@ const FormikAppUpdate = () => {
                 // borderWidth="2px"
                 borderRadius="xl"
                 // w="50%"
-                w="400px"
+                w="500px"
                 // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
                 alignItems="stretch"
               >
