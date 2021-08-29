@@ -6,12 +6,14 @@ import App from '../models/app-schema.js';
 import User from '../models/user-schema.js';
 import Env from '../models/env-schema.js';
 import Ssh from '../models/ssh-schema.js';
+import checkSSH from '../tasks/check-ssh.js';
 
 import SSH2Promise from 'ssh2-promise';
 // import SFTP from 'ssh2-promise/lib/sftp';
 import fs from 'fs';
 import Cryptr from 'cryptr';
 import dotenv from 'dotenv';
+import shell from 'shelljs';
 
 dotenv.config();
 const encrypt = new Cryptr(process.env.CRYPTR_SECRET);
