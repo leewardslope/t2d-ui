@@ -4,10 +4,29 @@ This documentation should act as a starting place for any future developers to g
 
 ## Installation of Ansible
 
+### Official Documentation
+
 ```
+sudo apt update
+sudo apt install software-properties-common
 sudo apt-add-repository -y ppa:ansible/ansible
-sudo apt-get update
-sudo apt-get install -y ansible
+sudo apt update
+sudo apt install -y ansible
+```
+
+### My personal preference
+
+```
+sudo apt install -y python3-pip
+pip3 install ansible --user
+```
+
+Now let's edit the bashrc
+
+```
+nano ~/.bashrc
+export PATH=$PATH:$HOME/.local/bin
+source .bashrc
 ```
 
 ## Simple Dokku Installation Methods
