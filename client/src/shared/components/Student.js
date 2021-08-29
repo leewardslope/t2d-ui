@@ -3,6 +3,7 @@ import { VStack, Flex, Box, Spacer } from '@chakra-ui/react';
 import ShowStudent from './students/ShowStudent';
 import CreateStudent from './students/CreateStudent';
 import axios from 'axios';
+import { BASE_URL } from '../../BASE_URL';
 
 export const GetStudentContext = React.createContext();
 
@@ -11,7 +12,7 @@ function Student() {
 
   // A function to get data after modifications
   const getStudent = () => {
-    axios.get('http://75.119.143.54:5000/students').then(student => {
+    axios.get(`${BASE_URL}/students`).then(student => {
       setStudentList(student.data);
     });
   };

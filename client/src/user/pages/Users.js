@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useToast } from '@chakra-ui/react';
 
 import UserList from '../components/UsersList';
+import { BASE_URL } from '../../BASE_URL';
 
 const Users = () => {
   const toast = useToast();
@@ -11,7 +12,7 @@ const Users = () => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const response = await axios.get('http://75.119.143.54:5000/api/users');
+        const response = await axios.get(`${BASE_URL}/api/users`);
         SetUSERS(response.data.users);
       } catch (error) {
         toast({

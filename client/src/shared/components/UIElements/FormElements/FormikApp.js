@@ -16,6 +16,7 @@ import { validateRequire } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
 // import FormikRadio from './components/FormikRadio';
 import FormikSelect from './components/FormikSelect';
+import { BASE_URL } from '../../../../BASE_URL';
 
 const FormikApp = () => {
   const toast = useToast();
@@ -35,7 +36,7 @@ const FormikApp = () => {
       onSubmit={(values, actions) => {
         const sendData = async () => {
           try {
-            await axios.post('http://75.119.143.54:5000/api/apps', values, {
+            await axios.post(`${BASE_URL}/api/apps`, values, {
               headers: { Authorization: `Bearer ${auth.token}` },
             });
             toast({

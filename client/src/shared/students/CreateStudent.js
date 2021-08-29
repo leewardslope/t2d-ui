@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { GetStudentContext } from '../components/Student';
+import { BASE_URL } from '../../BASE_URL';
 
 function CreateStudent() {
   const toast = useToast();
@@ -32,7 +33,7 @@ function CreateStudent() {
   const createStudent = e => {
     e.preventDefault();
     axios
-      .post('http://75.119.143.54:5000/students', student)
+      .post(`${BASE_URL}/students`, student)
       .then(() => {
         toast({
           title: 'Added New User',

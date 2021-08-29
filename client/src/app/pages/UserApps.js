@@ -3,6 +3,7 @@ import { useToast } from '@chakra-ui/react';
 import AppList from '../components/AppList';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { BASE_URL } from '../../BASE_URL';
 
 const UserApps = props => {
   // Getting the userId from the react routes: <Route path="/:userId/apps" exact> from App.js
@@ -20,7 +21,7 @@ const UserApps = props => {
     const getApps = async () => {
       try {
         const getData = await axios.get(
-          `http://75.119.143.54:5000/api/apps/user/${userId}/`
+          `${BASE_URL}/api/apps/user/${userId}/`
         );
         setLoadedApps(getData.data.apps);
       } catch (error) {

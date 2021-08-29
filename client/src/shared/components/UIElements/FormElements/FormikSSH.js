@@ -15,6 +15,7 @@ import { AuthContext } from '../../../context/auth-context';
 import { validateRequire } from './components/FormikValidations';
 import FormikTextArea from './components/FormikTextArea';
 import FormikInput from './components/FormikInput';
+import { BASE_URL } from '../../../../BASE_URL';
 
 const FormikSSH = () => {
   const toast = useToast();
@@ -35,7 +36,7 @@ const FormikSSH = () => {
       onSubmit={(values, actions) => {
         const sendData = async () => {
           try {
-            await axios.post('http://75.119.143.54:5000/api/ssh/new', values, {
+            await axios.post(`${BASE_URL}/api/ssh/new`, values, {
               headers: { Authorization: `Bearer ${auth.token}` },
             });
             toast({

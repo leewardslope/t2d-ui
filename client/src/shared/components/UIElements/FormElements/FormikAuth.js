@@ -19,6 +19,7 @@ import {
 } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
 import { AuthContext } from '../../../context/auth-context';
+import { BASE_URL } from '../../../../BASE_URL';
 
 const FormikAuth = () => {
   const toast = useToast();
@@ -42,7 +43,7 @@ const FormikAuth = () => {
           if (isLoginMode) {
             try {
               const receivedDetails = await axios.post(
-                'http://75.119.143.54:5000/api/users/login',
+                `${BASE_URL}/api/users/login`,
                 values
               );
 
@@ -78,7 +79,7 @@ const FormikAuth = () => {
           } else {
             try {
               const receivedDetails = await axios.post(
-                'http://75.119.143.54:5000/api/users/signup',
+                `${BASE_URL}/api/users/signup`,
                 values
               );
 

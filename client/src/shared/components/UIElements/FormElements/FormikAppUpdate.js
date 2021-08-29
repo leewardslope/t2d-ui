@@ -19,6 +19,7 @@ import { AuthContext } from '../../../context/auth-context';
 import { validateRequire } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
 import FormikENV from './FormikENV';
+import { BASE_URL } from '../../../../BASE_URL';
 
 // import FormikRadio from './components/FormikRadio';
 // import FormikSelect from './components/FormikSelect';
@@ -42,7 +43,7 @@ const FormikAppUpdate = () => {
     const getData = async () => {
       try {
         const loadedData = await axios.get(
-          `http://75.119.143.54:5000/api/apps/${appId}`
+          `${BASE_URL}/api/apps/${appId}`
         );
 
         setAppData(loadedData.data.apps);
@@ -67,7 +68,7 @@ const FormikAppUpdate = () => {
           const sendData = async () => {
             try {
               await axios.patch(
-                `http://75.119.143.54:5000/api/apps/${appId}`,
+                `${BASE_URL}/api/apps/${appId}`,
                 {
                   ...values,
                   creator: auth.userId,

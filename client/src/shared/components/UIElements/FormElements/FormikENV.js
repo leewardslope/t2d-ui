@@ -7,6 +7,7 @@ import { Formik, Form, FieldArray } from 'formik';
 // import { validateRequire } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
 import { AuthContext } from '../../../context/auth-context';
+import { BASE_URL } from '../../../../BASE_URL';
 // import FormikRadio from './components/FormikRadio';
 // import FormikSelect from './components/FormikSelect';
 
@@ -35,7 +36,7 @@ const FormikAppUpdate = () => {
     const getData = async () => {
       try {
         const loadedData = await axios.get(
-          `http://75.119.143.54:5000/api/env/${appId}`,
+          `${BASE_URL}/api/env/${appId}`,
           {
             headers: { Authorization: `Bearer ${auth.token}` },
           }

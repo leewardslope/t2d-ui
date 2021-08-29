@@ -31,6 +31,7 @@ import io from 'socket.io-client';
 
 import AlertInput from '../../shared/components/UIElements/Modals/AlertInput';
 import { AuthContext } from '../../shared/context/auth-context';
+import { BASE_URL } from '../../BASE_URL';
 
 const AppItem = props => {
   const auth = useContext(AuthContext);
@@ -49,7 +50,7 @@ const AppItem = props => {
     const deleteApp = async () => {
       try {
         onClose();
-        await axios.delete(`http://75.119.143.54:5000/api/apps/${props.id}`, {
+        await axios.delete(`${BASE_URL}/api/apps/${props.id}`, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
         toast({

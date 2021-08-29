@@ -17,6 +17,7 @@ import {
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import { GetStudentContext } from '../Student';
+import { BASE_URL } from '../../BASE_URL';
 
 function ShowStudent() {
   const toast = useToast();
@@ -25,7 +26,7 @@ function ShowStudent() {
 
   const deleteStudent = id => {
     axios
-      .delete(`http://75.119.143.54:5000/students/${id}`)
+      .delete(`${BASE_URL}/students/${id}`)
       .then(() => {
         toast({
           title: 'Deleted User',
