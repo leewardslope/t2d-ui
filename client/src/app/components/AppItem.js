@@ -68,6 +68,9 @@ const AppItem = props => {
       headers: { Authorization: `Bearer ${auth.token}` },
     };
     const socket = io('http://75.119.143.54:5000/');
+    socket.on('connect', () => {
+      console.log(`socket.io connection established`);
+    });
 
     // Base Step
     let errorOccurred = false;
