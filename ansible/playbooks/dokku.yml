@@ -1,4 +1,4 @@
 ---
-- hosts: new_user
+- hosts: all
   roles:
     - dokku_bot.ansible_dokku

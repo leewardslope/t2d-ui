@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import io from 'socket.io-client';
 
 import AlertInput from '../../shared/components/UIElements/Modals/AlertInput';
 import { AuthContext } from '../../shared/context/auth-context';
@@ -66,6 +67,18 @@ const AppItem = props => {
     const token = {
       headers: { Authorization: `Bearer ${auth.token}` },
     };
+    const socket = io('http://75.119.143.54:5000/');
+
+    socket.on('server-notification', notification => {
+      toast({
+        title: `${notification.message}`,
+        status: 'info',
+        position: 'top',
+        isClosable: true,
+      });
+    });
+
+    // socket.emit('build-data', 10, 'forem', { appId: `${appId}` }); // I can also use it here
 
     // Base Step
     let errorOccurred = false;

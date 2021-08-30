@@ -27,6 +27,7 @@ yarn-error.log*
 id_rsa
 test.js
 ssh_keys
+ansible_inventory
 
 # Ansible
 /tree

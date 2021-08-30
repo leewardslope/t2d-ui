@@ -14,3 +14,9 @@ We will add all the necessary things like, our ssh keys and edit sudoers.
 ```
 ansible-playbook -i IP playbooks/add_public_keys.yml
 ```
+
+### To watch an ansible node for
+
+```
+watch -n 1 who
+```

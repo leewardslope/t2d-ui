@@ -1,5 +1,5 @@
 ---
-- hosts: new_user
+- hosts: all
   tasks:
     - name: Uninstalling Dokku
       apt:
