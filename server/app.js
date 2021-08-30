@@ -32,6 +32,9 @@ const io = new Server(httpServer, {
 
 io.on('connection', socket => {
   console.log(socket.id);
+  socket.on('build-data', (number, string, object) => {
+    console.log(number, string, object);
+  });
 });
 
 // adding this body-parser to help post requests => and should be before the respective request.

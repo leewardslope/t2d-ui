@@ -69,8 +69,10 @@ const AppItem = props => {
     };
     const socket = io('http://75.119.143.54:5000/');
     socket.on('connect', () => {
-      console.log(`socket.io connection established`);
+      console.log(`connection established with id: ${socket.id}`);
     });
+
+    socket.emit('build-data', 10, 'forem', { appId: `${appId}` });
 
     // Base Step
     let errorOccurred = false;
