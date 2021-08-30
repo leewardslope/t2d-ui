@@ -6,7 +6,6 @@ import {
   Redirect,
   Switch,
 } from 'react-router-dom';
-import io from 'socket.io-client';
 
 // import { ColorModeSwitcher } from './ColorModeSwitcher';
 // import Navbar from './shared/components/Navbar';
@@ -30,8 +29,6 @@ import Setup from './ssh/Setup';
 
 import { AuthContext } from './shared/context/auth-context';
 import useAuth from './shared/hooks/auth-hook';
-
-const socket = io('http://75.119.143.54:5000/');
 
 function App() {
   const { userId, token, login, logout } = useAuth();

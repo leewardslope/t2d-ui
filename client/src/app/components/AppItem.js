@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import io from 'socket.io-client';
 
 import AlertInput from '../../shared/components/UIElements/Modals/AlertInput';
 import { AuthContext } from '../../shared/context/auth-context';
@@ -66,6 +67,7 @@ const AppItem = props => {
     const token = {
       headers: { Authorization: `Bearer ${auth.token}` },
     };
+    const socket = io('http://75.119.143.54:5000/');
 
     // Base Step
     let errorOccurred = false;
