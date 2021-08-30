@@ -136,6 +136,15 @@ export const installDokku = async (req, res, next) => {
   const appId = req.params.aid;
   const userId = req.userData.userId;
 
+  // socket data
+  const socket = req.app.get('socketio');
+
+  socket.on('build-data', (number, string, object) => {
+    console.log(number, string, object);
+  });
+
+  socket.emit('server-data', 10, 'forem', { appId: `from controller` });
+
   // const app = await App.findById(appId);
   const user = await User.findById(userId).populate('keys');
   const serverKey = user.keys[0];
@@ -158,7 +167,7 @@ export const installDokku = async (req, res, next) => {
     installingDokku();
   } else {
     // uninstallingDokku();
-
+    socket.emit('server-data', 1, 'dokku already exists');
     res.status(200).json({
       message: 'Dokku Already Installed, skipping Dokku Installation',
     });
@@ -169,6 +178,7 @@ export const installDokku = async (req, res, next) => {
       message: 'Installation Done',
     });
   }
+  socket.disconnect();
 };
 
 // This way, you can chain multiple commands!

@@ -71,10 +71,13 @@ const AppItem = props => {
     socket.on('connect', () => {
       console.log(`connection established with id: ${socket.id}`);
       // Most preferred way is to send one time data, here!
-      // socket.emit('build-data', 10, 'forem', { appId: `${appId}` });
+      socket.emit('build-data', 10, 'forem', { appId: `${appId}` });
+      socket.on('server-data', (number, string, object) => {
+        console.log(number, string, object);
+      });
     });
 
-    socket.emit('build-data', 10, 'forem', { appId: `${appId}` }); // I can also use it here
+    // socket.emit('build-data', 10, 'forem', { appId: `${appId}` }); // I can also use it here
 
     // Base Step
     let errorOccurred = false;

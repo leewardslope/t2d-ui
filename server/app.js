@@ -31,12 +31,14 @@ const io = new Server(httpServer, {
 });
 
 io.on('connection', socket => {
-  console.log(socket.id);
+  // console.log(socket);
+  app.set('socketio', socket); // With this I can use socket in any route by pointing it
+  // const socket = req.app.get('socket');
+
   socket.on('build-data', (number, string, object) => {
     console.log(number, string, object);
   });
 });
-
 // adding this body-parser to help post requests => and should be before the respective request.
 app.use(bodyParser.json({ limit: '20mb', extended: 'true' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: 'true' }));
