@@ -1,6 +1,3 @@
-[new_user]
-139.59.57.161
+IP ansible_ssh_user=root ansible_ssh_private_key=../server/ssh_keys/IP
 
-[new_user:vars]
-ansible_ssh_user=root 
-ansible_ssh_private_key=../server/ssh_keys/139.59.57.161
+

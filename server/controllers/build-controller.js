@@ -71,6 +71,20 @@ export const checkConnection = async (req, res, next) => {
         )
       );
     }
+    try {
+      await fs.writeFileSync(
+        `./ansible_inventory/${serverKey.host}`,
+        `${serverKey.host} ansible_ssh_user=root ansible_ssh_private_key=../server/ssh_keys/${serverKey.host}`
+      );
+    } catch (err) {
+      console.log(err);
+      return next(
+        new HttpError(
+          `Unable to extract the provided SSH Key, Please try again later`,
+          500
+        )
+      );
+    }
   }
 
   // Checking required ENV variables.
@@ -135,17 +149,8 @@ export const establishConnection = async (req, res, next) => {
 export const installDokku = async (req, res, next) => {
   const appId = req.params.aid;
   const userId = req.userData.userId;
-
-  // socket data
   const socket = req.app.get('socket');
-
-  socket.on('build-data', (number, string, object) => {
-    console.log(number, string, object);
-  });
-
-  socket.emit('server-data', 10, 'forem', { appId: `from controller` });
-
-  // End of socket data
+  // socket.emit('server-notification', { message: `Finished, Installing dokku` });
 
   // const app = await App.findById(appId);
   const user = await User.findById(userId).populate('keys');
@@ -166,10 +171,17 @@ export const installDokku = async (req, res, next) => {
   const isDokku = await ssh.exec('which dokku');
   let failed = false;
   if (!isDokku) {
-    installingDokku();
+    res.status(200).json({
+      message: `It might take upto 5 to 10 minutes to install dokku`,
+    });
+    installingDokku(serverKey.host);
+    socket.emit('server-notification', {
+      message: `Finished, Installing dokku`,
+    });
   } else {
-    // uninstallingDokku();
-    socket.emit('server-data', 1, 'dokku already exists');
+    socket.emit('server-notification', {
+      message: `Finished, Installing dokku`,
+    });
     res.status(200).json({
       message: 'Dokku Already Installed, skipping Dokku Installation',
     });

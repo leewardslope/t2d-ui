@@ -1,9 +1,9 @@
 import shell from 'shelljs';
 import fs from 'fs';
 
-const installingDokku = () => {
+const installingDokku = IP => {
   shell.exec(
-    'ansible-playbook -i ../ansible/IP ../ansible/playbooks/dokku.yml'
+    `ansible-playbook -i ./ansible_inventory/${IP} ../ansible/playbooks/dokku.yml --extra-vars "IP=${IP}"`
   );
 };
 

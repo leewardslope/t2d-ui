@@ -68,12 +68,13 @@ const AppItem = props => {
       headers: { Authorization: `Bearer ${auth.token}` },
     };
     const socket = io('http://75.119.143.54:5000/');
-    socket.on('connect', () => {
-      console.log(`connection established with id: ${socket.id}`);
-      // Most preferred way is to send one time data, here!
-      socket.emit('build-data', 10, 'forem', { appId: `${appId}` });
-      socket.on('server-data', (number, string, object) => {
-        console.log(number, string, object);
+
+    socket.on('server-notification', notification => {
+      toast({
+        title: `${notification.message}`,
+        status: 'info',
+        position: 'top',
+        isClosable: true,
       });
     });
 
