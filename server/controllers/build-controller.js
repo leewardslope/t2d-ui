@@ -14,6 +14,8 @@ import Cryptr from 'cryptr';
 import dotenv from 'dotenv';
 import shell from 'shelljs';
 import checkSSH from '../tasks/check-ssh.js';
+import installingDokku from '../tasks/installing-dokku.js';
+import uninstallingDokku from '../tasks/uninstalling-dokku.js';
 
 dotenv.config();
 const encrypt = new Cryptr(process.env.CRYPTR_SECRET);
@@ -153,7 +155,10 @@ export const installDokku = async (req, res, next) => {
   const isDokku = await ssh.exec('which dokku');
   let failed = false;
   if (!isDokku) {
+    installingDokku();
   } else {
+    // uninstallingDokku();
+
     res.status(200).json({
       message: 'Dokku Already Installed, skipping Dokku Installation',
     });
