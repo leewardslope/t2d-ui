@@ -179,7 +179,6 @@ export const installDokku = async (req, res, next) => {
       message: `Finished, Installing dokku`,
     });
   } else {
-    // installingDokku(serverKey.host);
     res.status(200).json({
       message: 'Dokku Already Installed, skipping Dokku Installation',
     });

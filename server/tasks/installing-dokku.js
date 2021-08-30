@@ -8,7 +8,6 @@ const installingDokku = async IP => {
   //   `ansible-playbook -i ./ansible_inventory/${IP} ../ansible/playbooks/dokku.yml --extra-vars "IP=${IP}"`
   // );
 
-  console.log('came here', IP);
   const { stdout, stderr } = await execAsync(
     `ansible-playbook -i ./ansible_inventory/${IP} ../ansible/playbooks/dokku.yml --extra-vars "IP=${IP}"`
   );
