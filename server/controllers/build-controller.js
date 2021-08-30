@@ -174,10 +174,7 @@ export const installDokku = async (req, res, next) => {
     res.status(200).json({
       message: `It might take upto 5 to 10 minutes to install dokku`,
     });
-    installingDokku(serverKey.host);
-    socket.emit('server-notification', {
-      message: `Finished, Installing dokku`,
-    });
+    installingDokku(serverKey.host, socket);
   } else {
     res.status(200).json({
       message: 'Dokku Already Installed, skipping Dokku Installation',
@@ -189,7 +186,6 @@ export const installDokku = async (req, res, next) => {
   //     message: 'Installation Done',
   //   });
   // }
-  socket.disconnect();
 };
 
 // This way, you can chain multiple commands!
