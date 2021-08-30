@@ -137,13 +137,15 @@ export const installDokku = async (req, res, next) => {
   const userId = req.userData.userId;
 
   // socket data
-  const socket = req.app.get('socketio');
+  const socket = req.app.get('socket');
 
   socket.on('build-data', (number, string, object) => {
     console.log(number, string, object);
   });
 
   socket.emit('server-data', 10, 'forem', { appId: `from controller` });
+
+  // End of socket data
 
   // const app = await App.findById(appId);
   const user = await User.findById(userId).populate('keys');
