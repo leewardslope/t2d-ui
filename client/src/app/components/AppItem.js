@@ -70,9 +70,11 @@ const AppItem = props => {
     const socket = io('http://75.119.143.54:5000/');
     socket.on('connect', () => {
       console.log(`connection established with id: ${socket.id}`);
+      // Most preferred way is to send one time data, here!
+      // socket.emit('build-data', 10, 'forem', { appId: `${appId}` });
     });
 
-    socket.emit('build-data', 10, 'forem', { appId: `${appId}` });
+    socket.emit('build-data', 10, 'forem', { appId: `${appId}` }); // I can also use it here
 
     // Base Step
     let errorOccurred = false;
