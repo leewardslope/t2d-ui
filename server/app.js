@@ -4,6 +4,10 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
+// Socket.io
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+
 // This is not the default import model supported by nodejs, so I should add the .js suffix
 import HttpError from './models/https-error.js';
 import appsRoutes from './routes/apps-routes.js';
@@ -18,6 +22,14 @@ import test from './tasks/test.js';
 dotenv.config();
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  // ...
+});
+
+io.on('connection', socket => {
+  // ...
+});
 
 // adding this body-parser to help post requests => and should be before the respective request.
 app.use(bodyParser.json({ limit: '20mb', extended: 'true' }));
@@ -66,7 +78,7 @@ mongoose
     useCreateIndex: true,
   })
   .then(() =>
-    app.listen(NODE_PORT, () => {
+    httpServer.listen(NODE_PORT, () => {
       console.log(`Connection established and running on PORT: ${NODE_PORT}`);
     })
   )
