@@ -178,11 +178,8 @@ export const installDokku = async (req, res, next) => {
     socket.emit('server-notification', {
       message: `Finished, Installing dokku`,
     });
-    isDokku = true;
   } else {
-    socket.emit('server-notification', {
-      message: `Finished, Installing dokku`,
-    });
+    // installingDokku(serverKey.host);
     res.status(200).json({
       message: 'Dokku Already Installed, skipping Dokku Installation',
     });
