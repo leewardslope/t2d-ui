@@ -178,6 +178,7 @@ export const installDokku = async (req, res, next) => {
     socket.emit('server-notification', {
       message: `Finished, Installing dokku`,
     });
+    isDokku = true;
   } else {
     socket.emit('server-notification', {
       message: `Finished, Installing dokku`,
@@ -187,11 +188,11 @@ export const installDokku = async (req, res, next) => {
     });
   }
 
-  if (!failed && !isDokku) {
-    res.status(200).json({
-      message: 'Installation Done',
-    });
-  }
+  // if (!failed && !isDokku) {
+  //   res.status(200).json({
+  //     message: 'Installation Done',
+  //   });
+  // }
   socket.disconnect();
 };
 
