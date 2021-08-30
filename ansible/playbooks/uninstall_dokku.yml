@@ -1,0 +1,7 @@
+---
+- hosts: new_user
+  tasks:
+    - name: Uninstalling Dokku
+      apt:
+        pkg: dokku
+        state: absent

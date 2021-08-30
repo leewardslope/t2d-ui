@@ -12,6 +12,10 @@ import SSH2Promise from 'ssh2-promise';
 import fs from 'fs';
 import Cryptr from 'cryptr';
 import dotenv from 'dotenv';
+import shell from 'shelljs';
+import checkSSH from '../tasks/check-ssh.js';
+import installingDokku from '../tasks/installing-dokku.js';
+import uninstallingDokku from '../tasks/uninstalling-dokku.js';
 
 dotenv.config();
 const encrypt = new Cryptr(process.env.CRYPTR_SECRET);
@@ -91,6 +95,7 @@ export const checkConnection = async (req, res, next) => {
 };
 
 export const establishConnection = async (req, res, next) => {
+  // I can also, simple use this => checkSSH();
   const appId = req.params.aid;
   const userId = req.userData.userId;
 
@@ -150,27 +155,10 @@ export const installDokku = async (req, res, next) => {
   const isDokku = await ssh.exec('which dokku');
   let failed = false;
   if (!isDokku) {
-    try {
-      await ssh.exec('mkdir akhil');
-    } catch (err) {
-      failed = true;
-      return next(new HttpError(`Unable to create folder akhil`, 403));
-    }
-
-    try {
-      await ssh.exec('mkdir naidu');
-    } catch (err) {
-      failed = true;
-      return next(new HttpError(`Unable to create folder naidu`, 403));
-    }
-
-    try {
-      await ssh.exec('rm -r akhil');
-    } catch (err) {
-      failed = true;
-      return next(new HttpError(`Unable to remove folder akhil`, 403));
-    }
+    installingDokku();
   } else {
+    // uninstallingDokku();
+
     res.status(200).json({
       message: 'Dokku Already Installed, skipping Dokku Installation',
     });
@@ -182,3 +170,11 @@ export const installDokku = async (req, res, next) => {
     });
   }
 };
+
+// This way, you can chain multiple commands!
+// try {
+//   await ssh.exec('mkdir akhil');
+// } catch (err) {
+//   failed = true;
+//   return next(new HttpError(`Unable to create folder akhil`, 403));
+// }

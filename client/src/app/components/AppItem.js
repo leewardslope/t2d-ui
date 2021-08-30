@@ -27,6 +27,7 @@ const AppItem = props => {
   const cancelRef = React.useRef();
 
   const [isLoading, setIsLoading] = React.useState(false);
+  // Intentionally not a state
 
   const afterDeleteConfirm = () => {
     // console.log(`pressed on delete: ${props.title} ${props.id}`);
@@ -67,6 +68,7 @@ const AppItem = props => {
     };
 
     // Base Step
+    let errorOccurred = false;
     const baseStep = async step => {
       try {
         const check = await axios.get(
@@ -87,13 +89,14 @@ const AppItem = props => {
           position: 'top',
           isClosable: true,
         });
+        errorOccurred = true;
         return error; // This will stop moving forward!
       }
     };
 
-    await baseStep('check');
-    await baseStep('connect');
-    await baseStep('dokku');
+    !errorOccurred && (await baseStep('check'));
+    !errorOccurred && (await baseStep('connect'));
+    !errorOccurred && (await baseStep('dokku'));
 
     setIsLoading(false);
   };

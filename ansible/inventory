@@ -1,11 +1,16 @@
 [master]
 75.119.143.54
+
 [nodes]
+
 [users]
+user1 ansible_host=139.59.57.161
 
 [master:vars]
 ansible_ssh_user=root
 
-[nodes:vars]
+[users:vars]
 ansible_ssh_user=root
-ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3

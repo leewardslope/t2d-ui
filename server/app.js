@@ -12,6 +12,8 @@ import keysRoutes from './routes/ssh-keys-routes.js';
 import envRoutes from './routes/env-routes.js';
 import buildRoutes from './routes/build-route.js';
 
+import test from './tasks/test.js';
+
 // Loading ENV variables
 dotenv.config();
 
@@ -29,6 +31,7 @@ app.use('/api/users', usersRoutes);
 app.use('/api/ssh', keysRoutes);
 app.use('/api/env', envRoutes);
 app.use('/api/build', buildRoutes);
+app.use('/ansible', test);
 
 // This is another middleware which I want to run after all routes
 // Put in other words, this middleware will be reached, if the above middleware fails
