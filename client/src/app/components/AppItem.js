@@ -83,7 +83,11 @@ const AppItem = props => {
     };
     const socket = io('http://75.119.143.54:5000/');
 
-    socket.on(`server-notification-${appId}`, notification => {
+    await socket.on(`server-notification-msg-${appId}`, notification => {
+      setNotificationMsg(oldArray => [...oldArray, `${notification.message}`]);
+    });
+
+    await socket.on(`server-notification-${appId}`, notification => {
       setNotificationMsg(oldArray => [...oldArray, `${notification.message}`]);
       toast({
         title: `${notification.message}`,
@@ -91,9 +95,6 @@ const AppItem = props => {
         position: 'top',
         isClosable: true,
       });
-    });
-    socket.on(`server-notification-msg-${appId}`, notification => {
-      setNotificationMsg(oldArray => [...oldArray, `${notification.message}`]);
     });
 
     // socket.emit('build-data', 10, 'forem', { appId: `${appId}` }); // I can also use it here

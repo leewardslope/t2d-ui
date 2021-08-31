@@ -21,17 +21,9 @@ const encrypt = new Cryptr(process.env.CRYPTR_SECRET);
 
 // I can essentially make it as a middleware => After check-auth and before rest of the routes.
 export const checkConnection = async (req, res, next) => {
-  const socket = req.app.get('socket');
   const appId = req.params.aid;
   const userId = req.userData.userId;
-
-  socket.emit(`server-notification-msg-${appId}`, {
-    message: `..... Build Started .....`,
-  });
-
-  socket.emit(`server-notification-msg-${appId}`, {
-    message: `Verifying SSH Details`,
-  });
+  const socket = req.app.get('socket');
 
   // Checking existence of App
   let app;
@@ -55,9 +47,10 @@ export const checkConnection = async (req, res, next) => {
 
   // Checking the existence of SSH Keys
   if (user.keys.length === 0) {
-    socket.emit('server-notification-msg', {
+    socket.emit(`server-notification-msg-${appId}`, {
       message: `You haven't configured your Server, please add at least one SSH Key`,
     });
+
     return next(
       new HttpError(
         `You haven't configured your Server, please add at least one SSH Key`,
@@ -120,9 +113,6 @@ export const checkConnection = async (req, res, next) => {
     console.log('Wordpress Logic goes here');
   }
 
-  socket.emit(`server-notification-msg-${appId}`, {
-    message: `Found SSH Key, Trying to establish connection`,
-  });
   res
     .status(200)
     .json({ message: 'Found SSH Key, Trying to establish connection' });
@@ -133,7 +123,9 @@ export const establishConnection = async (req, res, next) => {
   // I can also, simple use this => checkSSH();
   const appId = req.params.aid;
   const userId = req.userData.userId;
-
+  socket.emit(`server-notification-msg-${appId}`, {
+    message: `..... Build Started .....`,
+  });
   // const app = await App.findById(appId);
   const user = await User.findById(userId).populate('keys');
   const serverKey = user.keys[0];

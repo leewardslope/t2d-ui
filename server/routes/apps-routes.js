@@ -13,9 +13,8 @@ import checkAuth from '../middleware/check-auth.js';
 
 const router = express.Router();
 
-router.get('/:aid', getAppById);
-
 router.get('/user/:uid', getAppsByUserId);
+router.get('/:aid', getAppById);
 
 // Added middleware here, so anything above can be accessed without the token
 router.use(checkAuth);
