@@ -190,7 +190,7 @@ const AppItem = props => {
                   // ref={btnRef}
                   onClick={btn.onOpen}
                 >
-                  Status
+                  Logs
                 </Button>
 
                 <Link to={`/apps/${props.creatorId}/terminal`}>
