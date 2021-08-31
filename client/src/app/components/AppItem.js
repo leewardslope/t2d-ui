@@ -1,17 +1,27 @@
 // import React, {useContext} from 'react';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Avatar,
   Heading,
   Text,
   Box,
   Flex,
-  VStack,
   HStack,
-  StackDivider,
+  IconButton,
   Button,
   useToast,
+  Spacer,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from '@chakra-ui/react';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { BsTerminal } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import io from 'socket.io-client';
@@ -23,13 +33,13 @@ const AppItem = props => {
   const auth = useContext(AuthContext);
   const toast = useToast();
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef();
 
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   // Intentionally not a state
-
+  const [notificationMsg, setNotificationMsg] = useState([]);
   const afterDeleteConfirm = () => {
     // console.log(`pressed on delete: ${props.title} ${props.id}`);
     const deleteApp = async () => {
@@ -70,12 +80,16 @@ const AppItem = props => {
     const socket = io('http://75.119.143.54:5000/');
 
     socket.on('server-notification', notification => {
+      setNotificationMsg(oldArray => [...oldArray, `${notification.message}`]);
       toast({
         title: `${notification.message}`,
         status: 'info',
         position: 'top',
         isClosable: true,
       });
+    });
+    socket.on('server-notification-msg', notification => {
+      setNotificationMsg(oldArray => [...oldArray, `${notification.message}`]);
     });
 
     // socket.emit('build-data', 10, 'forem', { appId: `${appId}` }); // I can also use it here
@@ -114,19 +128,24 @@ const AppItem = props => {
     setIsLoading(false);
   };
 
+  const btn = useDisclosure();
+
+  const btnRef = React.useRef();
+
   return (
     <Flex m="2" justifyContent="center">
-      <VStack
-        divider={<StackDivider borderColor="grey.100" />}
+      <HStack
+        // divider={<StackDivider borderColor="grey.100" />}
         borderColor="grey.100"
         borderRadius="xl"
         mx="4"
         my="2"
         p="2"
-        // w="100%"
-        // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '30vw' }}
-        w="300px"
+        maxW={{ base: '90vw', sm: '80vw', lg: '60vw', xl: '60vw' }}
+        w="100%"
+        // w="300px"
         boxShadow="base"
+        alignItems="stretch"
         _hover={{
           boxShadow: 'md',
           borderRadius: 'xl',
@@ -145,28 +164,56 @@ const AppItem = props => {
             <Text fontSize="md">{props.name}</Text>
           </Box>
         </HStack>
-        <VStack>
-          <Text fontSize="md">{props.description}</Text>
+        <Spacer />
+        <HStack>
           {auth.userId === props.creatorId && (
             <HStack>
               <Button
                 isLoading={isLoading}
                 onClick={buildApp}
                 colorScheme="teal"
-                variant="outline"
+                variant="ghost"
               >
                 Build
               </Button>
-              <Link to={`/apps/${props.id}`}>
-                <Button variant="outline">Edit</Button>
-              </Link>
               <Button
-                colorScheme="red"
-                variant="solid"
-                onClick={() => setIsOpen(true)}
+                colorScheme="teal"
+                variant="ghost"
+                mt={3}
+                // ref={btnRef}
+                onClick={btn.onOpen}
               >
-                Delete
+                Status
               </Button>
+
+              <Link to={`/apps/${props.creatorId}/terminal`}>
+                <IconButton
+                  isRound="true"
+                  variant="ghost"
+                  aria-label="Open Terminal"
+                  colorScheme="blue"
+                  icon={<BsTerminal />}
+                />
+              </Link>
+
+              <Link to={`/apps/${props.id}`}>
+                <IconButton
+                  isRound="true"
+                  variant="ghost"
+                  aria-label="Edit App"
+                  colorScheme="teal"
+                  icon={<EditIcon />}
+                />
+              </Link>
+
+              <IconButton
+                isRound="true"
+                variant="ghost"
+                aria-label="Delete App"
+                colorScheme="red"
+                onClick={() => setIsOpen(true)}
+                icon={<DeleteIcon />}
+              />
 
               <AlertInput
                 isOpen={isOpen}
@@ -179,10 +226,39 @@ const AppItem = props => {
                 alertFooter2Color="red"
                 todo={afterDeleteConfirm}
               />
+
+              <Modal
+                onClose={btn.onClose}
+                finalFocusRef={btnRef}
+                isOpen={btn.isOpen}
+                scrollBehavior="inside"
+                size="lg"
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>App Notifications</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <Box color="primary">
+                      {notificationMsg.map((e, index) => (
+                        <Text key={index}>{e}</Text>
+                      ))}
+                    </Box>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Text color="teal">
+                      Build end with "Build Finished" Notification
+                    </Text>
+                    <Button m="1" onClick={btn.onClose}>
+                      Close
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
             </HStack>
           )}
-        </VStack>
-      </VStack>
+        </HStack>
+      </HStack>
     </Flex>
   );
 };
