@@ -12,7 +12,6 @@ import SSH2Promise from 'ssh2-promise';
 import fs from 'fs';
 import Cryptr from 'cryptr';
 import dotenv from 'dotenv';
-import shell from 'shelljs';
 import checkSSH from '../tasks/check-ssh.js';
 import installingDokku from '../tasks/installing-dokku.js';
 import uninstallingDokku from '../tasks/uninstalling-dokku.js';
@@ -22,9 +21,9 @@ const encrypt = new Cryptr(process.env.CRYPTR_SECRET);
 
 // I can essentially make it as a middleware => After check-auth and before rest of the routes.
 export const checkConnection = async (req, res, next) => {
+  const socket = req.app.get('socket');
   const appId = req.params.aid;
   const userId = req.userData.userId;
-  const socket = req.app.get('socket');
 
   socket.emit(`server-notification-msg-${appId}`, {
     message: `..... Build Started .....`,
@@ -139,42 +138,7 @@ export const establishConnection = async (req, res, next) => {
   const user = await User.findById(userId).populate('keys');
   const serverKey = user.keys[0];
   // const env = await Env.findOne({ appID: appId });
-
-  // SSH Details
-  const sshconfig = {
-    host: serverKey.host,
-    username: serverKey.username,
-    identity: `./ssh_keys/${serverKey.host}`,
-    //password: '',
-  };
-
-  // Connecting to the server using
-  const ssh = new SSH2Promise(sshconfig);
-
-  try {
-    await ssh.connect();
-    socket.emit(`server-notification-msg-${appId}`, {
-      message: `Connection established with your server`,
-    });
-    console.log(`Connection established with the user's server`);
-  } catch (error) {
-    socket.emit(`server-notification-msg-${appId}`, {
-      message: `Unable to connect to your server, please check update your SSH Keys`,
-    });
-    return next(
-      new HttpError(
-        `Unable to connect to your server, please check update your SSH Keys`,
-        403
-      )
-    );
-  }
-
-  socket.emit(`server-notification-msg-${appId}`, {
-    message: `Establish Connection to your SSH Server`,
-  });
-  res.status(200).json({
-    message: 'Establish Connection to your SSH Server, Installing Dokku',
-  });
+  checkSSH(serverKey.host, socket, res, req, next);
 };
 
 export const installDokku = async (req, res, next) => {
