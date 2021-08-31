@@ -24,6 +24,15 @@ const encrypt = new Cryptr(process.env.CRYPTR_SECRET);
 export const checkConnection = async (req, res, next) => {
   const appId = req.params.aid;
   const userId = req.userData.userId;
+  const socket = req.app.get('socket');
+
+  socket.emit('server-notification-msg', {
+    message: `..... Build Started .....`,
+  });
+
+  socket.emit('server-notification-msg', {
+    message: `Check => Verifying SSH Details`,
+  });
 
   // Checking existence of App
   let app;
@@ -47,6 +56,9 @@ export const checkConnection = async (req, res, next) => {
 
   // Checking the existence of SSH Keys
   if (user.keys.length === 0) {
+    socket.emit('server-notification-msg', {
+      message: `You haven't configured your Server, please add at least one SSH Key`,
+    });
     return next(
       new HttpError(
         `You haven't configured your Server, please add at least one SSH Key`,
@@ -63,7 +75,9 @@ export const checkConnection = async (req, res, next) => {
     try {
       await fs.writeFileSync(`./ssh_keys/${serverKey.host}`, decryptedString);
     } catch (err) {
-      console.log(err);
+      socket.emit('server-notification-msg', {
+        message: `Unable to extract the provided SSH Key, Please try again later`,
+      });
       return next(
         new HttpError(
           `Unable to extract the provided SSH Key, Please try again later`,
@@ -109,6 +123,7 @@ export const checkConnection = async (req, res, next) => {
 };
 
 export const establishConnection = async (req, res, next) => {
+  const socket = req.app.get('socket');
   // I can also, simple use this => checkSSH();
   const appId = req.params.aid;
   const userId = req.userData.userId;
@@ -171,13 +186,22 @@ export const installDokku = async (req, res, next) => {
   const isDokku = await ssh.exec('which dokku');
   let failed = false;
   if (!isDokku) {
+    socket.emit('server-notification-msg', {
+      message: `It might take upto 5 to 10 minutes to install dokku`,
+    });
     res.status(200).json({
       message: `It might take upto 5 to 10 minutes to install dokku`,
     });
     installingDokku(serverKey.host, socket);
   } else {
+    socket.emit('server-notification-msg', {
+      message: `Dokku Already Installed`,
+    });
     res.status(200).json({
       message: 'Dokku Already Installed, skipping Dokku Installation',
+    });
+    socket.emit('server-notification-msg', {
+      message: `Build Finished => Build Already Exist`,
     });
   }
 
