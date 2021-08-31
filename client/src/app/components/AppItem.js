@@ -8,7 +8,7 @@ import {
   Flex,
   VStack,
   HStack,
-  StackDivider,
+  Divider,
   IconButton,
   Button,
   useToast,
@@ -141,7 +141,7 @@ const AppItem = props => {
     <Flex m="2" justifyContent="center">
       {!isLargerThan1280 && (
         <VStack
-          divider={<StackDivider borderColor="grey.100" />}
+          // divider={<StackDivider borderColor="grey.100" />}
           borderColor="grey.100"
           borderRadius="xl"
           mx="4"
@@ -171,8 +171,9 @@ const AppItem = props => {
             </Box>
           </HStack>
 
-          <HStack>
-            {auth.userId === props.creatorId && (
+          {auth.userId === props.creatorId && (
+            <VStack>
+              <Divider orientation="horizontal" />
               <HStack>
                 <Button
                   isLoading={isLoading}
@@ -262,8 +263,8 @@ const AppItem = props => {
                   </ModalContent>
                 </Modal>
               </HStack>
-            )}
-          </HStack>
+            </VStack>
+          )}
         </VStack>
       )}
 
