@@ -1,5 +1,5 @@
 // import React, {useContext} from 'react';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Avatar,
   Heading,
@@ -8,10 +8,23 @@ import {
   Flex,
   VStack,
   HStack,
-  StackDivider,
+  Divider,
+  IconButton,
   Button,
   useToast,
+  Spacer,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useMediaQuery,
 } from '@chakra-ui/react';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { BsTerminal } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import io from 'socket.io-client';
@@ -22,14 +35,15 @@ import { AuthContext } from '../../shared/context/auth-context';
 const AppItem = props => {
   const auth = useContext(AuthContext);
   const toast = useToast();
+  const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)');
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef();
 
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   // Intentionally not a state
-
+  const [notificationMsg, setNotificationMsg] = useState([]);
   const afterDeleteConfirm = () => {
     // console.log(`pressed on delete: ${props.title} ${props.id}`);
     const deleteApp = async () => {
@@ -69,13 +83,17 @@ const AppItem = props => {
     };
     const socket = io('http://75.119.143.54:5000/');
 
-    socket.on('server-notification', notification => {
+    socket.on(`server-notification-${appId}`, notification => {
+      setNotificationMsg(oldArray => [...oldArray, `${notification.message}`]);
       toast({
         title: `${notification.message}`,
         status: 'info',
         position: 'top',
         isClosable: true,
       });
+    });
+    socket.on(`server-notification-msg-${appId}`, notification => {
+      setNotificationMsg(oldArray => [...oldArray, `${notification.message}`]);
     });
 
     // socket.emit('build-data', 10, 'forem', { appId: `${appId}` }); // I can also use it here
@@ -114,75 +132,269 @@ const AppItem = props => {
     setIsLoading(false);
   };
 
+  const btn = useDisclosure();
+
+  const btnRef = React.useRef();
+
+  // The flex contains 2 renders based upon the mediaquery, one for mobile and the other for PC, I don't a much better way, so added 2 different renders.
   return (
     <Flex m="2" justifyContent="center">
-      <VStack
-        divider={<StackDivider borderColor="grey.100" />}
-        borderColor="grey.100"
-        borderRadius="xl"
-        mx="4"
-        my="2"
-        p="2"
-        // w="100%"
-        // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '30vw' }}
-        w="300px"
-        boxShadow="base"
-        _hover={{
-          boxShadow: 'md',
-          borderRadius: 'xl',
-          borderColor: 'grey.800',
-        }}
-      >
-        <HStack p="2">
-          <Box>
-            <Avatar name={props.name} src={props.image} />
-          </Box>
+      {!isLargerThan1280 && (
+        <VStack
+          // divider={<StackDivider borderColor="grey.100" />}
+          borderColor="grey.100"
+          borderRadius="xl"
+          mx="4"
+          my="2"
+          p="2"
+          maxW={{ base: '90vw', sm: '80vw', lg: '60vw', xl: '60vw' }}
+          w="100%"
+          // w="300px"
+          boxShadow="base"
+          // alignItems="stretch"
+          _hover={{
+            boxShadow: 'md',
+            borderRadius: 'xl',
+            borderColor: 'grey.800',
+          }}
+        >
+          <HStack p="2">
+            <Box>
+              <Avatar name={props.name} src={props.image} />
+            </Box>
 
-          <Box>
-            <Heading size="md" color="teal">
-              {props.title}
-            </Heading>
-            <Text fontSize="md">{props.name}</Text>
-          </Box>
-        </HStack>
-        <VStack>
-          <Text fontSize="md">{props.description}</Text>
+            <Box>
+              <Heading size="md" color="teal">
+                {props.title}
+              </Heading>
+              <Text fontSize="md">{props.name}</Text>
+            </Box>
+          </HStack>
+
           {auth.userId === props.creatorId && (
-            <HStack>
-              <Button
-                isLoading={isLoading}
-                onClick={buildApp}
-                colorScheme="teal"
-                variant="outline"
-              >
-                Build
-              </Button>
-              <Link to={`/apps/${props.id}`}>
-                <Button variant="outline">Edit</Button>
-              </Link>
-              <Button
-                colorScheme="red"
-                variant="solid"
-                onClick={() => setIsOpen(true)}
-              >
-                Delete
-              </Button>
+            <VStack>
+              <Divider orientation="horizontal" />
+              <HStack>
+                <Button
+                  isLoading={isLoading}
+                  onClick={buildApp}
+                  colorScheme="teal"
+                  variant="ghost"
+                >
+                  Build
+                </Button>
+                <Button
+                  colorScheme="teal"
+                  variant="ghost"
+                  mt={3}
+                  // ref={btnRef}
+                  onClick={btn.onOpen}
+                >
+                  Logs
+                </Button>
 
-              <AlertInput
-                isOpen={isOpen}
-                onClose={onClose}
-                cancelRef={cancelRef}
-                alertHeader="Delete App"
-                alertBody="Are you sure? You can't undo this action afterwards."
-                alertFooter1="Cancel"
-                alertFooter2="Delete"
-                alertFooter2Color="red"
-                todo={afterDeleteConfirm}
-              />
-            </HStack>
+                <Link to={`/apps/${props.creatorId}/terminal`}>
+                  <IconButton
+                    isRound="true"
+                    variant="ghost"
+                    aria-label="Open Terminal"
+                    colorScheme="blue"
+                    icon={<BsTerminal />}
+                  />
+                </Link>
+
+                <Link to={`/apps/${props.id}`}>
+                  <IconButton
+                    isRound="true"
+                    variant="ghost"
+                    aria-label="Edit App"
+                    colorScheme="teal"
+                    icon={<EditIcon />}
+                  />
+                </Link>
+
+                <IconButton
+                  isRound="true"
+                  variant="ghost"
+                  aria-label="Delete App"
+                  colorScheme="red"
+                  onClick={() => setIsOpen(true)}
+                  icon={<DeleteIcon />}
+                />
+
+                <AlertInput
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  cancelRef={cancelRef}
+                  alertHeader="Delete App"
+                  alertBody="Are you sure? You can't undo this action afterwards."
+                  alertFooter1="Cancel"
+                  alertFooter2="Delete"
+                  alertFooter2Color="red"
+                  todo={afterDeleteConfirm}
+                />
+
+                <Modal
+                  onClose={btn.onClose}
+                  finalFocusRef={btnRef}
+                  isOpen={btn.isOpen}
+                  scrollBehavior="inside"
+                  size="lg"
+                >
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader>App Logs</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      <Box color="primary">
+                        {notificationMsg.map((e, index) => (
+                          <Text key={index}>{e}</Text>
+                        ))}
+                      </Box>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Text color="teal">
+                        Build end with "Build Finished" Notification
+                      </Text>
+                      <Button m="1" onClick={btn.onClose}>
+                        Close
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
+              </HStack>
+            </VStack>
           )}
         </VStack>
-      </VStack>
+      )}
+
+      {isLargerThan1280 && (
+        <HStack
+          // divider={<StackDivider borderColor="grey.100" />}
+          borderColor="grey.100"
+          borderRadius="xl"
+          mx="4"
+          my="2"
+          p="2"
+          maxW={{ base: '90vw', sm: '80vw', lg: '60vw', xl: '60vw' }}
+          w="100%"
+          // w="300px"
+          boxShadow="base"
+          // alignItems="stretch"
+          _hover={{
+            boxShadow: 'md',
+            borderRadius: 'xl',
+            borderColor: 'grey.800',
+          }}
+        >
+          <HStack p="2">
+            <Box>
+              <Avatar name={props.name} src={props.image} />
+            </Box>
+
+            <Box>
+              <Heading size="md" color="teal">
+                {props.title}
+              </Heading>
+              <Text fontSize="md">{props.name}</Text>
+            </Box>
+          </HStack>
+          <Spacer />
+          <HStack>
+            {auth.userId === props.creatorId && (
+              <HStack>
+                <Button
+                  isLoading={isLoading}
+                  onClick={buildApp}
+                  colorScheme="teal"
+                  variant="ghost"
+                >
+                  Build
+                </Button>
+                <Button
+                  colorScheme="teal"
+                  variant="ghost"
+                  mt={3}
+                  // ref={btnRef}
+                  onClick={btn.onOpen}
+                >
+                  Status
+                </Button>
+
+                <Link to={`/apps/${props.creatorId}/terminal`}>
+                  <IconButton
+                    isRound="true"
+                    variant="ghost"
+                    aria-label="Open Terminal"
+                    colorScheme="blue"
+                    icon={<BsTerminal />}
+                  />
+                </Link>
+
+                <Link to={`/apps/${props.id}`}>
+                  <IconButton
+                    isRound="true"
+                    variant="ghost"
+                    aria-label="Edit App"
+                    colorScheme="teal"
+                    icon={<EditIcon />}
+                  />
+                </Link>
+
+                <IconButton
+                  isRound="true"
+                  variant="ghost"
+                  aria-label="Delete App"
+                  colorScheme="red"
+                  onClick={() => setIsOpen(true)}
+                  icon={<DeleteIcon />}
+                />
+
+                <AlertInput
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  cancelRef={cancelRef}
+                  alertHeader="Delete App"
+                  alertBody="Are you sure? You can't undo this action afterwards."
+                  alertFooter1="Cancel"
+                  alertFooter2="Delete"
+                  alertFooter2Color="red"
+                  todo={afterDeleteConfirm}
+                />
+
+                <Modal
+                  onClose={btn.onClose}
+                  finalFocusRef={btnRef}
+                  isOpen={btn.isOpen}
+                  scrollBehavior="inside"
+                  size="lg"
+                >
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader>App Logs</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      <Box color="primary">
+                        {notificationMsg.map((e, index) => (
+                          <Text key={index}>{e}</Text>
+                        ))}
+                      </Box>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Text color="teal">
+                        Build end with "Build Finished" Notification
+                      </Text>
+                      <Button m="1" onClick={btn.onClose}>
+                        Close
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
+              </HStack>
+            )}
+          </HStack>
+        </HStack>
+      )}
     </Flex>
   );
 };

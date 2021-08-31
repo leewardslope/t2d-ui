@@ -24,6 +24,15 @@ const encrypt = new Cryptr(process.env.CRYPTR_SECRET);
 export const checkConnection = async (req, res, next) => {
   const appId = req.params.aid;
   const userId = req.userData.userId;
+  const socket = req.app.get('socket');
+
+  socket.emit(`server-notification-msg-${appId}`, {
+    message: `..... Build Started .....`,
+  });
+
+  socket.emit(`server-notification-msg-${appId}`, {
+    message: `Verifying SSH Details`,
+  });
 
   // Checking existence of App
   let app;
@@ -47,6 +56,9 @@ export const checkConnection = async (req, res, next) => {
 
   // Checking the existence of SSH Keys
   if (user.keys.length === 0) {
+    socket.emit('server-notification-msg', {
+      message: `You haven't configured your Server, please add at least one SSH Key`,
+    });
     return next(
       new HttpError(
         `You haven't configured your Server, please add at least one SSH Key`,
@@ -63,7 +75,9 @@ export const checkConnection = async (req, res, next) => {
     try {
       await fs.writeFileSync(`./ssh_keys/${serverKey.host}`, decryptedString);
     } catch (err) {
-      console.log(err);
+      socket.emit(`server-notification-msg-${appId}`, {
+        message: `Unable to extract the provided SSH Key, Please try again later`,
+      });
       return next(
         new HttpError(
           `Unable to extract the provided SSH Key, Please try again later`,
@@ -77,7 +91,9 @@ export const checkConnection = async (req, res, next) => {
         `${serverKey.host} ansible_ssh_user=root ansible_ssh_private_key=../server/ssh_keys/${serverKey.host}`
       );
     } catch (err) {
-      console.log(err);
+      socket.emit(`server-notification-msg-${appId}`, {
+        message: `Unable to extract the provided SSH Key, Please try again later`,
+      });
       return next(
         new HttpError(
           `Unable to extract the provided SSH Key, Please try again later`,
@@ -105,10 +121,16 @@ export const checkConnection = async (req, res, next) => {
     console.log('Wordpress Logic goes here');
   }
 
-  res.status(200).json({ message: 'Checking Passed, Moving to Step 02' });
+  socket.emit(`server-notification-msg-${appId}`, {
+    message: `Found SSH Key, Trying to establish connection`,
+  });
+  res
+    .status(200)
+    .json({ message: 'Found SSH Key, Trying to establish connection' });
 };
 
 export const establishConnection = async (req, res, next) => {
+  const socket = req.app.get('socket');
   // I can also, simple use this => checkSSH();
   const appId = req.params.aid;
   const userId = req.userData.userId;
@@ -131,8 +153,14 @@ export const establishConnection = async (req, res, next) => {
 
   try {
     await ssh.connect();
+    socket.emit(`server-notification-msg-${appId}`, {
+      message: `Connection established with your server`,
+    });
     console.log(`Connection established with the user's server`);
   } catch (error) {
+    socket.emit(`server-notification-msg-${appId}`, {
+      message: `Unable to connect to your server, please check update your SSH Keys`,
+    });
     return next(
       new HttpError(
         `Unable to connect to your server, please check update your SSH Keys`,
@@ -141,8 +169,11 @@ export const establishConnection = async (req, res, next) => {
     );
   }
 
+  socket.emit(`server-notification-msg-${appId}`, {
+    message: `Establish Connection to your SSH Server`,
+  });
   res.status(200).json({
-    message: 'Establish Connection to your SSH Server, Moving to Step 03',
+    message: 'Establish Connection to your SSH Server, Installing Dokku',
   });
 };
 
@@ -169,16 +200,33 @@ export const installDokku = async (req, res, next) => {
   const ssh = new SSH2Promise(sshconfig);
 
   const isDokku = await ssh.exec('which dokku');
-  let failed = false;
+  socket.emit(`server-notification-msg-${appId}`, {
+    message: `Checking pre-installed dokku`,
+  });
+
   if (!isDokku) {
+    socket.emit(`server-notification-${appId}`, {
+      message: `It might take upto 5 to 10 minutes to install dokku`,
+    });
+    socket.emit(`server-notification-msg-${appId}`, {
+      message: `It might take upto 5 to 10 minutes to install dokku`,
+    });
     res.status(200).json({
       message: `It might take upto 5 to 10 minutes to install dokku`,
     });
-    installingDokku(serverKey.host, socket);
+    installingDokku(serverKey.host, socket, appId);
   } else {
+    socket.emit(`server-notification-msg-${appId}`, {
+      message: `Dokku Already Installed`,
+    });
     res.status(200).json({
       message: 'Dokku Already Installed, skipping Dokku Installation',
     });
+
+    socket.emit(`server-notification-msg-${appId}`, {
+      message: `.... Build Finished ....`,
+    });
+    socket.disconnect();
   }
 
   // if (!failed && !isDokku) {
