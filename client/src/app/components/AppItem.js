@@ -79,7 +79,7 @@ const AppItem = props => {
     };
     const socket = io('http://75.119.143.54:5000/');
 
-    socket.on('server-notification', notification => {
+    socket.on(`server-notification-${appId}`, notification => {
       setNotificationMsg(oldArray => [...oldArray, `${notification.message}`]);
       toast({
         title: `${notification.message}`,
@@ -88,7 +88,7 @@ const AppItem = props => {
         isClosable: true,
       });
     });
-    socket.on('server-notification-msg', notification => {
+    socket.on(`server-notification-msg-${appId}`, notification => {
       setNotificationMsg(oldArray => [...oldArray, `${notification.message}`]);
     });
 
@@ -236,7 +236,7 @@ const AppItem = props => {
               >
                 <ModalOverlay />
                 <ModalContent>
-                  <ModalHeader>App Notifications</ModalHeader>
+                  <ModalHeader>App Logs</ModalHeader>
                   <ModalCloseButton />
                   <ModalBody>
                     <Box color="primary">
