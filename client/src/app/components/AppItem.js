@@ -88,7 +88,6 @@ const AppItem = props => {
     });
 
     await socket.on(`server-notification-${appId}`, notification => {
-      setNotificationMsg(oldArray => [...oldArray, `${notification.message}`]);
       toast({
         title: `${notification.message}`,
         status: 'info',
