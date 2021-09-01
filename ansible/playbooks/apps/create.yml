@@ -1,5 +1,5 @@
 ---
-- hosts: localhost
+- hosts: all
   tasks:
     - name: does the {{ appName }} app exist
       shell: dokku apps:exists {{ appName }}

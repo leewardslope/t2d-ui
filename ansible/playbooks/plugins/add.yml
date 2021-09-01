@@ -1,0 +1,9 @@
+---
+- hosts: all
+  remote_user: root
+  tasks:
+    - name: Installing the Plugin => {{ pluginName }}
+      shell: dokku plugin:install {{ pluginUrl }}
+      ignore_errors: True
+      async: 600 # Maximum allowed time in Seconds
+      poll: 15
