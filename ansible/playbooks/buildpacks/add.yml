@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: Adding the buildpack => {{ buildpackName }}
+      shell: dokku buildpacks:add {{ appName }} {{ buildpackUrl }}
+      ignore_errors: True
+      async: 600 # Maximum allowed time in Seconds
+      poll: 15
