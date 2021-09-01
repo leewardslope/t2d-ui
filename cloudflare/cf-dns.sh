@@ -1,7 +1,8 @@
 # USAGE: ./cf-dns.sh -d DOMAIN -n NAME -t TYPE -c CONTENT -p PRIORITY -l TTL -x PROXIED [-k] [-o]
 # EXAMPLE: ./cf-dns.sh -d example.com -t A -n example.com -c 203.0.113.50 -l 1 -x y
-#   See the README for more examples
 
+# See the README for more examples, this is still on the the way!
+# For now use ./cf-dns.sh -h
 
 
 # # # # # # # # # # # # # # # # # # # #
