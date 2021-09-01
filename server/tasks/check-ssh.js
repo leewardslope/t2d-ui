@@ -13,7 +13,7 @@ const checkSSH = async (IP, socket, res, req, next) => {
   }
 
   const ping = await execAsync(
-    `ansible ${IP} -t tree -o -i ../ansible/inventory -m ping`
+    `ansible all -t tree -o -i ./ansible_inventory/${IP} -m ping`
   );
   // console.log('stderr:', ping.stderr);
   if (ping.stderr) {
