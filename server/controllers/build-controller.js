@@ -139,10 +139,10 @@ export const installDokku = async (req, res, next) => {
   const socket = req.app.get('socket');
   // socket.emit('server-notification', { message: `Finished, Installing dokku` });
 
-  // const app = await App.findById(appId);
+  const app = await App.findById(appId);
   const user = await User.findById(userId).populate('keys');
   const serverKey = user.keys[0];
-  // const env = await Env.findOne({ appID: appId });
+  const env = await Env.findOne({ appID: appId });
 
   // SSH Details
   const sshconfig = {
@@ -170,7 +170,7 @@ export const installDokku = async (req, res, next) => {
     res.status(200).json({
       message: `It might take upto 5 to 10 minutes to install dokku`,
     });
-    installingDokku(serverKey.host, socket, appId);
+    installingDokku(serverKey.host, res, socket, appId, app, env);
   } else {
     socket.emit(`server-notification-msg-${appId}`, {
       message: `Dokku Already Installed`,
