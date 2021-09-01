@@ -9,12 +9,26 @@ const checkSSH = async (IP, socket, res, req, next) => {
   const appId = req.params.aid;
   // shell.exec('pwd');
   if (`./tree/${IP}`) {
-    shell.exec(`rm -rf tree/${IP}`); // this should not be async
+    shell.exec(`rm -rf ./tree/${IP}`); // this should not be async
   }
 
-  const ping = await execAsync(
-    `ansible all -t tree -o -i ./ansible_inventory/${IP} -m ping`
-  );
+  let ping;
+  try {
+    ping = await execAsync(
+      `ansible all -t tree -o -i ./ansible_inventory/${IP} -m ping`
+    );
+  } catch (error) {
+    socket.emit(`server-notification-msg-${appId}`, {
+      message: `Unable to connect to your server, please check update your Server Details`,
+    });
+    return next(
+      new HttpError(
+        `Unable to connect to your server, please check update your Server Details`,
+        403
+      )
+    );
+  }
+
   // console.log('stderr:', ping.stderr);
   if (ping.stderr) {
     socket.emit(`server-notification-msg-${appId}`, {
