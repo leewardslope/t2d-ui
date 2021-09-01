@@ -1,4 +1,4 @@
-This script assumes I received the SSH keys and certfiles from ansible.
+This script assumes I received the SSH keys, cert-files and other required from ansible.
 
 ```
 // sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
