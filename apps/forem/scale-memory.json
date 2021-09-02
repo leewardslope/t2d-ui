@@ -1,0 +1,4 @@
+[
+  { "name": "web", "workers": "1", "memory": "750m" },
+  { "name": "sidekiq_worker", "workers": "1", "memory": "750m" }
+]
