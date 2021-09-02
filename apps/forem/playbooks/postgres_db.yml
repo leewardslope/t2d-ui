@@ -1,0 +1,14 @@
+---
+- hosts: all
+  tasks:
+    - name: Creating a Postgres db
+      shell: dokku postgres:create {{ appName }}db
+      ignore_errors: True
+      async: 600 # Maximum allowed time in Seconds
+      poll: 15
+    
+    - name: Linking the postgres db to the app
+      shell: dokku postgres:link {{ appName }}db {{ appName }}
+      ignore_errors: True
+      async: 600 # Maximum allowed time in Seconds
+      poll: 15

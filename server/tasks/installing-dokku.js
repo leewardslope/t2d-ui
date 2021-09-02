@@ -3,7 +3,9 @@ import util from 'util';
 import { exec } from 'child_process';
 const execAsync = util.promisify(exec);
 
-const installingDokku = async (IP, socket, appId) => {
+import installForem from './install-forem.js';
+
+const installingDokku = async (ip, res, socket, appId, app, env) => {
   // shell.exec(
   //   `ansible-playbook -i ./ansible_inventory/${IP} ../ansible/playbooks/dokku.yml --extra-vars "IP=${IP}"`
   // );
@@ -17,7 +19,7 @@ const installingDokku = async (IP, socket, appId) => {
   });
 
   const { stdout, stderr } = await execAsync(
-    `ansible-playbook -i ./ansible_inventory/${IP} ../ansible/playbooks/dokku.yml --extra-vars "IP=${IP}"`
+    `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/dokku.yml --extra-vars "IP=${ip}"`
   );
 
   // console.log('stdout:', stdout);
@@ -28,7 +30,18 @@ const installingDokku = async (IP, socket, appId) => {
   socket.emit(`server-notification-msg-${appId}`, {
     message: `Finished, Installing dokku`,
   });
-  socket.disconnect();
+
+  if (app.app === 'forem') {
+    installForem(ip, res, socket, app, env);
+  } else {
+    socket.emit(`server-notification-${appId}`, {
+      message: `For now, we only support Forem`,
+    });
+    socket.emit(`server-notification-msg-${appId}`, {
+      message: `For now, we only support Forem`,
+    });
+    socket.disconnect();
+  }
 };
 
 export default installingDokku;

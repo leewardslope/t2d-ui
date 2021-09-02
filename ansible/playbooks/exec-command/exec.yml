@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: Running the command => {{ command }}
+      shell: "{{ command }}"
+      ignore_errors: True
+      async: 3600 # Maximum allowed time in Seconds
+      poll: 10

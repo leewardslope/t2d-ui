@@ -1,0 +1,12 @@
+---
+- hosts: master
+  tasks:
+    - name: Read a json file
+      set_fact:
+        env_json_contents: "{{ lookup('file', '../../../apps/{{appName}}/{{ file }}.json') }}"
+
+    - name: set config
+      shell: dokku config:set {{ appTitle }} --no-restart {{ item.env }}={{ item.value }}
+      with_items: "{{ env_json_contents }}"
+      ignore_errors: True
+    

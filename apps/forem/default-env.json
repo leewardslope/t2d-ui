@@ -1,0 +1,9 @@
+[
+  { "env": "MALLOC_ARENA_MAX", "value": "2" },
+  { "env": "JEMALLOC_ENABLED", "value": "true" },
+  { "env": "WEB_CONCURRENCY", "value": "2" },
+  { "env": "RUBY_GC_HEAP_GROWTH_FACTOR", "value": "1.03" },
+  { "env": "PGBOUNCER_PREPARED_STATEMENTS", "value": "false" },
+  { "env": "DATABASE_POOL_SIZE", "value": "5" },
+  { "env": "RAILS_MAX_THREADS", "value": "5" }
+]

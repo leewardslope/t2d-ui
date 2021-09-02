@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+    - name: Adding Scale
+      shell: dokku ps:scale {{ appTitle }} {{ serviceName }}={{ value }}
+      ignore_errors: True

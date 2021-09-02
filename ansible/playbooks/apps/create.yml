@@ -1,12 +1,12 @@
 ---
-- hosts: localhost
+- hosts: all
   tasks:
-    - name: does the {{ appName }} app exist
-      shell: dokku apps:exists {{ appName }}
+    - name: does the {{ appTitle }} app exist
+      shell: dokku apps:exists {{ appTitle }}
       register: app_exists
       ignore_errors: True
 
     - name: create an app
-      shell: dokku apps:create {{ appName }}
+      shell: dokku apps:create {{ appTitle }}
       when: app_exists.rc == 1
 
