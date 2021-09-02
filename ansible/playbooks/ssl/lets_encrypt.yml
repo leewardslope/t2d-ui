@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+    - name: Configuring Let's encrypt
+      shell: dokku letsencrypt:enable {{ appTitle }}
+      ignore_errors: True

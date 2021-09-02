@@ -30,6 +30,7 @@ const FormikApp = () => {
         app: '',
         repo: '',
         title: '',
+        domain: '',
         description: '',
       }}
       onSubmit={(values, actions) => {
@@ -119,11 +120,19 @@ const FormikApp = () => {
               />
 
               <FormikInput
-                // validation={validateRequire}
-                uniqueField="url"
+                validation={validateRequire}
+                uniqueField="domain"
                 label="Domain Name"
                 placeholder="https://app.example.com"
                 formHelper="If not provided, we will create a subdomain for you"
+              />
+
+              <FormikInput
+                // validation={validateRequire}
+                uniqueField="repo"
+                label="Github Repo"
+                placeholder="https://github.com/username/projectname"
+                formHelper="If not provided, we will default it to official repo"
               />
 
               <Button

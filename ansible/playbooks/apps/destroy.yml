@@ -1,5 +1,5 @@
 ---
-- hosts: nodes
+- hosts: all
   roles:
     - dokku_bot.ansible_dokku
 
@@ -8,3 +8,4 @@
       dokku_app:
         app: "{{ appTitle }}"
         state: absent
+      tags: delete-app

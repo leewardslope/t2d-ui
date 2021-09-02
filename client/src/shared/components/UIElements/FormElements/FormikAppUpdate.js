@@ -34,6 +34,7 @@ const FormikAppUpdate = () => {
   const [appData, setAppData] = useState({
     app: '',
     repo: '',
+    domain: '',
     title: '',
     description: '',
   });
@@ -133,6 +134,14 @@ const FormikAppUpdate = () => {
                   uniqueField="description"
                   label="Description"
                   placeholder={appData.description}
+                  formHelper="Place Holder contains your previous value"
+                />
+
+                <FormikInput
+                  validation={validateRequire}
+                  uniqueField="domain"
+                  label="Domain Name"
+                  placeholder={appData.domain}
                   formHelper="Place Holder contains your previous value"
                 />
 

@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+    - name: Building the app via github repo
+      shell: dokku git:sync --build {{ appTitle }} {{ repo }}
+      ignore_errors: True

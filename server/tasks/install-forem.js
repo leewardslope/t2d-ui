@@ -122,17 +122,74 @@ const installForem = async (ip, res, req, next, socket, appId, app, env) => {
 
   if (addENVVariables.stderr) {
     console.log('stderr:', addENVVariables.stderr);
-    installationFailed('Creating and Linking databases');
+    installationFailed('Adding Users ENV variables');
+  }
+
+  const addProdENVVariables = await execAsync(
+    `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/env/add.yml --extra-vars "appTitle=${appTitle} file=/production-env appName=${appName}"`
+  );
+
+  if (addProdENVVariables.stderr) {
+    console.log('stderr:', addProdENVVariables.stderr);
+    installationFailed('adding production ENV variables');
+  }
+
+  const addDefaultENVVariables = await execAsync(
+    `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/env/add.yml --extra-vars "appTitle=${appTitle} file=/default-env appName=${appName}"`
+  );
+
+  if (addDefaultENVVariables.stderr) {
+    console.log('stderr:', addDefaultENVVariables.stderr);
+    installationFailed('Adding Default ENV variables');
   }
 
   socketMessage('Adding ENV variables was done successfully');
 
-  socket.emit(`server-notification-${appId}`, {
-    message: `Forem Installed successfully`,
-  });
-  socket.emit(`server-notification-msg-${appId}`, {
-    message: `Forem Installed successfully`,
-  });
+  // Step 07 => Configuring git
+
+  socketMessage('Configuring git');
+
+  const initGit = await execAsync(
+    `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/git/init.yml --extra-vars "appTitle=${appTitle}"`
+  );
+
+  if (initGit.stderr) {
+    console.log('stderr:', initGit.stderr);
+    installationFailed('Configuring git');
+  }
+
+  socketMessage('Configuring git was done successfully');
+
+  // Step 08 => Configuring SSL via letsencrypt
+
+  socketMessage('Configuring SSL');
+
+  const ssl = await execAsync(
+    `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/ssl/lets_encrypt.yml --extra-vars "appTitle=${appTitle}"`
+  );
+
+  if (ssl.stderr) {
+    console.log('stderr:', ssl.stderr);
+    installationFailed('Configuring SSL databases');
+  }
+
+  // Step 09 => Last Step
+
+  socketMessage('Building Forem, might take upto 25 to 30 Minutes.');
+
+  const repo = app.repo || 'https://github.com/forem/forem.git';
+
+  const buildApp = await execAsync(
+    `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/apps/build_app.yml --extra-vars "appTitle=${appTitle} repo=${repo}"`
+  );
+
+  if (buildApp.stderr) {
+    console.log('stderr:', buildApp.stderr);
+    installationFailed('Building App');
+  }
+
+  socketMessage('Forem Installed successfully');
+
   socket.disconnect();
 };
 
