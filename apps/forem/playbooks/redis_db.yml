@@ -1,13 +1,13 @@
 ---
 - hosts: all
   tasks:
-    - name: Creating a Postgres db
+    - name: Creating a redis db
       shell: dokku redis:create redis{{ appName }}db
       ignore_errors: True
       async: 600 # Maximum allowed time in Seconds
       poll: 15
     
-    - name: Linking the postgres db to the app
+    - name: Linking the redis db to the app
       shell: dokku redis:link redis{{ appName }}db {{ appName }}
       ignore_errors: True
       async: 600 # Maximum allowed time in Seconds
