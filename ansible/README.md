@@ -4,6 +4,40 @@ This documentation should act as a starting place for any future developers to g
 
 ## Installation of Ansible
 
+### basic requirements
+
+```
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev  libncursesw5-dev xz-utils tk-dev
+sudo apt install make -y
+```
+
+### Downloading and installing python from source
+
+```
+wget https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tar.xz
+tar xf Python-3.9.7.tar.xz
+cd Python-3.9.7
+./configure --enable-optimizations
+make
+sudo make altinstall
+```
+
+### switching to new python version
+
+```
+update-alternatives --install /usr/bin/python python3 /usr/local/bin/python3.9 10
+```
+
+### Fixing and updating pip
+
+```
+ln -s /usr/share/pyshared/lsb_release.py /usr/local/lib/python3.9/site-packages/lsb_release.py
+
+pip3 install --upgrade pip
+```
+
 ### Official Documentation
 
 ```
