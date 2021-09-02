@@ -1,5 +1,5 @@
 ---
-- hosts: master
+- hosts: all
   tasks:
     - name: Read a json file
       set_fact:

@@ -1,8 +1,13 @@
 ---
 - hosts: all
   tasks:
-    - name: Adding the buildpack => {{ buildpackName }}
-      shell: dokku buildpacks:add {{ appTitle }} {{ buildpackUrl }}
+    - name: Read a json file
+      set_fact:
+        buildpack_json_contents: "{{ lookup('file', '../../../apps/{{appName}}/{{ file }}.json') }}"
+
+    - name: Installing the buildpack {{ item.name }}
+      shell: dokku buildpacks:add {{ appTitle }} {{ item.url }}
+      with_items: "{{ buildpack_json_contents }}"
       ignore_errors: True
       async: 600 # Maximum allowed time in Seconds
       poll: 15
