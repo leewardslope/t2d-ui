@@ -46,7 +46,7 @@ const installingDokku = async (ip, res, req, next, socket, appId, app, env) => {
   });
 
   if (app.app === 'Forem') {
-    installForem(ip, res, socket, app, env);
+    installForem(ip, res, req, next, socket, appId, app, env);
   } else {
     socket.emit(`server-notification-${appId}`, {
       message: `For now, we only support Forem`,

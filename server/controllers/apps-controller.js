@@ -102,7 +102,7 @@ export const updateApp = async (req, res, next) => {
   }
 
   // For patch request we will also have a body
-  const { title, description, repo } = req.body;
+  const { title, description, repo, domain } = req.body;
   const appId = req.params.aid;
   let app;
 
@@ -124,6 +124,7 @@ export const updateApp = async (req, res, next) => {
     );
   }
 
+  console.log(app);
   app.title = title;
   app.description = description;
   app.domain = domain;
