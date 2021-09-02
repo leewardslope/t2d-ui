@@ -14,6 +14,7 @@ import Cryptr from 'cryptr';
 import dotenv from 'dotenv';
 import checkSSH from '../tasks/check-ssh.js';
 import installingDokku from '../tasks/installing-dokku.js';
+import installingForem from '../tasks/install-forem.js';
 import uninstallingDokku from '../tasks/uninstalling-dokku.js';
 
 dotenv.config();
@@ -170,19 +171,26 @@ export const installDokku = async (req, res, next) => {
     res.status(200).json({
       message: `It might take upto 5 to 10 minutes to install dokku`,
     });
-    installingDokku(serverKey.host, res, socket, appId, app, env);
+    installingDokku(serverKey.host, res, req, next, socket, appId, app, env);
   } else {
     socket.emit(`server-notification-msg-${appId}`, {
       message: `Dokku Already Installed`,
     });
     res.status(200).json({
-      message: 'Dokku Already Installed, skipping Dokku Installation',
+      message: 'Dokku Already Installed, moving to app Installation',
     });
 
-    socket.emit(`server-notification-msg-${appId}`, {
-      message: `.... Build Finished ....`,
-    });
-    socket.disconnect();
+    if (app.app === 'forem') {
+      installForem(ip, res, req, next, socket, app, env);
+    } else {
+      socket.emit(`server-notification-${appId}`, {
+        message: `For now, we only support Forem`,
+      });
+      socket.emit(`server-notification-msg-${appId}`, {
+        message: `For now, we only support Forem`,
+      });
+      // socket.disconnect();
+    }
   }
 
   // if (!failed && !isDokku) {

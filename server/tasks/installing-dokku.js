@@ -4,12 +4,10 @@ import { exec } from 'child_process';
 const execAsync = util.promisify(exec);
 
 import installForem from './install-forem.js';
+console.log(`came here`);
 
-const installingDokku = async (ip, res, socket, appId, app, env) => {
-  // shell.exec(
-  //   `ansible-playbook -i ./ansible_inventory/${IP} ../ansible/playbooks/dokku.yml --extra-vars "IP=${IP}"`
-  // );
-
+const installingDokku = async (ip, res, req, next, socket, appId, app, env) => {
+  console.log(`came here`);
   socket.emit(`server-notification-${appId}`, {
     message: `Starting Dokku Installation`,
   });
@@ -18,12 +16,31 @@ const installingDokku = async (ip, res, socket, appId, app, env) => {
     message: `Starting Dokku Installation`,
   });
 
-  const { stdout, stderr } = await execAsync(
-    `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/dokku.yml --extra-vars "IP=${ip}"`
-  );
+  try {
+    console.log(`came here`);
+    const { stdout, stderr } = await execAsync(
+      `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/dokku.yml --extra-vars "IP=${ip}"`
+    );
+    console.log('came here', stderr);
+  } catch (error) {
+    console.log(error);
 
-  // console.log('stdout:', stdout);
-  console.log('stderr:', stderr);
+    console.log('stderr:', stderr);
+
+    socket.emit(`server-notification-${appId}`, {
+      message: `Dokku installation failed`,
+    });
+    socket.emit(`server-notification-msg-${appId}`, {
+      message: `Dokku installation failed`,
+    });
+
+    return next(
+      new HttpError(`Dokku installation failed, contact is for more info`, 403)
+    );
+  }
+
+  console.log(`ok ok`);
+
   socket.emit(`server-notification-${appId}`, {
     message: `Finished, Installing dokku`,
   });
