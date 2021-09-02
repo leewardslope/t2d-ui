@@ -1,0 +1,44 @@
+---
+- hosts: all
+  tasks:
+    - name: Creating a Postgres db
+      shell: dokku postgres:create {{ appTitle }}db
+      ignore_errors: True
+      async: 600 # Maximum allowed time in Seconds
+      poll: 15
+    
+    - name: Linking the postgres db to the app
+      shell: dokku postgres:link {{ appTitle }}db {{ appTitle }}
+      ignore_errors: True
+      async: 600 # Maximum allowed time in Seconds
+      poll: 15
+
+    - name: Creating a redis db
+      shell: dokku redis:create redis{{ appTitle }}db
+      ignore_errors: True
+      async: 120 # Maximum allowed time in Seconds
+      poll: 10
+    
+    - name: Linking the redis db to the app
+      shell: dokku redis:link redis{{ appTitle }}db {{ appTitle }}
+      ignore_errors: True
+      async: 120 # Maximum allowed time in Seconds
+      poll: 10
+
+    - name: git initialization
+      shell: dokku git:initialize forem
+      ignore_errors: True
+      async: 120
+      poll: 10
+
+    - name: allowing github
+      shell: dokku git:allow-host github.com
+      ignore_errors: True
+      async: 120
+      poll: 10
+
+    - name: forem branch is not master branch
+      shell: dokku git:set {{ appTitle }} deploy-branch main
+      ignore_errors: True
+      async: 120
+      poll: 10
