@@ -4,10 +4,8 @@ import { exec } from 'child_process';
 const execAsync = util.promisify(exec);
 
 import installForem from './install-forem.js';
-console.log(`came here`);
 
 const installingDokku = async (ip, res, req, next, socket, appId, app, env) => {
-  console.log(`came here`);
   socket.emit(`server-notification-${appId}`, {
     message: `Starting Dokku Installation`,
   });
@@ -17,7 +15,6 @@ const installingDokku = async (ip, res, req, next, socket, appId, app, env) => {
   });
 
   try {
-    console.log(`came here`);
     const { stdout, stderr } = await execAsync(
       `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/dokku.yml --extra-vars "IP=${ip}"`
     );
@@ -48,7 +45,7 @@ const installingDokku = async (ip, res, req, next, socket, appId, app, env) => {
     message: `Finished, Installing dokku`,
   });
 
-  if (app.app === 'forem') {
+  if (app.app === 'Forem') {
     installForem(ip, res, socket, app, env);
   } else {
     socket.emit(`server-notification-${appId}`, {

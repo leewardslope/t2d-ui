@@ -14,7 +14,7 @@ import Cryptr from 'cryptr';
 import dotenv from 'dotenv';
 import checkSSH from '../tasks/check-ssh.js';
 import installingDokku from '../tasks/installing-dokku.js';
-import installingForem from '../tasks/install-forem.js';
+import installForem from '../tasks/install-forem.js';
 import uninstallingDokku from '../tasks/uninstalling-dokku.js';
 
 dotenv.config();
@@ -180,8 +180,8 @@ export const installDokku = async (req, res, next) => {
       message: 'Dokku Already Installed, moving to app Installation',
     });
 
-    if (app.app === 'forem') {
-      installForem(ip, res, req, next, socket, app, env);
+    if (app.app === 'Forem') {
+      installForem(serverKey.host, res, req, next, socket, appId, app, env);
     } else {
       socket.emit(`server-notification-${appId}`, {
         message: `For now, we only support Forem`,

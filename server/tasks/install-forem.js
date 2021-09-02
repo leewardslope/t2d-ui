@@ -3,11 +3,7 @@ import util from 'util';
 import { exec } from 'child_process';
 const execAsync = util.promisify(exec);
 
-const installForem = async (ip, res, req, next, socket, app, env) => {
-  console.log(ip);
-  console.log(res);
-  console.log(socket.id);
-
+const installForem = async (ip, res, req, next, socket, appId, app, env) => {
   const installationFailed = stage => {
     socket.emit(`server-notification-${appId}`, {
       message: `${stage} failed`,
@@ -45,7 +41,7 @@ const installForem = async (ip, res, req, next, socket, app, env) => {
   // Step 01 => creating app
   socketMessage('Creating your App');
 
-  const { createApp } = await execAsync(
+  const createApp = await execAsync(
     `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/apps/create.yml --extra-vars "appTitle=${appTitle}"`
   );
 
@@ -60,8 +56,8 @@ const installForem = async (ip, res, req, next, socket, app, env) => {
 
   socketMessage('Installing required plugins');
 
-  const { installingPlugins } = await execAsync(
-    `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/plugins/add.yml --extra-vars "appTitle=${appTitle} file=plugins"`
+  const installingPlugins = await execAsync(
+    `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/plugins/add.yml --extra-vars "appTitle=${appTitle} appName=${appName} file=plugins"`
   );
 
   if (installingPlugins.stderr) {
@@ -75,7 +71,7 @@ const installForem = async (ip, res, req, next, socket, app, env) => {
 
   socketMessage('Adding required buildpacks');
 
-  const { addingBuildpacks } = await execAsync(
+  const addingBuildpacks = await execAsync(
     `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/buildpacks/add.yml --extra-vars "appTitle=${appTitle} file=buildpacks appName=${appName}"`
   );
 
@@ -90,7 +86,7 @@ const installForem = async (ip, res, req, next, socket, app, env) => {
 
   socketMessage('Allocation Workers and Scale');
 
-  const { scaleAndMemory } = await execAsync(
+  const scaleAndMemory = await execAsync(
     `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/memory/scale.yml --extra-vars "appTitle=${appTitle} file=scale-memory appName=${appName}"`
   );
 
@@ -105,7 +101,7 @@ const installForem = async (ip, res, req, next, socket, app, env) => {
 
   socketMessage('Creating and Linking databases');
 
-  const { createAndLinkDB } = await execAsync(
+  const createAndLinkDB = await execAsync(
     `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/databases/create_and_link.yml --extra-vars "appTitle=${appTitle} file=databases appName=${appName}"`
   );
 
