@@ -112,6 +112,21 @@ const installForem = async (ip, res, req, next, socket, appId, app, env) => {
 
   socketMessage('Creating and Linking databases was done successfully');
 
+  // Step 06 => Adding ENV variables
+
+  socketMessage('Adding ENV variables');
+
+  const addENVVariables = await execAsync(
+    `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/env/add.yml --extra-vars "appTitle=${appTitle} file=/store/${ip} appName=${appName}"`
+  );
+
+  if (addENVVariables.stderr) {
+    console.log('stderr:', addENVVariables.stderr);
+    installationFailed('Creating and Linking databases');
+  }
+
+  socketMessage('Adding ENV variables was done successfully');
+
   socket.emit(`server-notification-${appId}`, {
     message: `Forem Installed successfully`,
   });

@@ -1,4 +1,4 @@
 [
   { "name": "postgres", "dbName": "foremPostgresDB" },
-  { "name": "RACK_ENV", "dbName": "foremRedisDB" }
+  { "name": "redis", "dbName": "foremRedisDB" }
 ]

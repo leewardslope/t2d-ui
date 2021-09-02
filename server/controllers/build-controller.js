@@ -1,5 +1,5 @@
 import { validationResult } from 'express-validator';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 
 import HttpError from '../models/https-error.js';
 import App from '../models/app-schema.js';
@@ -97,12 +97,39 @@ export const checkConnection = async (req, res, next) => {
   }
 
   // Checking required ENV variables.
+
   let env;
   if (app.app == 'Forem') {
     env = await Env.findOne({ appID: appId });
+
+    let envJson = [];
+    for (var i = 0; i < env.var.length; i++) {
+      envJson.push({
+        env: env.var[i],
+        value: env.val[i],
+      });
+    }
+
+    const envJsonString = JSON.stringify(envJson);
+
+    try {
+      await fs.writeFileSync(
+        `../apps/Forem/store/${user.keys[0].host}.json`,
+        envJsonString
+      );
+    } catch (err) {
+      console.log(err);
+      return next(
+        new HttpError(
+          `Unable to process your ENV variables, Please try again later`,
+          500
+        )
+      );
+    }
+
     if (!env) {
       // I know for sure, right now it should have at least one env.
-      // Also, I should make tight validations so user will provide all the required ENV variables
+      // Also, I should make tight validations so user will provide all the required ENV variable
       return next(
         new HttpError(
           `You haven't configured your ENV variables, please add them by "Editing your APP"`,

@@ -60,8 +60,6 @@ const FormikAppUpdate = () => {
             });
           }
           setEnvData({ env: newEnv });
-
-          // setEnvData(loadedData.data);
         }
       } catch (error) {
         toast({

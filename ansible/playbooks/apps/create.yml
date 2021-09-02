@@ -1,12 +1,6 @@
 ---
 - hosts: all
   tasks:
-    - name: does the {{ appTitle }} app exist
-      shell: dokku apps:exists {{ appTitle }}
-      register: app_exists
-      ignore_errors: True
-
     - name: create an app
       shell: dokku apps:create {{ appTitle }}
-      when: app_exists.rc == 1
 
