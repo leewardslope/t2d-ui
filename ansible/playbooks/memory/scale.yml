@@ -4,5 +4,3 @@
     - name: Adding Scale
       shell: dokku ps:scale {{ appTitle }} {{ serviceName }}={{ value }}
       ignore_errors: True
-      async: 60 # Maximum allowed time in Seconds
-      poll: 5
