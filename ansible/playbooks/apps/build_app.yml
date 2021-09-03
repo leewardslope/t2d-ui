@@ -5,4 +5,4 @@
       shell: dokku git:sync --build {{ appTitle }} {{ repo }}
       ignore_errors: True
       async: 3600 # Maximum allowed time in Seconds
-      poll: 30
+      poll: 0
