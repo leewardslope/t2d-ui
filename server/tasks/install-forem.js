@@ -190,7 +190,8 @@ const installForem = async (ip, res, req, next, socket, appId, app, env) => {
 
   socketMessage('Building Forem, might take upto 25 to 30 Minutes.');
 
-  const repo = app.repo || 'https://github.com/forem/forem.git';
+  // const repo = app.repo || 'https://github.com/forem/forem.git';
+  const repo = app.repo || 'https://github.com/akhil-naidu/forem.git';
 
   const buildApp = await execAsync(
     `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/apps/build_app.yml --extra-vars "appTitle=${appTitle} repo=${repo}"`
