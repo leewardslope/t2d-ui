@@ -25,11 +25,15 @@ const FormikAppUpdate = () => {
         val: '',
       },
       {
-        var: 'DOMAIN_NAME',
+        var: 'APP_DOMAIN',
         val: '',
       },
       {
         var: 'DOKKU_LETSENCRYPT_EMAIL',
+        val: '',
+      },
+      {
+        var: 'DEFAULT_EMAIL',
         val: '',
       },
       {
