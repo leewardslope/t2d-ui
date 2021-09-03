@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useToast } from '@chakra-ui/react';
 import AppList from '../components/AppList';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../../BASE_URL';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const UserApps = props => {
   // Getting the userId from the react routes: <Route path="/:userId/apps" exact> from App.js
-  const userId = useParams().userId;
+  const auth = useContext(AuthContext);
+
   const toast = useToast();
   const [loadedApps, setLoadedApps] = useState();
   // const loadedApps = DUMMY_APPS.filter(apps => apps.creatorId === userId);
@@ -21,7 +22,7 @@ const UserApps = props => {
     const getApps = async () => {
       try {
         const getData = await axios.get(
-          `${BASE_URL}/api/apps/user/${userId}/`
+          `${BASE_URL}/api/apps/user/${auth.userId}/`
         );
         setLoadedApps(getData.data.apps);
       } catch (error) {
@@ -34,7 +35,7 @@ const UserApps = props => {
       }
     };
     getApps();
-  }, [toast, userId]);
+  }, [toast, auth.userId]);
 
   return <AppList items={loadedApps} filterApps={appFilter} />;
 };

@@ -39,6 +39,19 @@ const FormikAppUpdate = () => {
     description: '',
   });
 
+  const [envVariabeForm, setEnvVariableForm] = useState({
+    env: [
+      {
+        var: 'COMMUNITY_NAME',
+        val: '',
+      },
+      {
+        var: 'DOMAIN_NAME',
+        val: '',
+      },
+    ],
+  });
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -103,23 +116,26 @@ const FormikAppUpdate = () => {
       >
         {props => (
           <Form>
+            <Heading my="8" align="center" size="lg">
+              Edit {appData.title}
+            </Heading>
             <Flex>
-              <Spacer />
               <VStack
-                p="4"
-                m="8"
+                paddingY="10"
+                paddingX="14"
+                mx="8"
+                backgroundColor="white"
                 boxShadow="md"
                 // borderColor="gray.200"
                 // borderWidth="2px"
                 borderRadius="xl"
+                spacing="8"
                 // w="50%"
-                w="500px"
+                w="600px"
                 // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
                 alignItems="stretch"
               >
-                <Heading align="center" size="lg">
-                  Editing App
-                </Heading>
+
 
                 <FormikInput
                   validation={validateRequire}
@@ -140,27 +156,24 @@ const FormikAppUpdate = () => {
                 <FormikInput
                   // validation={validateRequire}
                   uniqueField="repo"
-                  label="Github URL"
+                  label="Domain Name"
                   placeholder={appData.repo}
                   formHelper="Place Holder contains your previous value"
                 />
-                <Divider />
-                <HStack>
-                  <Spacer />
 
-                  <Link to={redirectTo}>
-                    <Button>Cancel</Button>
-                  </Link>
-                  <Spacer />
-                  <Button
-                    colorScheme="teal"
-                    isLoading={props.isSubmitting}
-                    type="submit"
-                  >
-                    Submit
-                  </Button>
-                  <Spacer />
-                </HStack>
+                <Button
+                  colorScheme="teal"
+                  isLoading={props.isSubmitting}
+                  type="submit"
+                >
+                  Submit
+                </Button>
+                <Link to={redirectTo}>
+                  <Button width="100%"
+                    type="button"
+                    variant="outline">Cancel</Button>
+                </Link>
+
               </VStack>
               <Spacer />
             </Flex>
@@ -168,7 +181,7 @@ const FormikAppUpdate = () => {
         )}
       </Formik>
       <Box>
-        <FormikENV />
+        <FormikENV envVariabeForm={envVariabeForm} setEnvVariableForm={setEnvVariableForm} />
       </Box>
     </SimpleGrid>
   );

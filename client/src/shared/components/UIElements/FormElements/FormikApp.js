@@ -17,8 +17,9 @@ import FormikInput from './components/FormikInput';
 // import FormikRadio from './components/FormikRadio';
 import FormikSelect from './components/FormikSelect';
 import { BASE_URL } from '../../../../BASE_URL';
+import FormikTextArea from './components/FormikTextArea';
 
-const FormikApp = () => {
+const FormikApp = ({ setActiveStep, appSetupForm, setAppSetupForm, ...props }) => {
   const toast = useToast();
   const auth = useContext(AuthContext);
 
@@ -27,26 +28,23 @@ const FormikApp = () => {
 
   return (
     <Formik
-      initialValues={{
-        app: '',
-        repo: '',
-        title: '',
-        description: '',
-      }}
+      initialValues={appSetupForm}
       onSubmit={(values, actions) => {
         const sendData = async () => {
           try {
-            await axios.post(`${BASE_URL}/api/apps`, values, {
-              headers: { Authorization: `Bearer ${auth.token}` },
-            });
-            toast({
-              title: `New App Created`,
-              status: 'success',
-              position: 'top',
-              isClosable: true,
-            });
+            setAppSetupForm(values)
+            setActiveStep(2)
+            // await axios.post(`${BASE_URL}/api/apps`, values, {
+            //   headers: { Authorization: `Bearer ${auth.token}` },
+            // });
+            // toast({
+            //   title: `New App Created`,
+            //   status: 'success',
+            //   position: 'top',
+            //   isClosable: true,
+            // });
 
-            history.push(redirectTo);
+            // history.push(redirectTo);
             // Redirect the user to different page
           } catch (error) {
             toast({
@@ -65,23 +63,27 @@ const FormikApp = () => {
     >
       {props => (
         <Form>
+          <Heading marginTop='8' align="center" size="lg">
+            New App
+          </Heading>
           <Flex>
             <Spacer />
             <VStack
-              p="4"
+              backgroundColor="white"
+              paddingX="14"
+              paddingY="10"
               m="8"
               boxShadow="md"
+              spacing="8"
               // borderColor="gray.200"
               // borderWidth="2px"
               borderRadius="xl"
               // w="50%"
-              w="500px"
+              w="600px"
               // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
               alignItems="stretch"
             >
-              <Heading align="center" size="lg">
-                New App
-              </Heading>
+
 
               <FormikInput
                 validation={validateRequire}
@@ -110,15 +112,6 @@ const FormikApp = () => {
                 options={['Forem', 'Wordpress']}
                 formHelper="Choose an App to install on your server"
               />
-
-              <FormikInput
-                validation={validateRequire}
-                uniqueField="description"
-                label="Description"
-                placeholder="Let's Rock and Roll"
-                formHelper=""
-              />
-
               <FormikInput
                 // validation={validateRequire}
                 uniqueField="url"
@@ -127,12 +120,28 @@ const FormikApp = () => {
                 formHelper="If not provided, we will create a subdomain for you"
               />
 
+              <FormikTextArea
+                validation={validateRequire}
+                uniqueField="description"
+                label="Description"
+                placeholder="Let's Rock and Roll"
+                formHelper=""
+              />
+
               <Button
                 colorScheme="teal"
                 isLoading={props.isSubmitting}
                 type="submit"
               >
                 Submit
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                color="teal"
+                onClick={() => setActiveStep(0)}
+              >
+                Back
               </Button>
             </VStack>
             <Spacer />

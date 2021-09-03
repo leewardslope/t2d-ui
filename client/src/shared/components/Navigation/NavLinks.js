@@ -12,19 +12,21 @@ const NavLinks = () => {
   return (
     <>
       <Box display="flex" alignItems="center" justifyContent="space-between">
-        {auth.isLoggedIn && (
+        {/* {auth.isLoggedIn && (
           <NavLink to="/" exact>
-            <Box p="2" mx="4">
+            <Box   fontWeight="semibold" p="2" mx="4">
               Dashboard
             </Box>
           </NavLink>
-        )}
+        )} */}
 
         {auth.isLoggedIn && (
           <NavLink to={`/${auth.userId}/apps`}>
             <Box
-              p="2"
+              px="4"
+              py="2"
               mx="4"
+              fontWeight="semibold"
               _hover={{
                 background: 'teal.500',
                 borderRadius: 'md',
@@ -36,10 +38,11 @@ const NavLinks = () => {
           </NavLink>
         )}
 
-        <NavLink to="/">
+        {/* <NavLink to="/">
           <Box
             p="2"
             mx="4"
+            fontWeight="semibold"
             _hover={{
               background: 'teal.500',
               borderRadius: 'md',
@@ -48,12 +51,14 @@ const NavLinks = () => {
           >
             All Users
           </Box>
-        </NavLink>
+        </NavLink> */}
 
-        <NavLink to="/setup">
+        {auth.isLoggedIn && <NavLink to="/setup">
           <Box
-            p="2"
+            px="4"
+            py="2"
             mx="4"
+            fontWeight="semibold"
             _hover={{
               background: 'teal.500',
               borderRadius: 'md',
@@ -63,12 +68,15 @@ const NavLinks = () => {
             Quick Setup
           </Box>
         </NavLink>
+        }
 
-        {auth.isLoggedIn && (
+        {/* {auth.isLoggedIn && (
           <NavLink to="/app/new">
             <Box
-              p="2"
+              px="4"
+              py="2"
               mx="4"
+              fontWeight="semibold"
               _hover={{
                 background: 'teal.500',
                 borderRadius: 'md',
@@ -78,7 +86,7 @@ const NavLinks = () => {
               New App
             </Box>
           </NavLink>
-        )}
+        )} */}
       </Box>
       <Spacer />
       {/* End */}

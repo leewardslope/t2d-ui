@@ -15,16 +15,17 @@ const FormikSelect = props => {
     <Field name={uniqueField} validate={validation}>
       {({ field }) => (
         <FormControl>
-          <FormLabel htmlFor={uniqueField}>{label}</FormLabel>
+          <FormLabel fontSize="sm" color="blackAlpha.800" htmlFor={uniqueField}>{label}</FormLabel>
 
-          <Select {...field} id={uniqueField} placeholder={placeholder}>
+          <Select backgroundColor="blackAlpha.50"
+            {...field} id={uniqueField} placeholder={placeholder}>
             {options.map(e => (
               <option key={e}>{e}</option>
             ))}
           </Select>
 
           <FormHelperText>{formHelper}</FormHelperText>
-          <Box color="red">
+          <Box color="red.500" fontSize="xs">
             <ErrorMessage name={uniqueField} />
           </Box>
         </FormControl>

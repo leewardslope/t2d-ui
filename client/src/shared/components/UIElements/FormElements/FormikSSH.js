@@ -17,7 +17,7 @@ import FormikTextArea from './components/FormikTextArea';
 import FormikInput from './components/FormikInput';
 import { BASE_URL } from '../../../../BASE_URL';
 
-const FormikSSH = () => {
+const FormikSSH = ({ setActiveStep, setAppSSHForm, appSSHForm, ...props }) => {
   const toast = useToast();
   const auth = useContext(AuthContext);
 
@@ -27,26 +27,22 @@ const FormikSSH = () => {
 
   return (
     <Formik
-      initialValues={{
-        host: '',
-        username: '',
-        sshName: '',
-        identity: '',
-      }}
+      initialValues={appSSHForm}
       onSubmit={(values, actions) => {
         const sendData = async () => {
           try {
-            await axios.post(`${BASE_URL}/api/ssh/new`, values, {
-              headers: { Authorization: `Bearer ${auth.token}` },
-            });
-            toast({
-              title: `New SSH Key connected`,
-              status: 'success',
-              position: 'top',
-              isClosable: true,
-            });
+            setAppSSHForm(values)
+            setActiveStep(1)
+            // await axios.post(`${BASE_URL}/api/ssh/new`, values, {
+            //   headers: { Authorization: `Bearer ${auth.token}` },
+            // });
+            // toast({
+            //   title: `New SSH Key connected`,
+            //   status: 'success',
+            //   position: 'top',
+            //   isClosable: true,
+            // });
 
-            history.push(redirectTo);
             // Redirect the user to different page
           } catch (error) {
             toast({
@@ -65,23 +61,23 @@ const FormikSSH = () => {
     >
       {props => (
         <Form>
+          <Heading align="center" mt="8" size="lg">
+            Add SSH Key
+          </Heading>
           <Flex>
             <Spacer />
             <VStack
-              p="4"
               m="8"
               boxShadow="md"
-              // borderColor="gray.200"
-              // borderWidth="2px"
               borderRadius="xl"
-              // w="50%"
-              w="500px"
-              // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
+              backgroundColor="white"
+              paddingX="14"
+              paddingY="10"
+              w="600px"
+              spacing="8"
               alignItems="stretch"
             >
-              <Heading align="center" size="lg">
-                Add SSH Key
-              </Heading>
+
 
               <FormikInput
                 validation={validateRequire}
@@ -107,17 +103,6 @@ const FormikSSH = () => {
                 formHelper="Any Name, this will be useful when managing multiple keys"
               />
 
-              {/* <Field type="radio" name="picked" value="One" />
-              <Field type="radio" name="picked" value="Two" /> */}
-
-              {/* <FormikRadio
-                uniqueField="app"
-                label="Choose an App"
-                radioValues={['Forem', 'Wordpress']}
-                defaultValue="Forem"
-                formHelper="Choose an App to install in your server"
-              /> */}
-
               <FormikTextArea
                 validation={validateRequire}
                 uniqueField="identity"
@@ -131,7 +116,7 @@ const FormikSSH = () => {
                 isLoading={props.isSubmitting}
                 type="submit"
               >
-                Submit
+                Next
               </Button>
             </VStack>
             <Spacer />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChakraProvider, theme } from '@chakra-ui/react';
+import { ChakraProvider, Container } from '@chakra-ui/react';
 import {
   BrowserRouter as Router,
   Route,
@@ -29,6 +29,7 @@ import Setup from './ssh/Setup';
 
 import { AuthContext } from './shared/context/auth-context';
 import useAuth from './shared/hooks/auth-hook';
+import { THEME } from './theme';
 
 function App() {
   const { userId, token, login, logout } = useAuth();
@@ -39,7 +40,7 @@ function App() {
     routes = (
       <Switch>
         <Route path="/" exact>
-          <Users />
+          <UserApps />
         </Route>
         <Route path="/setup" exact>
           <Setup />
@@ -61,7 +62,7 @@ function App() {
     routes = (
       <Switch>
         <Route path="/" exact>
-          <Users />
+          <Auth />
         </Route>
         <Route path="/:userId/apps" exact>
           <UserApps />
@@ -78,7 +79,7 @@ function App() {
   // value={{ isLoggedIn, login, logout }}>
 
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={THEME}>
       <AuthContext.Provider
         value={{
           isLoggedIn: !!token,
@@ -90,8 +91,9 @@ function App() {
       >
         <Router>
           <MainNavigation />
-
-          {routes}
+          <Container maxW="container.xl">
+            {routes}
+          </Container>
         </Router>
       </AuthContext.Provider>
     </ChakraProvider>

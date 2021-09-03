@@ -111,40 +111,40 @@ const FormikAuth = () => {
       }}
     >
       {props => (
-        <Form>
+        <Form className="auth-form">
+          <Heading marginBottom="5" marginTop="10" align="center" size="lg">
+            Welcome to t2d
+          </Heading>
           <Flex>
             <Spacer />
             <VStack
-              p="4"
-              m="8"
+              paddingY="10"
+              paddingX="14"
+              marginTop="5"
               boxShadow="md"
-              // borderColor="gray.200"
-              // borderWidth="2px"
               borderRadius="xl"
+              backgroundColor="white"
+              spacing="6"
               // w="50%"
               w="500px"
               // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
               alignItems="stretch"
             >
-              <Heading align="center" size="lg">
-                Welcome to t2d
-              </Heading>
+
 
               {!isLoginMode && (
                 <FormikInput
                   validation={validateName}
                   uniqueField="name"
                   label="Full Name"
-                  placeholder="Name"
                 />
               )}
 
               <FormikInput
                 validation={validateEmail}
                 uniqueField="email"
-                label="Email ID"
+                label="Email"
                 type="email"
-                placeholder="E-Mail Address"
               />
 
               <FormikInput
@@ -152,9 +152,15 @@ const FormikAuth = () => {
                 uniqueField="password"
                 label="Password"
                 type="password"
-                placeholder="Enter Your Password"
               />
-
+              {!isLoginMode && (
+                <FormikInput
+                  validation={validatePassword}
+                  uniqueField="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                />
+              )}
               <Button
                 colorScheme="teal"
                 isLoading={props.isSubmitting}
@@ -162,10 +168,9 @@ const FormikAuth = () => {
               >
                 {isLoginMode ? 'Sign In' : 'Sign Up'}
               </Button>
-              <Box p="2">
-                <Divider />
-              </Box>
-              <Button onClick={switchModeHandler}>
+
+              <Button color="teal"
+                variant="outline" onClick={switchModeHandler}>
                 Click Here To {isLoginMode ? 'Sign Up' : 'Sign In'}
               </Button>
             </VStack>

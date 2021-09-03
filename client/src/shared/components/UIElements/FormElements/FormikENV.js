@@ -11,7 +11,7 @@ import { BASE_URL } from '../../../../BASE_URL';
 // import FormikRadio from './components/FormikRadio';
 // import FormikSelect from './components/FormikSelect';
 
-const FormikAppUpdate = () => {
+const FormikENV = ({ setActiveStep, setEnvVariableForm, envVariabeForm, ...props }) => {
   // Getting the userId from the react routes: <Route path="/apps/:appsId" exact> from App.js
   const appId = useParams().appsId;
 
@@ -19,18 +19,7 @@ const FormikAppUpdate = () => {
   const auth = useContext(AuthContext);
   // const history = useHistory();
   // const redirectTo = `/${auth.userId}/apps`;
-  const [envData, setEnvData] = useState({
-    env: [
-      {
-        var: 'COMMUNITY_NAME',
-        val: '',
-      },
-      {
-        var: 'DOMAIN_NAME',
-        val: '',
-      },
-    ],
-  });
+
 
   useEffect(() => {
     const getData = async () => {
@@ -60,7 +49,7 @@ const FormikAppUpdate = () => {
               val: all.val[i],
             });
           }
-          setEnvData({ env: newEnv });
+          setEnvVariableForm({ env: newEnv });
 
           // setEnvData(loadedData.data);
         }
@@ -77,121 +66,138 @@ const FormikAppUpdate = () => {
   }, [toast, appId, auth]);
 
   return (
-    <VStack
-      p="4"
-      m="8"
-      boxShadow="md"
-      // borderColor="gray.200"
-      // borderWidth="2px"
-      borderRadius="xl"
-      // w="50%"
-      w="500px"
-      // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
-      alignItems="stretch"
-    >
-      <Heading align="center" size="lg">
+    <>
+      <Heading my="8" align="center" size="lg">
         Add ENV Variables
       </Heading>
 
-      <Formik
-        enableReinitialize
-        initialValues={envData}
-        onSubmit={async values => {
-          // await new Promise(r => setTimeout(r, 500));
-          // console.log(values);
-          try {
-            const errorToast = () => {
-              toast({
-                title: `"ENV_VALUE" fields can't be empty`,
-                status: 'error',
-                position: 'top',
-                isClosable: true,
-              });
-            };
+      <VStack
+        paddingY="10"
+        paddingX="14"
+        mx="auto"
+        boxShadow="md"
+        // borderColor="gray.200"
+        // borderWidth="2px"
+        borderRadius="xl"
+        // w="50%"
 
-            const saveData = async values => {
-              try {
-                const status = await axios.post(
-                  `http://75.119.143.54:5000/api/env/${appId}`,
-                  values,
-                  { headers: { Authorization: `Bearer ${auth.token}` } }
-                );
+        w="700px"
+        backgroundColor="white"
+      // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
+      >
 
+        <Formik
+          enableReinitialize
+          initialValues={envVariabeForm}
+          onSubmit={async values => {
+            // await new Promise(r => setTimeout(r, 500));
+            // console.log(values);
+            try {
+              const errorToast = () => {
                 toast({
-                  title: `${status.data.message}`,
-                  status: 'success',
-                  position: 'top',
-                  isClosable: true,
-                });
-              } catch (error) {
-                toast({
-                  title: `${error.response.data.message}`,
+                  title: `"ENV_VALUE" fields can't be empty`,
                   status: 'error',
                   position: 'top',
                   isClosable: true,
                 });
-              }
-            };
+              };
 
-            const notFilled = await values.env.filter((e, index) => !e.val);
+              const saveData = async values => {
+                try {
+                  const status = await axios.post(
+                    `http://75.119.143.54:5000/api/env/${appId}`,
+                    values,
+                    { headers: { Authorization: `Bearer ${auth.token}` } }
+                  );
 
-            notFilled.length ? errorToast() : saveData(values);
-          } catch (error) {
-            console.log(error);
-          }
-        }}
-      >
-        {({ values }) => (
-          <Form>
-            <FieldArray name="env">
-              {({ insert, remove, push }) => (
-                <VStack>
-                  {values.env.length > 0 &&
-                    values.env.map((env, index) => (
-                      <HStack key={index}>
-                        <FormikInput
-                          uniqueField={`env.${index}.var`}
-                          // validation={validateRequire}
-                          // label="Name"
-                          placeholder="ENV_VAR"
-                          type="text"
-                        />
+                  toast({
+                    title: `${status.data.message}`,
+                    status: 'success',
+                    position: 'top',
+                    isClosable: true,
+                  });
+                } catch (error) {
+                  toast({
+                    title: `${error.response.data.message}`,
+                    status: 'error',
+                    position: 'top',
+                    isClosable: true,
+                  });
+                }
+              };
 
-                        <FormikInput
-                          uniqueField={`env.${index}.val`}
-                          // validation={validateRequire}
-                          // label="Email"
-                          placeholder="ENV_VALUE"
-                          type="text"
-                        />
-                        <Button
-                          type="button"
-                          className="secondary"
-                          onClick={() => push({ var: '', val: '' })}
-                        >
-                          +
-                        </Button>
+              const notFilled = await values.env.filter((e, index) => !e.val);
 
-                        {values.env.length !== 1 && (
-                          <Button
-                            type="button"
-                            className="secondary"
-                            onClick={() => remove(index)}
-                          >
-                            x
-                          </Button>
-                        )}
-                      </HStack>
-                    ))}
-                </VStack>
-              )}
-            </FieldArray>
-            <Button type="submit">Save</Button>
-          </Form>
-        )}
-      </Formik>
-    </VStack>
+              notFilled.length ? errorToast() : saveData(values);
+            } catch (error) {
+              console.log(error);
+            }
+          }}
+        >
+          {({ values }) => (
+            <Form>
+              <VStack spacing="8">
+                <FieldArray name="env">
+                  {({ insert, remove, push }) => (
+                    <VStack spacing="8" >
+                      {values.env.length > 0 &&
+                        values.env.map((env, index) => (
+                          <HStack key={index}>
+                            <FormikInput
+                              uniqueField={`env.${index}.var`}
+                              // validation={validateRequire}
+                              // label="Name"
+                              placeholder="env variable"
+                              type="text"
+                              width="100%"
+                            />
+
+                            <FormikInput
+                              uniqueField={`env.${index}.val`}
+                              // validation={validateRequire}
+                              // label="Email"
+                              placeholder="value"
+                              type="text"
+                            />
+                            <Button
+                              type="button"
+                              className="secondary"
+                              onClick={() => push({ var: '', val: '' })}
+                            >
+                              +
+                            </Button>
+
+                            {values.env.length !== 1 && (
+                              <Button
+                                type="button"
+                                className="secondary"
+                                onClick={() => remove(index)}
+                              >
+                                x
+                              </Button>
+                            )}
+                          </HStack>
+                        ))}
+                    </VStack>
+                  )}
+                </FieldArray>
+                <Button colorScheme="teal" width="100%" type="submit">Save</Button>
+                {setActiveStep && (<Button
+                  color="teal"
+                  width="100%"
+                  type="button"
+                  variant="outline"
+                  onClick={() => setActiveStep(1)}
+                >
+                  Back
+                </Button>)}
+              </VStack>
+            </Form>
+          )}
+        </Formik>
+      </VStack>
+    </>
   );
 };
 
-export default FormikAppUpdate;
+export default FormikENV;

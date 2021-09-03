@@ -145,6 +145,7 @@ const AppItem = props => {
           // divider={<StackDivider borderColor="grey.100" />}
           borderColor="grey.100"
           borderRadius="xl"
+          backgroundColor="white"
           mx="4"
           my="2"
           p="2"
@@ -274,7 +275,7 @@ const AppItem = props => {
           // divider={<StackDivider borderColor="grey.100" />}
           borderColor="grey.100"
           borderRadius="xl"
-          mx="4"
+          backgroundColor="white"
           my="2"
           p="2"
           maxW={{ base: '90vw', sm: '80vw', lg: '60vw', xl: '60vw' }}
