@@ -1,6 +1,7 @@
 import shell from 'shelljs';
 import util from 'util';
 import { exec } from 'child_process';
+// import HttpError from '../models/https-error.js';
 const execAsync = util.promisify(exec);
 
 const installForem = async (ip, res, req, next, socket, appId, app, env) => {
@@ -12,9 +13,11 @@ const installForem = async (ip, res, req, next, socket, appId, app, env) => {
       message: `${stage} failed`,
     });
 
-    return next(
-      new HttpError(`${stage} failed, contact is for more info`, 403)
-    );
+    return;
+
+    // return next(
+    //   new HttpError(`${stage} failed, contact is for more info`, 403)
+    // );
   };
 
   const socketMessage = msg => {
@@ -189,6 +192,9 @@ const installForem = async (ip, res, req, next, socket, appId, app, env) => {
   // Step 09 => Last Step
 
   socketMessage('Building Forem, might take upto 25 to 30 Minutes.');
+  socketMessage(
+    'If all the provided details were correct, your Forem will be up and running in 30 to 40 minutes'
+  );
 
   // const repo = app.repo || 'https://github.com/forem/forem.git';
   const repo = app.repo || 'https://github.com/akhil-naidu/forem.git';
@@ -201,8 +207,6 @@ const installForem = async (ip, res, req, next, socket, appId, app, env) => {
     console.log('stderr:', buildApp.stderr);
     installationFailed('Building App');
   }
-
-  socketMessage('Forem Installed successfully');
 
   socket.disconnect();
 };

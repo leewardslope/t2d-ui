@@ -15,10 +15,12 @@ const installingDokku = async (ip, res, req, next, socket, appId, app, env) => {
   });
 
   try {
+    // using try catch as, there is a warning message in stderr.
     const { stdout, stderr } = await execAsync(
       `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/dokku.yml --extra-vars "IP=${ip}"`
     );
-    console.log('came here', stderr);
+
+    // console.log('came here', stderr);
   } catch (error) {
     console.log(error);
 
@@ -35,8 +37,6 @@ const installingDokku = async (ip, res, req, next, socket, appId, app, env) => {
       new HttpError(`Dokku installation failed, contact is for more info`, 403)
     );
   }
-
-  console.log(`ok ok`);
 
   socket.emit(`server-notification-${appId}`, {
     message: `Finished, Installing dokku`,
