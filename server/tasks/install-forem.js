@@ -160,6 +160,19 @@ const installForem = async (ip, res, req, next, socket, appId, app, env) => {
 
   socketMessage('Configuring git was done successfully');
 
+  // Step 08 => Adding domain name to the App
+
+  socketMessage('Configuring you domain name');
+
+  const setDomain = await execAsync(
+    `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/domain/set.yml --extra-vars "appTitle=${appTitle} domainName=${app.domain}"`
+  );
+
+  if (setDomain.stderr) {
+    console.log('stderr:', setDomain.stderr);
+    installationFailed('Configuring you domain name');
+  }
+
   // Step 08 => Configuring SSL via letsencrypt
 
   socketMessage('Configuring SSL');

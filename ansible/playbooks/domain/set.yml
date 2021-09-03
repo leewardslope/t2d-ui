@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: Setting domain name to the App
+      shell: dokku domains:set {{ appTitle }} {{ domainName }}
+      ignore_errors: True
+      async: 3600 # Maximum allowed time in Seconds
+      poll: 10
