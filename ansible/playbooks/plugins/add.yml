@@ -1,9 +1,13 @@
 ---
 - hosts: all
-  remote_user: root
   tasks:
-    - name: Installing the Plugin => {{ pluginName }}
-      shell: dokku plugin:install {{ pluginUrl }}
+    - name: Read a json file
+      set_fact:
+        plugin_json_contents: "{{ lookup('file', '../../../apps/{{appName}}/{{ file }}.json') }}"
+
+    - name: Installing the plugin {{ item.name }}
+      shell: dokku plugin:install {{ item.url }}
+      with_items: "{{ plugin_json_contents }}"
       ignore_errors: True
       async: 600 # Maximum allowed time in Seconds
       poll: 15

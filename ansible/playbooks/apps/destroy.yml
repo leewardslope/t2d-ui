@@ -1,0 +1,11 @@
+---
+- hosts: all
+  roles:
+    - dokku_bot.ansible_dokku
+
+  tasks:
+    - name: Delete that app
+      dokku_app:
+        app: "{{ appTitle }}"
+        state: absent
+      tags: delete-app

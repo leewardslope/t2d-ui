@@ -25,7 +25,39 @@ const FormikAppUpdate = () => {
         val: '',
       },
       {
-        var: 'DOMAIN_NAME',
+        var: 'APP_DOMAIN',
+        val: '',
+      },
+      {
+        var: 'DOKKU_LETSENCRYPT_EMAIL',
+        val: '',
+      },
+      {
+        var: 'DEFAULT_EMAIL',
+        val: '',
+      },
+      {
+        var: 'FOREM_OWNER_SECRET',
+        val: '',
+      },
+      {
+        var: 'SECRET_KEY_BASE',
+        val: '',
+      },
+      {
+        var: 'AWS_ID',
+        val: '',
+      },
+      {
+        var: 'AWS_SECRET',
+        val: '',
+      },
+      {
+        var: 'AWS_BUCKET_NAME',
+        val: '',
+      },
+      {
+        var: 'AWS_UPLOAD_REGION',
         val: '',
       },
     ],
@@ -60,8 +92,6 @@ const FormikAppUpdate = () => {
             });
           }
           setEnvData({ env: newEnv });
-
-          // setEnvData(loadedData.data);
         }
       } catch (error) {
         toast({
@@ -84,7 +114,7 @@ const FormikAppUpdate = () => {
       // borderWidth="2px"
       borderRadius="xl"
       // w="50%"
-      w="500px"
+      // w="700px"
       // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
       alignItems="stretch"
     >

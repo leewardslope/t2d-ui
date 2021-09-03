@@ -1,5 +1,5 @@
 import { validationResult } from 'express-validator';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 
 import HttpError from '../models/https-error.js';
 import App from '../models/app-schema.js';
@@ -14,6 +14,7 @@ import Cryptr from 'cryptr';
 import dotenv from 'dotenv';
 import checkSSH from '../tasks/check-ssh.js';
 import installingDokku from '../tasks/installing-dokku.js';
+import installForem from '../tasks/install-forem.js';
 import uninstallingDokku from '../tasks/uninstalling-dokku.js';
 
 dotenv.config();
@@ -96,12 +97,39 @@ export const checkConnection = async (req, res, next) => {
   }
 
   // Checking required ENV variables.
+
   let env;
   if (app.app == 'Forem') {
     env = await Env.findOne({ appID: appId });
+
+    let envJson = [];
+    for (var i = 0; i < env.var.length; i++) {
+      envJson.push({
+        env: env.var[i],
+        value: env.val[i],
+      });
+    }
+
+    const envJsonString = JSON.stringify(envJson);
+
+    try {
+      await fs.writeFileSync(
+        `../apps/Forem/store/${user.keys[0].host}.json`,
+        envJsonString
+      );
+    } catch (err) {
+      console.log(err);
+      return next(
+        new HttpError(
+          `Unable to process your ENV variables, Please try again later`,
+          500
+        )
+      );
+    }
+
     if (!env) {
       // I know for sure, right now it should have at least one env.
-      // Also, I should make tight validations so user will provide all the required ENV variables
+      // Also, I should make tight validations so user will provide all the required ENV variable
       return next(
         new HttpError(
           `You haven't configured your ENV variables, please add them by "Editing your APP"`,
@@ -170,19 +198,26 @@ export const installDokku = async (req, res, next) => {
     res.status(200).json({
       message: `It might take upto 5 to 10 minutes to install dokku`,
     });
-    installingDokku(serverKey.host, res, socket, appId, app, env);
+    installingDokku(serverKey.host, res, req, next, socket, appId, app, env);
   } else {
     socket.emit(`server-notification-msg-${appId}`, {
       message: `Dokku Already Installed`,
     });
     res.status(200).json({
-      message: 'Dokku Already Installed, skipping Dokku Installation',
+      message: 'Dokku Already Installed, moving to app Installation',
     });
 
-    socket.emit(`server-notification-msg-${appId}`, {
-      message: `.... Build Finished ....`,
-    });
-    socket.disconnect();
+    if (app.app === 'Forem') {
+      installForem(serverKey.host, res, req, next, socket, appId, app, env);
+    } else {
+      socket.emit(`server-notification-${appId}`, {
+        message: `For now, we only support Forem`,
+      });
+      socket.emit(`server-notification-msg-${appId}`, {
+        message: `For now, we only support Forem`,
+      });
+      // socket.disconnect();
+    }
   }
 
   // if (!failed && !isDokku) {

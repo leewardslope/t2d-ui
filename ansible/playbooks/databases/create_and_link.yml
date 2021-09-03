@@ -1,0 +1,16 @@
+---
+- hosts: all
+  tasks:
+    - name: Read a json file
+      set_fact:
+        db_json_contents: "{{ lookup('file', '../../../apps/{{appName}}/{{ file }}.json') }}"
+
+    - name: creating {{ item.name }} database
+      shell: dokku {{ item.name }}:create {{ item.dbName }}
+      with_items: "{{ db_json_contents }}"
+      ignore_errors: True
+
+    - name: allocation {{ item.dbName }} to {{ appTitle }}
+      shell: dokku {{ item.name }}:link {{ item.dbName }} {{ appTitle }}
+      with_items: "{{ db_json_contents }}"
+      ignore_errors: True

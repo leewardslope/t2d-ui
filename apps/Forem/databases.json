@@ -1,0 +1,4 @@
+[
+  { "name": "postgres", "dbName": "foremPostgresDB" },
+  { "name": "redis", "dbName": "foremRedisDB" }
+]

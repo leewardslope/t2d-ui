@@ -1,0 +1,5 @@
+[
+  { "env": "NODE_ENV", "value": "production" },
+  { "env": "RACK_ENV", "value": "production" },
+  { "env": "APP_PROTOCOL", "value": "https://" }
+]

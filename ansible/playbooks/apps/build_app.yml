@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: Building the app via github repo
+      shell: dokku git:sync --build {{ appTitle }} {{ repo }}
+      ignore_errors: True
+      async: 3600 # Maximum allowed time in Seconds
+      poll: 0

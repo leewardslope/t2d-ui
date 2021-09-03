@@ -1,6 +1,16 @@
 ---
 - hosts: all
   tasks:
-    - name: Adding Scale
-      shell: dokku ps:scale {{ appTitle }} {{ serviceName }}={{ value }}
+    - name: Read a json file
+      set_fact:
+        scale_json_contents: "{{ lookup('file', '../../../apps/{{appName}}/{{ file }}.json') }}"
+
+    - name: allocation workers to {{ item.name }}
+      shell: dokku ps:scale {{ appTitle }} {{ item.name }}={{ item.workers}}
+      with_items: "{{ scale_json_contents }}"
+      ignore_errors: True
+
+    - name: allocation memory {{ item.name }}
+      shell: dokku resource:limit --memory {{ item.memory }} --process-type {{ item.name }} {{ appTitle }}
+      with_items: "{{ scale_json_contents }}"
       ignore_errors: True
