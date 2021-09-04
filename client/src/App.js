@@ -89,9 +89,8 @@ function App() {
         }}
       >
         <Router>
-          <MainNavigation />
-
-          {routes}
+          <MainNavigation body={routes} />
+          {/* App -> Main Navigation -> Main Header -> Sidebar -> body*/}
         </Router>
       </AuthContext.Provider>
     </ChakraProvider>
