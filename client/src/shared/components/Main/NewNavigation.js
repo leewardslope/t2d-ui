@@ -95,11 +95,11 @@ export default function Header(props) {
         borderBottomWidth={2}
         borderBottomColor={useColorModeValue('gray.200', 'gray.900')}
       >
-        <chakra.div h="3.5rem" mx="auto" maxW="1200px">
+        <chakra.div h="3.5rem" mx="8">
           <Flex
             w="full"
             h="full"
-            px="6"
+            px="4"
             alignItems="center"
             justifyContent="space-between"
           >

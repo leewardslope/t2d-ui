@@ -24,13 +24,15 @@ const Dashboard = () => {
       alignItems="center"
       justifyContent="space-between"
       // mx={2}
+
       borderWidth={0}
       overflowX="auto"
     >
       <Flex
+        maxW="1280px"
         alignItems="center"
         justifyContent="space-between"
-        ml={isLargerThan1280 && 24}
+        ml={isLargerThan1280 ? 12 : 4}
         borderWidth={0}
         overflowX="auto"
       >
@@ -66,7 +68,7 @@ const Dashboard = () => {
         </Tabs>
       </Flex>
       <Spacer />
-      <HStack spacing={3} alignItems="center" mr={isLargerThan1280 ? 24 : 4}>
+      <HStack spacing={3} alignItems="center" mr={isLargerThan1280 ? 12 : 4}>
         {isLargerThan1280 && (
           <NavLink to="/setup">
             <Button
