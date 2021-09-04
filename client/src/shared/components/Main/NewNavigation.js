@@ -275,13 +275,6 @@ export default function Header(props) {
         onClick={mobileNav.onClose}
       />
 
-      {auth.isLoggedIn && (
-        <NavLink to="/">
-          <Button w="full" variant="ghost">
-            Dashboard
-          </Button>
-        </NavLink>
-      )}
       {!auth.isLoggedIn && (
         <NavLink to="/blog">
           <Box w="full" variant="solid">
@@ -305,11 +298,17 @@ export default function Header(props) {
       )}
 
       {auth.isLoggedIn && (
-        <NavLink to="/app/new">
+        <NavLink to="/setup">
           <Button w="full" variant="ghost">
-            Sign Out
+            Server Setup
           </Button>
         </NavLink>
+      )}
+
+      {auth.isLoggedIn && (
+        <Button onClick={auth.logout} w="full" variant="ghost">
+          Sign Out
+        </Button>
       )}
     </VStack>
   );
