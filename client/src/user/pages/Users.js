@@ -13,7 +13,9 @@ const Users = () => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const response = await axios.get('http://75.119.143.54:5000/api/users');
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/api/users`
+        );
         SetUSERS(response.data.users);
       } catch (error) {
         toast({

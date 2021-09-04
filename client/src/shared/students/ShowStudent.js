@@ -25,7 +25,7 @@ function ShowStudent() {
 
   const deleteStudent = id => {
     axios
-      .delete(`http://75.119.143.54:5000/students/${id}`)
+      .delete(`${process.env.REACT_APP_BASE_URL}/students/${id}`)
       .then(() => {
         toast({
           title: 'Deleted User',

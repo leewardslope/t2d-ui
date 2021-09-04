@@ -67,7 +67,7 @@ const FormikAppUpdate = () => {
     const getData = async () => {
       try {
         const loadedData = await axios.get(
-          `http://75.119.143.54:5000/api/env/${appId}`,
+          `${process.env.REACT_APP_BASE_URL}/api/env/${appId}`,
           {
             headers: { Authorization: `Bearer ${auth.token}` },
           }
@@ -141,7 +141,7 @@ const FormikAppUpdate = () => {
             const saveData = async values => {
               try {
                 const status = await axios.post(
-                  `http://75.119.143.54:5000/api/env/${appId}`,
+                  `${process.env.REACT_APP_BASE_URL}/api/env/${appId}`,
                   values,
                   { headers: { Authorization: `Bearer ${auth.token}` } }
                 );

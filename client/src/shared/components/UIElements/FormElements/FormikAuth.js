@@ -42,7 +42,7 @@ const FormikAuth = () => {
           if (isLoginMode) {
             try {
               const receivedDetails = await axios.post(
-                'http://75.119.143.54:5000/api/users/login',
+                `${process.env.REACT_APP_BASE_URL}/api/users/login`,
                 values
               );
 
@@ -78,7 +78,7 @@ const FormikAuth = () => {
           } else {
             try {
               const receivedDetails = await axios.post(
-                'http://75.119.143.54:5000/api/users/signup',
+                `${process.env.REACT_APP_BASE_URL}/api/users/signup`,
                 values
               );
 

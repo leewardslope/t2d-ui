@@ -20,7 +20,7 @@ const UserApps = props => {
     const getApps = async () => {
       try {
         const getData = await axios.get(
-          `http://75.119.143.54:5000/api/apps/user/${userId}/`
+          `${process.env.REACT_APP_BASE_URL}/api/apps/user/${userId}/`
         );
         setLoadedApps(getData.data.apps);
       } catch (error) {

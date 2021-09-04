@@ -11,7 +11,7 @@ function Student() {
 
   // A function to get data after modifications
   const getStudent = () => {
-    axios.get('http://75.119.143.54:5000/students').then(student => {
+    axios.get('${process.env.REACT_APP_BASE_URL}/students').then(student => {
       setStudentList(student.data);
     });
   };

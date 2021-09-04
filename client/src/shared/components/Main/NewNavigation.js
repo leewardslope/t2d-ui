@@ -58,7 +58,7 @@ export default function Header(props) {
     const getUsers = async () => {
       try {
         const response = await axios.get(
-          `http://75.119.143.54:5000/api/users/${auth.userId}`,
+          `${process.env.REACT_APP_BASE_URL}/api/users/${auth.userId}`,
           {
             headers: { Authorization: `Bearer ${auth.token}` },
           }
