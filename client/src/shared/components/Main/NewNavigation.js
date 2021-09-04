@@ -5,13 +5,10 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Box,
   Flex,
   IconButton,
   useColorModeValue,
   useDisclosure,
-  CloseButton,
-  VStack,
   Button,
   useColorMode,
   Image,
@@ -20,7 +17,6 @@ import {
 import { useViewportScroll } from 'framer-motion';
 
 import { Link } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
 
 import { IoIosArrowDown } from 'react-icons/io';
 import { AiOutlineMenu } from 'react-icons/ai';
@@ -30,6 +26,7 @@ import { AuthContext } from '../../context/auth-context';
 
 // import Section from './components/Section';
 import Features from './components/Features';
+import MobileNavContent from './components/MobileNavContent';
 
 export default function Header(props) {
   const { toggleColorMode: toggleMode } = useColorMode();
@@ -48,67 +45,6 @@ export default function Header(props) {
   }, [scrollY]);
   const cl = useColorModeValue('gray.800', 'white');
   const mobileNav = useDisclosure();
-
-  const MobileNavContent = (
-    <VStack
-      pos="absolute"
-      zIndex={2}
-      top={0}
-      left={0}
-      right={0}
-      display={mobileNav.isOpen ? 'flex' : 'none'}
-      flexDirection="column"
-      p={2}
-      pb={4}
-      m={2}
-      bg={bg}
-      spacing={3}
-      rounded="sm"
-      shadow="sm"
-    >
-      <CloseButton
-        aria-label="Close menu"
-        justifySelf="self-start"
-        onClick={mobileNav.onClose}
-      />
-
-      {!auth.isLoggedIn && (
-        <NavLink to="/blog">
-          <Box w="full" variant="solid">
-            Blog
-          </Box>
-        </NavLink>
-      )}
-      {!auth.isLoggedIn && (
-        <NavLink to="/">
-          <Box w="full" variant="ghost">
-            Price
-          </Box>
-        </NavLink>
-      )}
-      {!auth.isLoggedIn && (
-        <NavLink to="/auth">
-          <Box w="full" variant="ghost">
-            Sign in/Sign up
-          </Box>
-        </NavLink>
-      )}
-
-      {auth.isLoggedIn && (
-        <NavLink to="/setup">
-          <Button w="full" variant="ghost">
-            Server Setup
-          </Button>
-        </NavLink>
-      )}
-
-      {auth.isLoggedIn && (
-        <Button onClick={auth.logout} w="full" variant="ghost">
-          Sign Out
-        </Button>
-      )}
-    </VStack>
-  );
 
   return (
     <React.Fragment>
@@ -244,7 +180,7 @@ export default function Header(props) {
               />
             </Flex>
           </Flex>
-          {MobileNavContent}
+          {MobileNavContent(mobileNav)}
         </chakra.div>
       </chakra.header>
     </React.Fragment>
