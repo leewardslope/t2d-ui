@@ -437,6 +437,7 @@ export default function Header(props) {
                 icon={<SwitchIcon />}
               />
               <IconButton
+                isRound="true"
                 display={{ base: 'flex', md: 'none' }}
                 aria-label="Open menu"
                 fontSize="20px"
