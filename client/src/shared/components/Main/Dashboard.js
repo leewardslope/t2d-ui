@@ -32,7 +32,7 @@ const Dashboard = () => {
         maxW="1280px"
         alignItems="center"
         justifyContent="space-between"
-        ml={isLargerThan1280 ? 12 : 4}
+        ml={4}
         borderWidth={0}
         overflowX="auto"
       >
@@ -68,7 +68,7 @@ const Dashboard = () => {
         </Tabs>
       </Flex>
       <Spacer />
-      <HStack spacing={3} alignItems="center" mr={isLargerThan1280 ? 12 : 4}>
+      <HStack spacing={3} alignItems="center" mr={4}>
         {isLargerThan1280 && (
           <NavLink to="/setup">
             <Button

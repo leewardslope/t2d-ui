@@ -1,19 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import MainHeader from './MainHeader';
-import { AuthContext } from '../../context/auth-context';
+// import { AuthContext } from '../../context/auth-context';
 
 const MainNavigation = props => {
   const { body } = props;
-  const auth = useContext(AuthContext);
+  // const auth = React.useContext(AuthContext);
   // const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)');
-  return (
-    <>
-      {auth.isLoggedIn && <MainHeader body={body} />}
-      {!auth.isLoggedIn && <MainHeader />}
-      {!auth.isLoggedIn && body}
-    </>
-  );
+  return <>{<MainHeader body={body} />}</>;
 };
 
 export default MainNavigation;

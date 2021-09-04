@@ -10,25 +10,15 @@ import {
   useColorModeValue,
   useDisclosure,
   Button,
-  useColorMode,
   Image,
-  useToast,
-  Avatar,
-  Menu,
-  MenuList,
-  MenuItem,
-  MenuButton,
-  MenuDivider,
 } from '@chakra-ui/react';
 
 import { useViewportScroll } from 'framer-motion';
 
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 import { IoIosArrowDown } from 'react-icons/io';
 import { AiOutlineMenu } from 'react-icons/ai';
-import { FaMoon, FaSun } from 'react-icons/fa';
 
 import { AuthContext } from '../../context/auth-context';
 
@@ -37,9 +27,6 @@ import Features from './components/Features';
 import MobileNavContent from './components/MobileNavContent';
 
 export default function Header(props) {
-  const { toggleColorMode: toggleMode } = useColorMode();
-  const text = useColorModeValue('dark', 'light');
-  const SwitchIcon = useColorModeValue(FaMoon, FaSun);
   const bg = useColorModeValue('white', 'gray.800');
   const ref = React.useRef();
   const [y, setY] = React.useState(0);
@@ -50,32 +37,6 @@ export default function Header(props) {
   const { scrollY } = useViewportScroll();
   const cl = useColorModeValue('gray.800', 'white');
   const mobileNav = useDisclosure();
-
-  const toast = useToast();
-  const [USER, setUSER] = React.useState({});
-
-  React.useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/api/users/${auth.userId}`,
-          {
-            headers: { Authorization: `Bearer ${auth.token}` },
-          }
-        );
-        setUSER(response.data);
-        // console.log(response.data);
-      } catch (error) {
-        toast({
-          title: `${error.response.data.message}`,
-          status: 'error',
-          position: 'top',
-          isClosable: true,
-        });
-      }
-    };
-    auth.userId && getUsers();
-  }, [toast, auth]);
 
   React.useEffect(() => {
     return scrollY.onChange(() => setY(scrollY.get()));
@@ -180,34 +141,6 @@ export default function Header(props) {
                       Sign up
                     </Button>
                   </Link>
-                )}
-                {auth.isLoggedIn && (
-                  <Menu>
-                    <MenuButton
-                      as={Button}
-                      rounded={'full'}
-                      variant={'link'}
-                      cursor={'pointer'}
-                      minW={0}
-                    >
-                      <Avatar size={'sm'} name={USER.name} src={USER.image} />
-                    </MenuButton>
-                    <MenuList>
-                      <MenuItem>Settings</MenuItem>
-                      <MenuItem onClick={toggleMode} icon={<SwitchIcon />}>
-                        Switch to {text} mode
-                      </MenuItem>
-                      <MenuDivider />
-                      <MenuItem
-                        onClick={auth.logout}
-                        colorscheme="teal"
-                        variant="solid"
-                        size="sm"
-                      >
-                        Sign Out
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
                 )}
               </HStack>
 

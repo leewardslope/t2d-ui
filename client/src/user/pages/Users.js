@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useToast, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
+import { useToast, SimpleGrid } from '@chakra-ui/react';
 
 import UserList from '../components/UsersList';
 
@@ -8,7 +8,7 @@ const Users = () => {
   const toast = useToast();
   const [USERS, SetUSERS] = useState([]);
 
-  const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)');
+  // const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)');
 
   useEffect(() => {
     const getUsers = async () => {
@@ -30,18 +30,9 @@ const Users = () => {
   }, [toast]);
 
   return (
-    <>
-      {isLargerThan1280 && (
-        <SimpleGrid mx={24} minChildWidth="300px" spacing="0px">
-          {USERS.length && <UserList items={USERS} />}
-        </SimpleGrid>
-      )}
-      {!isLargerThan1280 && (
-        <SimpleGrid minChildWidth="300px" spacing="0px">
-          {USERS.length && <UserList items={USERS} />}
-        </SimpleGrid>
-      )}
-    </>
+    <SimpleGrid mx={24} minChildWidth="300px" spacing="0px">
+      {USERS.length && <UserList items={USERS} />}
+    </SimpleGrid>
   );
 };
 

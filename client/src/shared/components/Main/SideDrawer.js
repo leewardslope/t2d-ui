@@ -28,6 +28,7 @@ import { MdHome } from 'react-icons/md';
 import React, { useContext } from 'react';
 // import { FaMoon, FaSun } from 'react-icons/fa';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import Dashboard from './Dashboard';
 import { AuthContext } from '../../context/auth-context';
@@ -183,10 +184,11 @@ export default function Swibc(props) {
             <InputLeftElement color="gray.500" children={<FiSearch />} />
             <Input placeholder="Search for guides... (not yet ready)" />
           </InputGroup> */}
-
-          <Box>
-            <Button m={2}>Create New App</Button>
-          </Box>
+          <Link to="/app/new">
+            <Box>
+              <Button m={2}>Create New App</Button>
+            </Box>
+          </Link>
 
           <Flex align="center">
             {/* <Icon color="gray.500" as={FaBell} cursor="pointer" /> */}
