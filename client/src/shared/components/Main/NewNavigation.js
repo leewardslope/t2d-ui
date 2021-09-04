@@ -12,11 +12,19 @@ import {
   Button,
   useColorMode,
   Image,
+  useToast,
+  Avatar,
+  Menu,
+  MenuList,
+  MenuItem,
+  MenuButton,
+  MenuDivider,
 } from '@chakra-ui/react';
 
 import { useViewportScroll } from 'framer-motion';
 
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import { IoIosArrowDown } from 'react-icons/io';
 import { AiOutlineMenu } from 'react-icons/ai';
@@ -40,11 +48,38 @@ export default function Header(props) {
   const auth = useContext(AuthContext);
 
   const { scrollY } = useViewportScroll();
+  const cl = useColorModeValue('gray.800', 'white');
+  const mobileNav = useDisclosure();
+
+  const toast = useToast();
+  const [USER, setUSER] = React.useState({});
+
+  React.useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await axios.get(
+          `http://75.119.143.54:5000/api/users/${auth.userId}`,
+          {
+            headers: { Authorization: `Bearer ${auth.token}` },
+          }
+        );
+        setUSER(response.data);
+        // console.log(response.data);
+      } catch (error) {
+        toast({
+          title: `${error.response.data.message}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+      }
+    };
+    auth.userId && getUsers();
+  }, [toast, auth]);
+
   React.useEffect(() => {
     return scrollY.onChange(() => setY(scrollY.get()));
   }, [scrollY]);
-  const cl = useColorModeValue('gray.800', 'white');
-  const mobileNav = useDisclosure();
 
   return (
     <React.Fragment>
@@ -147,27 +182,35 @@ export default function Header(props) {
                   </Link>
                 )}
                 {auth.isLoggedIn && (
-                  <Button
-                    onClick={auth.logout}
-                    colorScheme="teal"
-                    variant="solid"
-                    size="sm"
-                  >
-                    Sign out
-                  </Button>
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      rounded={'full'}
+                      variant={'link'}
+                      cursor={'pointer'}
+                      minW={0}
+                    >
+                      <Avatar size={'sm'} name={USER.name} src={USER.image} />
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem>Settings</MenuItem>
+                      <MenuItem onClick={toggleMode} icon={<SwitchIcon />}>
+                        Switch to {text} mode
+                      </MenuItem>
+                      <MenuDivider />
+                      <MenuItem
+                        onClick={auth.logout}
+                        colorscheme="teal"
+                        variant="solid"
+                        size="sm"
+                      >
+                        Sign Out
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 )}
               </HStack>
-              <IconButton
-                size="sm"
-                fontSize="lg"
-                isRound="true"
-                aria-label={`Switch to ${text} mode`}
-                variant="ghost"
-                color="current"
-                ml={{ base: '0', md: '3' }}
-                onClick={toggleMode}
-                icon={<SwitchIcon />}
-              />
+
               <IconButton
                 isRound="true"
                 display={{ base: 'flex', md: 'none' }}

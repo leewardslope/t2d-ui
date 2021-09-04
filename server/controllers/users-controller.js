@@ -17,6 +17,20 @@ export const getUsers = async (req, res, next) => {
   }
 };
 
+export const getUserByUserId = async (req, res, next) => {
+  const userId = req.params.uid;
+  try {
+    const user = await User.findById(userId); //get everything except password
+    res.json({
+      name: user.name,
+      email: user.email,
+      image: user.image,
+    });
+  } catch (err) {
+    next(new HttpError('Fetching users failed, pleased try again later!', 500));
+  }
+};
+
 export const signup = async (req, res, next) => {
   //Validation
   const errors = validationResult(req);
