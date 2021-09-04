@@ -32,7 +32,7 @@ function CreateStudent() {
   const createStudent = e => {
     e.preventDefault();
     axios
-      .post('http://75.119.143.54:5000/students', student)
+      .post(`${process.env.REACT_APP_BASE_URL}/students`, student)
       .then(() => {
         toast({
           title: 'Added New User',

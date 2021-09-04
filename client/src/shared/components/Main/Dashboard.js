@@ -8,14 +8,10 @@ import {
   HStack,
   useColorModeValue,
   Button,
-  Input,
-  InputGroup,
-  InputLeftElement,
   useMediaQuery,
 } from '@chakra-ui/react';
 
 import { NavLink } from 'react-router-dom';
-import { AiOutlineSearch } from 'react-icons/ai';
 
 import { AuthContext } from '../../context/auth-context';
 
@@ -28,13 +24,15 @@ const Dashboard = () => {
       alignItems="center"
       justifyContent="space-between"
       // mx={2}
+
       borderWidth={0}
       overflowX="auto"
     >
       <Flex
+        maxW="1280px"
         alignItems="center"
         justifyContent="space-between"
-        ml={isLargerThan1280 && 24}
+        ml={4}
         borderWidth={0}
         overflowX="auto"
       >
@@ -70,7 +68,7 @@ const Dashboard = () => {
         </Tabs>
       </Flex>
       <Spacer />
-      <HStack spacing={3} alignItems="center" mr={isLargerThan1280 ? 24 : 4}>
+      <HStack spacing={3} alignItems="center" mr={4}>
         {isLargerThan1280 && (
           <NavLink to="/setup">
             <Button
@@ -82,13 +80,6 @@ const Dashboard = () => {
             </Button>
           </NavLink>
         )}
-        <InputGroup display={{ base: 'none', lg: 'block' }} ml="auto">
-          <InputLeftElement
-            pointerEvents="none"
-            children={<AiOutlineSearch />}
-          />
-          <Input type="tel" placeholder="Search..." />
-        </InputGroup>
       </HStack>
     </Flex>
   );

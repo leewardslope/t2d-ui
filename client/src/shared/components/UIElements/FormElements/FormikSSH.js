@@ -35,9 +35,13 @@ const FormikSSH = () => {
       onSubmit={(values, actions) => {
         const sendData = async () => {
           try {
-            await axios.post('http://75.119.143.54:5000/api/ssh/new', values, {
-              headers: { Authorization: `Bearer ${auth.token}` },
-            });
+            await axios.post(
+              `${process.env.REACT_APP_BASE_URL}/api/ssh/new`,
+              values,
+              {
+                headers: { Authorization: `Bearer ${auth.token}` },
+              }
+            );
             toast({
               title: `New SSH Key connected`,
               status: 'success',

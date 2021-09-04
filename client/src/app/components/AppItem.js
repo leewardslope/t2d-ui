@@ -49,9 +49,12 @@ const AppItem = props => {
     const deleteApp = async () => {
       try {
         onClose();
-        await axios.delete(`http://75.119.143.54:5000/api/apps/${props.id}`, {
-          headers: { Authorization: `Bearer ${auth.token}` },
-        });
+        await axios.delete(
+          `${process.env.REACT_APP_BASE_URL}/api/apps/${props.id}`,
+          {
+            headers: { Authorization: `Bearer ${auth.token}` },
+          }
+        );
         toast({
           title: `Deleted`,
           status: 'success',
@@ -81,7 +84,7 @@ const AppItem = props => {
     const token = {
       headers: { Authorization: `Bearer ${auth.token}` },
     };
-    const socket = io('http://75.119.143.54:5000/');
+    const socket = io(`${process.env.REACT_APP_BASE_URL}/`);
 
     await socket.on(`server-notification-msg-${appId}`, notification => {
       setNotificationMsg(oldArray => [...oldArray, `${notification.message}`]);
@@ -103,7 +106,7 @@ const AppItem = props => {
     const baseStep = async step => {
       try {
         const check = await axios.get(
-          `http://75.119.143.54:5000/api/build/${appId}/${step}`,
+          `${process.env.REACT_APP_BASE_URL}/api/build/${appId}/${step}`,
           token
         );
         await toast({
