@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useToast } from '@chakra-ui/react';
+import { useToast, SimpleGrid } from '@chakra-ui/react';
 
 import UserList from '../components/UsersList';
 
@@ -25,7 +25,11 @@ const Users = () => {
     getUsers();
   }, [toast]);
 
-  return <>{USERS.length && <UserList items={USERS} />}</>;
+  return (
+    <SimpleGrid mx={24} minChildWidth="300px" spacing="0px">
+      {USERS.length && <UserList items={USERS} />}
+    </SimpleGrid>
+  );
 };
 
 export default Users;
