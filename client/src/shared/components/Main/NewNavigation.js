@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   chakra,
   HStack,
@@ -17,6 +17,7 @@ import {
   useColorMode,
   SimpleGrid,
   Stack,
+  Image,
 } from '@chakra-ui/react';
 import { useViewportScroll } from 'framer-motion';
 
@@ -27,6 +28,8 @@ import { AiFillHome, AiOutlineInbox, AiOutlineMenu } from 'react-icons/ai';
 import { BsFillCameraVideoFill } from 'react-icons/bs';
 import { FaMoon, FaSun } from 'react-icons/fa';
 
+import { AuthContext } from '../../context/auth-context';
+
 export default function Header(props) {
   const { toggleColorMode: toggleMode } = useColorMode();
   const text = useColorModeValue('dark', 'light');
@@ -35,6 +38,8 @@ export default function Header(props) {
   const ref = React.useRef();
   const [y, setY] = React.useState(0);
   const { height = 0 } = ref.current ? ref.current.getBoundingClientRect() : {};
+
+  const auth = useContext(AuthContext);
 
   const { scrollY } = useViewportScroll();
   React.useEffect(() => {
@@ -282,6 +287,7 @@ export default function Header(props) {
       </Button>
     </VStack>
   );
+
   return (
     <React.Fragment>
       <chakra.header
@@ -296,7 +302,7 @@ export default function Header(props) {
         borderBottomWidth={2}
         borderBottomColor={useColorModeValue('gray.200', 'gray.900')}
       >
-        <chakra.div h="4.5rem" mx="auto" maxW="1200px">
+        <chakra.div h="3.5rem" mx="auto" maxW="1200px">
           <Flex
             w="full"
             h="full"
@@ -307,79 +313,94 @@ export default function Header(props) {
             <Flex align="flex-start">
               <Link href="/">
                 <HStack>
-                  <chakra.header>Logo</chakra.header>
+                  <Image width="10" src="/logo.svg"></Image>
                 </HStack>
               </Link>
             </Flex>
             <Flex>
               <HStack spacing="5" display={{ base: 'none', md: 'flex' }}>
-                <Popover>
-                  <PopoverTrigger>
-                    <Button
-                      bg={bg}
-                      color="gray.500"
-                      display="inline-flex"
-                      alignItems="center"
-                      fontSize="md"
-                      _hover={{ color: cl }}
-                      _focus={{ boxShadow: 'none' }}
-                      rightIcon={<IoIosArrowDown />}
+                {!auth.isLoggedIn && (
+                  <Popover>
+                    <PopoverTrigger>
+                      <Button
+                        bg={bg}
+                        color="gray.500"
+                        display="inline-flex"
+                        alignItems="center"
+                        fontSize="md"
+                        _hover={{ color: cl }}
+                        _focus={{ boxShadow: 'none' }}
+                        rightIcon={<IoIosArrowDown />}
+                      >
+                        Features
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      w="100vw"
+                      maxW="md"
+                      _focus={{ boxShadow: 'md' }}
                     >
-                      Features
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    w="100vw"
-                    maxW="md"
-                    _focus={{ boxShadow: 'md' }}
+                      <Features />
+                    </PopoverContent>
+                  </Popover>
+                )}
+                {!auth.isLoggedIn && (
+                  <Button
+                    bg={bg}
+                    color="gray.500"
+                    display="inline-flex"
+                    alignItems="center"
+                    fontSize="md"
+                    _hover={{ color: cl }}
+                    _focus={{ boxShadow: 'none' }}
                   >
-                    <Features />
-                  </PopoverContent>
-                </Popover>
-                <Button
-                  bg={bg}
-                  color="gray.500"
-                  display="inline-flex"
-                  alignItems="center"
-                  fontSize="md"
-                  _hover={{ color: cl }}
-                  _focus={{ boxShadow: 'none' }}
-                >
-                  Blog
-                </Button>
-                <Button
-                  bg={bg}
-                  color="gray.500"
-                  display="inline-flex"
-                  alignItems="center"
-                  fontSize="md"
-                  _hover={{ color: cl }}
-                  _focus={{ boxShadow: 'none' }}
-                >
-                  Pricing
-                </Button>
+                    Blog
+                  </Button>
+                )}
+                {!auth.isLoggedIn && (
+                  <Button
+                    bg={bg}
+                    color="gray.500"
+                    display="inline-flex"
+                    alignItems="center"
+                    fontSize="md"
+                    _hover={{ color: cl }}
+                    _focus={{ boxShadow: 'none' }}
+                  >
+                    Pricing
+                  </Button>
+                )}
               </HStack>
             </Flex>
             <Flex justify="flex-end" align="center" color="gray.400">
               <HStack spacing="5" display={{ base: 'none', md: 'flex' }}>
-                <RouterLink to="/auth">
-                  <Button colorScheme="teal" variant="ghost" size="sm">
-                    Sign in
+                {!auth.isLoggedIn && (
+                  <RouterLink to="/auth">
+                    <Button colorScheme="teal" variant="ghost" size="sm">
+                      Sign in
+                    </Button>
+                  </RouterLink>
+                )}
+                {!auth.isLoggedIn && (
+                  <RouterLink to="/auth">
+                    <Button colorScheme="teal" variant="solid" size="sm">
+                      Sign up
+                    </Button>
+                  </RouterLink>
+                )}
+                {auth.isLoggedIn && (
+                  <Button
+                    onClick={auth.logout}
+                    colorScheme="teal"
+                    variant="solid"
+                    size="sm"
+                  >
+                    Sign out
                   </Button>
-                </RouterLink>
-                <RouterLink to="/auth">
-                  <Button colorScheme="teal" variant="solid" size="sm">
-                    Sign up
-                  </Button>
-                </RouterLink>
-                <RouterLink to="/auth">
-                  <Button colorScheme="teal" variant="solid" size="sm">
-                    Sign up
-                  </Button>
-                </RouterLink>
+                )}
               </HStack>
               <IconButton
-                size="md"
+                size="sm"
                 fontSize="lg"
                 isRound="true"
                 aria-label={`Switch to ${text} mode`}
