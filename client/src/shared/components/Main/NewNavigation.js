@@ -19,13 +19,15 @@ import {
   Stack,
   Image,
 } from '@chakra-ui/react';
+
 import { useViewportScroll } from 'framer-motion';
 
 import { Link as RouterLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { IoIosArrowDown } from 'react-icons/io';
-import { AiFillHome, AiOutlineInbox, AiOutlineMenu } from 'react-icons/ai';
-import { BsFillCameraVideoFill } from 'react-icons/bs';
+import { AiOutlineMenu } from 'react-icons/ai';
+
 import { FaMoon, FaSun } from 'react-icons/fa';
 
 import { AuthContext } from '../../context/auth-context';
@@ -253,6 +255,7 @@ export default function Header(props) {
   const MobileNavContent = (
     <VStack
       pos="absolute"
+      zIndex={2}
       top={0}
       left={0}
       right={0}
@@ -271,20 +274,43 @@ export default function Header(props) {
         justifySelf="self-start"
         onClick={mobileNav.onClose}
       />
-      <Button w="full" variant="ghost" leftIcon={<AiFillHome />}>
-        Dashboard
-      </Button>
-      <Button
-        w="full"
-        variant="solid"
-        colorScheme="teal"
-        leftIcon={<AiOutlineInbox />}
-      >
-        Inbox
-      </Button>
-      <Button w="full" variant="ghost" leftIcon={<BsFillCameraVideoFill />}>
-        Videos
-      </Button>
+
+      {auth.isLoggedIn && (
+        <NavLink to="/">
+          <Button w="full" variant="ghost">
+            Dashboard
+          </Button>
+        </NavLink>
+      )}
+      {!auth.isLoggedIn && (
+        <NavLink to="/blog">
+          <Box w="full" variant="solid">
+            Blog
+          </Box>
+        </NavLink>
+      )}
+      {!auth.isLoggedIn && (
+        <NavLink to="/">
+          <Box w="full" variant="ghost">
+            Price
+          </Box>
+        </NavLink>
+      )}
+      {!auth.isLoggedIn && (
+        <NavLink to="/auth">
+          <Box w="full" variant="ghost">
+            Sign in/Sign up
+          </Box>
+        </NavLink>
+      )}
+
+      {auth.isLoggedIn && (
+        <NavLink to="/app/new">
+          <Button w="full" variant="ghost">
+            Sign Out
+          </Button>
+        </NavLink>
+      )}
     </VStack>
   );
 
@@ -311,11 +337,11 @@ export default function Header(props) {
             justifyContent="space-between"
           >
             <Flex align="flex-start">
-              <Link href="/">
+              <RouterLink to="/">
                 <HStack>
                   <Image width="10" src="/logo.svg"></Image>
                 </HStack>
-              </Link>
+              </RouterLink>
             </Flex>
             <Flex>
               <HStack spacing="5" display={{ base: 'none', md: 'flex' }}>
