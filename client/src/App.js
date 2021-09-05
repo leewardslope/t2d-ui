@@ -29,7 +29,10 @@ import Setup from './ssh/Setup';
 
 import { AuthContext } from './shared/context/auth-context';
 import useAuth from './shared/hooks/auth-hook';
+
+import ForgotPassword from './ajit-components/Forgot-Password';
 import ShowComponents from './ajit-components/ShowComponents';
+
 
 function App() {
   const { userId, token, login, logout } = useAuth();
@@ -40,7 +43,7 @@ function App() {
     routes = (
       <Switch>
         <Route path="/" exact>
-          <Users />
+          <ForgotPassword></ForgotPassword>
         </Route>
         <Route path="/ajit" exact>
           <ShowComponents></ShowComponents>
@@ -68,7 +71,7 @@ function App() {
           <ShowComponents></ShowComponents>
         </Route>
         <Route path="/" exact>
-          <Users />
+          <ForgotPassword></ForgotPassword>
         </Route>
         <Route path="/:userId/apps" exact>
           <UserApps />
