@@ -29,7 +29,9 @@ import Setup from './ssh/Setup';
 
 import { AuthContext } from './shared/context/auth-context';
 import useAuth from './shared/hooks/auth-hook';
-import ShowComponents from './ajit-components/ShowComponents';
+
+import ShowComponents from './ui-elements/v1-components/ShowComponents';
+
 
 function App() {
   const { userId, token, login, logout } = useAuth();
