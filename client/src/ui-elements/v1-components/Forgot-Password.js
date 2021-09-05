@@ -1,8 +1,8 @@
 import { Button } from "@chakra-ui/button"
 import { Heading, VStack } from "@chakra-ui/layout"
 import { Form, Formik } from "formik"
-import FormikInput from "../shared/components/UIElements/FormElements/components/FormikInput"
-import { validateRequire } from "../shared/components/UIElements/FormElements/components/FormikValidations"
+import FormikInput from "../../shared/components/UIElements/FormElements/components/FormikInput"
+import { validateRequire } from "../../shared/components/UIElements/FormElements/components/FormikValidations"
 
 const ForgotPassword = ({ ...restProps }) => {
     return (
