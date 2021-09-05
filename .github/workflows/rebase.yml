@@ -8,14 +8,13 @@ jobs:
     if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          path: main
-
-      - name: Checkout private tools
+      - name: Checkout the latest code
         uses: actions/checkout@v2
         with:
           repository: leewardslope/t2d-ui
-          token: ${{ secrets.TOKEN }} 
-          path: my-tools
+          token: ${{ secrets.TOKEN }}
+          fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
+      - name: Automatic Rebase
+        uses: cirrus-actions/rebase@1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
