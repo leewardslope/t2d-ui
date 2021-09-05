@@ -102,6 +102,16 @@ export const checkConnection = async (req, res, next) => {
   if (app.app == 'Forem') {
     env = await Env.findOne({ appID: appId });
 
+    if (!env) {
+      socket.disconnect();
+      return next(
+        new HttpError(
+          `You haven't configured the required ENV variables, Please configure them`,
+          500
+        )
+      );
+    }
+
     let envJson = [];
     for (var i = 0; i < env.var.length; i++) {
       envJson.push({
