@@ -30,6 +30,9 @@ import Setup from './ssh/Setup';
 import { AuthContext } from './shared/context/auth-context';
 import useAuth from './shared/hooks/auth-hook';
 
+import ShowComponents from './ui-elements/v1-components/ShowComponents';
+
+
 function App() {
   const { userId, token, login, logout } = useAuth();
 
@@ -40,6 +43,9 @@ function App() {
       <Switch>
         <Route path="/" exact>
           <Users />
+        </Route>
+        <Route path="/ajit" exact>
+          <ShowComponents></ShowComponents>
         </Route>
         <Route path="/setup" exact>
           <Setup />
@@ -60,6 +66,9 @@ function App() {
   } else {
     routes = (
       <Switch>
+        <Route path="/ajit" exact>
+          <ShowComponents></ShowComponents>
+        </Route>
         <Route path="/" exact>
           <Users />
         </Route>
@@ -69,6 +78,7 @@ function App() {
         <Route path="/auth" exact>
           <Auth />
         </Route>
+
         <Redirect to="/auth" />
       </Switch>
     );
