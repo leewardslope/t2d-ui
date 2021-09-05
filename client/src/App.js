@@ -30,7 +30,6 @@ import Setup from './ssh/Setup';
 import { AuthContext } from './shared/context/auth-context';
 import useAuth from './shared/hooks/auth-hook';
 
-import ForgotPassword from './ui-elements/v1-components/Forgot-Password';
 import ShowComponents from './ui-elements/v1-components/ShowComponents';
 
 
