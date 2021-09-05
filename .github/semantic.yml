@@ -12,6 +12,8 @@ types:
   - ci
   - chore
   - revert
+  - new
+  - component
 scopes:
   - component
   - new
