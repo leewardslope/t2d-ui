@@ -6,6 +6,7 @@ import {
   Redirect,
   Switch,
 } from 'react-router-dom';
+import { THEME } from './theme';
 
 // import { ColorModeSwitcher } from './ColorModeSwitcher';
 // import Navbar from './shared/components/Navbar';
@@ -78,7 +79,7 @@ function App() {
   // value={{ isLoggedIn, login, logout }}>
 
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={THEME}>
       <AuthContext.Provider
         value={{
           isLoggedIn: !!token,
