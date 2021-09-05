@@ -46,13 +46,14 @@ app.use(bodyParser.json({ limit: '20mb', extended: 'true' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: 'true' }));
 app.use(cors());
 
+// app.use('/', express.static('../client/build'));
+
 app.use('/api/apps', appsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/ssh', keysRoutes);
 app.use('/api/env', envRoutes);
 app.use('/api/build', buildRoutes);
 app.use('/ansible', test);
-app.use('/', express.static('../client/build'));
 
 // This is another middleware which I want to run after all routes
 // Put in other words, this middleware will be reached, if the above middleware fails
