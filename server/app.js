@@ -26,7 +26,12 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   // This is to make the development server compatible
   cors: {
-    origin: ['http://75.119.143.54:8081', 'http://75.119.143.54:5000'],
+    origin: [
+      `${process.env.VERCEL_URL}`,
+      `${process.env.CLIENT_DEV_URL}`,
+      `${process.env.API_URL}`,
+      `${process.env.TELEBIT_URL}`,
+    ],
   },
 });
 
