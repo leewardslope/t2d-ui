@@ -31,7 +31,8 @@ There is no much difference to explain between types and scopes. It would be bet
 - `perf: `code improved in terms of processing performance
 - `vendor: `update version for dependencies, packages.
 - `test: `adding missing tests, refactoring tests; no production code change
-- `revert: `Reverts a previous commit
+- `revert: `reverts a previous commit
+- `build: `changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
 
 ### Scopes
 
