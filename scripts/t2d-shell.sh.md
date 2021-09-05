@@ -1,5 +1,7 @@
 This script assumes I received the SSH keys, cert-files and other required from ansible.
 
+> This should be one of the must install app in t2d. This way we can provide terminal access to users.
+
 ```
 // sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
 sudo dokku plugin:install https://github.com/dokku/dokku-http-auth.git
