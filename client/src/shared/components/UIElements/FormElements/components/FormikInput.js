@@ -16,16 +16,15 @@ const FormikInput = props => {
     <Field name={uniqueField} validate={validation}>
       {({ field }) => (
         <FormControl>
-          <FormLabel fontSize="sm" color="blackAlpha.800" htmlFor={uniqueField}>{label}</FormLabel>
+          <FormLabel htmlFor={uniqueField}>{label}</FormLabel>
           <Input
             {...field}
             id={uniqueField}
             type={type}
             placeholder={placeholder}
-            backgroundColor="blackAlpha.50"
           />
           <Stack>
-            <Box color="red.500" fontSize="xs">
+            <Box color="red" size="xs">
               <ErrorMessage name={uniqueField} />
             </Box>
             <FormHelperText>{formHelper}</FormHelperText>
