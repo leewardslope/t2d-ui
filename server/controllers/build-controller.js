@@ -90,7 +90,7 @@ export const checkConnection = async (req, res, next) => {
       return next(
         new HttpError(
           `Unable to extract the provided SSH Key, Please try again later`,
-          500
+          403
         )
       );
     }
@@ -103,11 +103,10 @@ export const checkConnection = async (req, res, next) => {
     env = await Env.findOne({ appID: appId });
 
     if (!env) {
-      socket.disconnect();
       return next(
         new HttpError(
           `You haven't configured the required ENV variables, Please configure them`,
-          500
+          403
         )
       );
     }
