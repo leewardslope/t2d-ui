@@ -16,9 +16,9 @@ This branch is synonymous to development branch. All new features and bug fixes 
 
 > This branch is not yet ready, should wait for the first release.
 
-### Small Note
+#### Small Note
 
-We are not yer implementing the traditional `development > test > staging > production`. Adding this right now makes things more complicated rather than being development friendly.
+We are not yet implementing the traditional `development > test > staging > production`. Adding this right now makes things more complicated rather than being development friendly.
 
 > In subsequent releases we might come across a need for such practices, but for now it is not required.
 
@@ -127,3 +127,31 @@ There is no much difference to explain between types and scopes. It would be bet
 
 - `new: `It is not a new feature to the repo, but it is new.
 - `component: `new chakra-ui components
+
+# A small beginner friendly overview
+
+### Initial setup
+
+```
+git clone https://github.com/leewardslope/t2d
+git checkout -b feature/client/changelog
+git push --set-upstream origin feature/client/changelog
+```
+
+With this initial setup, now you can do all the changes you want. And also, frequently use the commit messages, if you are not good with terminal commit messages, use VSCode gitlens extension.
+
+- semantic commit message format => `feat: adding changelog`
+- Now you can push the code, `git push` or use gitlens.
+- Once the push, was done, you can navigate to github account in browser and raise a PR, where even the title should be in semantic
+- Once you have all the build verifications, and acceptable code, it can be merged by any maintainer.
+
+### Deleting finished branches
+
+First we delete the remote branch and then our local branch.
+
+```
+git push origin --delete feature/client/changelog
+git branch -D feature/client/changelog
+```
+
+> Now, repeat the same process for every PR.
