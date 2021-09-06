@@ -1,3 +1,11 @@
+# Table of Contents
+
+- [Branch name conventions](#Branch name conventions)
+- - [Permanent Branches](#Permanent Branches)
+- - [Temporary Branches](#Temporary Branches)
+- [Do follow the semantic PR's](#Do follow the semantic PR's)
+- [A small beginner friendly overview](#A small beginner friendly overview)
+
 # Branch name conventions
 
 Most of the content I mention here are a collection of best practices. There is nothing special here, if you are already familiar with developer friendly branch naming conventions. There
