@@ -1,10 +1,10 @@
 # Table of Contents
 
-- [Branch name conventions](#Branch name conventions)
-- - [Permanent Branches](#Permanent Branches)
-- - [Temporary Branches](#Temporary Branches)
-- [Do follow the semantic PR's](#Do follow the semantic PR's)
-- [A small beginner friendly overview](#A small beginner friendly overview)
+- [Branch name conventions](#branch-name-conventions)
+- - [Permanent Branches](#permanent-branches)
+- - [Temporary Branches](#temporary-branches)
+- [Do follow the semantic PR's](#do-follow-the-semantic-prs)
+- [A small beginner friendly overview](#a-small-beginner-friendly-overview)
 
 # Branch name conventions
 
