@@ -48,9 +48,10 @@ export const checkConnection = async (req, res, next) => {
 
   // Checking the existence of SSH Keys
   if (user.keys.length === 0) {
-    socket.emit(`server-notification-msg-${appId}`, {
+    await socket.emit(`server-notification-msg-${appId}`, {
       message: `You haven't configured your Server, please add at least one SSH Key`,
     });
+    socket.disconnect();
 
     return next(
       new HttpError(
@@ -68,9 +69,10 @@ export const checkConnection = async (req, res, next) => {
     try {
       await fs.writeFileSync(`./ssh_keys/${serverKey.host}`, decryptedString);
     } catch (err) {
-      socket.emit(`server-notification-msg-${appId}`, {
+      await socket.emit(`server-notification-msg-${appId}`, {
         message: `Unable to extract the provided SSH Key, Please try again later`,
       });
+      socket.disconnect();
       return next(
         new HttpError(
           `Unable to extract the provided SSH Key, Please try again later`,
@@ -84,13 +86,14 @@ export const checkConnection = async (req, res, next) => {
         `${serverKey.host} ansible_ssh_user=root ansible_ssh_private_key=../server/ssh_keys/${serverKey.host}`
       );
     } catch (err) {
-      socket.emit(`server-notification-msg-${appId}`, {
+      await socket.emit(`server-notification-msg-${appId}`, {
         message: `Unable to extract the provided SSH Key, Please try again later`,
       });
+      socket.disconnect();
       return next(
         new HttpError(
           `Unable to extract the provided SSH Key, Please try again later`,
-          500
+          403
         )
       );
     }
@@ -103,11 +106,14 @@ export const checkConnection = async (req, res, next) => {
     env = await Env.findOne({ appID: appId });
 
     if (!env) {
+      await socket.emit(`server-notification-msg-${appId}`, {
+        message: `Unable to extract the provided SSH Key, Please try again later`,
+      });
       socket.disconnect();
       return next(
         new HttpError(
           `You haven't configured the required ENV variables, Please configure them`,
-          500
+          403
         )
       );
     }
