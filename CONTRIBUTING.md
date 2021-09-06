@@ -158,8 +158,10 @@ With this initial setup, now you can do all the changes you want. And also, freq
 First we delete the remote branch and then our local branch.
 
 ```
+git checkout main
 git push origin --delete feature/client/changelog
 git branch -D feature/client/changelog
+git pull origin main
 ```
 
 > Now, repeat the same process for every PR.
