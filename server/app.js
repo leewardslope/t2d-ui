@@ -28,6 +28,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: [
       `${process.env.VERCEL_URL}`,
+      `${process.env.NETLIFY_URL}`,
       `${process.env.CLIENT_DEV_URL}`,
       `${process.env.API_URL}`,
       `${process.env.TELEBIT_URL}`,
