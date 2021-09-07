@@ -11,7 +11,9 @@ sudo dokku plugin:install https://github.com/dokku/dokku-http-auth.git
 
 dokku apps:create t2d-shell
 docker pull wettyoss/wetty
+wait
 docker tag wettyoss/wetty:latest dokku/t2d-shell:latest
+wait
 
 ## Port forwarding
 
@@ -43,6 +45,7 @@ dokku config:set --no-restart t2d-shell SSHHOST=VARIABLE_IP SSHUSER=dokku SSH_KE
 
 dokku http-auth:on t2d-shell basic_auth_username basic_auth_password
 dokku tags:deploy t2d-shell latest
+wait
 
 # These command might come in handy
 
