@@ -6,11 +6,11 @@
         scale_json_contents: "{{ lookup('file', '../../../apps/{{appName}}/{{ file }}.json') }}"
 
     - name: allocation workers to {{ item.name }}
-      shell: dokku ps:scale {{ appTitle }} {{ item.name }}={{ item.workers}}
+      shell: dokku ps:scale {{ appTitle }} {{ item.name }}={{ item.workers}} > /opt/t2d/log.txt
       with_items: "{{ scale_json_contents }}"
       ignore_errors: True
 
     - name: allocation memory {{ item.name }}
-      shell: dokku resource:limit --memory {{ item.memory }} --process-type {{ item.name }} {{ appTitle }}
+      shell: dokku resource:limit --memory {{ item.memory }} --process-type {{ item.name }} {{ appTitle }} > /opt/t2d/log.txt
       with_items: "{{ scale_json_contents }}"
       ignore_errors: True

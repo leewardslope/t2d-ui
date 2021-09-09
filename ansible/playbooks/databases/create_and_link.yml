@@ -6,11 +6,11 @@
         db_json_contents: "{{ lookup('file', '../../../apps/{{appName}}/{{ file }}.json') }}"
 
     - name: creating {{ item.name }} database
-      shell: dokku {{ item.name }}:create {{ item.dbName }}
+      shell: dokku {{ item.name }}:create {{ item.dbName }} > /opt/t2d/log.txt
       with_items: "{{ db_json_contents }}"
       ignore_errors: True
 
     - name: allocation {{ item.dbName }} to {{ appTitle }}
-      shell: dokku {{ item.name }}:link {{ item.dbName }} {{ appTitle }}
+      shell: dokku {{ item.name }}:link {{ item.dbName }} {{ appTitle }} > /opt/t2d/log.txt
       with_items: "{{ db_json_contents }}"
       ignore_errors: True
