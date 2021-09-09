@@ -1,0 +1,53 @@
+- id: list
+  execute-command: dokku
+  include-command-output-in-response: true
+  pass-arguments-to-command:
+    - source: string
+      name: apps:list
+  trigger-rule:
+  match:
+    type: value
+    value: 't2d'
+    parameter:
+      source: url
+      name: token
+  # trigger-rule:
+  #   match:
+  #     type: ip-whitelist
+  #     ip-range: 75.119.143.54/32
+
+- id: config
+  execute-command: dokku
+  include-command-output-in-response: true
+  pass-arguments-to-command:
+    - source: string
+      name: config:show
+    - source: url
+      name: app
+  trigger-rule:
+    match:
+      type: value
+      value: 't2d'
+      parameter:
+        source: url
+        name: token
+
+- id: dokku
+  execute-command: dokku
+  include-command-output-in-response: true
+  pass-arguments-to-command:
+    - source: url
+      name: command
+    - source: url
+      name: app
+    - source: url
+      name: arg1
+    - source: url
+      name: arg2
+  trigger-rule:
+    match:
+      type: value
+      value: 't2d'
+      parameter:
+        source: url
+        name: token
