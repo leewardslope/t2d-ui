@@ -6,7 +6,7 @@
         env_json_contents: "{{ lookup('file', '../../../apps/{{appName}}/{{ file }}.json') }}"
 
     - name: set config
-      shell: dokku config:set {{ appTitle }} --no-restart {{ item.env }}={{ item.value }}
+      shell: dokku config:set {{ appTitle }} --no-restart {{ item.env }}={{ item.value }} > /opt/t2d/log.txt
       with_items: "{{ env_json_contents }}"
       ignore_errors: True
     

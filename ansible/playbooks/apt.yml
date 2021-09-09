@@ -1,0 +1,8 @@
+---
+ - name: Playbook to install NGINX
+   hosts: all
+   tasks: 
+    - name: Ansible apt install nginx
+      apt:
+        name: nginx
+        state: present

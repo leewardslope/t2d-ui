@@ -5,17 +5,17 @@ import util from 'util';
 import { exec } from 'child_process';
 const execAsync = util.promisify(exec);
 
-const checkSSH = async (IP, socket, res, req, next) => {
+const checkSSH = async (ip, socket, res, req, next) => {
   const appId = req.params.aid;
   // shell.exec('pwd');
-  if (`./tree/${IP}`) {
-    shell.exec(`rm -rf ./tree/${IP}`); // this should not be async
+  if (`./tree/${ip}`) {
+    shell.exec(`rm -rf ./tree/${ip}`); // this should not be async
   }
 
   let ping;
   try {
     ping = await execAsync(
-      `ansible all -t tree -o -i ./ansible_inventory/${IP} -m ping`
+      `ansible all -t tree -o -i ./ansible_inventory/${ip} -m ping`
     );
   } catch (error) {
     socket.emit(`server-notification-msg-${appId}`, {
@@ -41,7 +41,7 @@ const checkSSH = async (IP, socket, res, req, next) => {
       )
     );
   } else {
-    fs.readFile(`tree/${IP}`, 'utf8', (err, jsonString) => {
+    fs.readFile(`tree/${ip}`, 'utf8', (err, jsonString) => {
       if (err) {
         console.log(err);
       } else {
@@ -51,11 +51,11 @@ const checkSSH = async (IP, socket, res, req, next) => {
             socket.emit(`server-notification-msg-${appId}`, {
               message: `Establish Connection to your SSH Server`,
             });
-            res.status(200).json({
-              message:
-                'Establish Connection to your SSH Server, Installing Dokku',
-            });
-            shell.exec(`rm -rf tree/${IP}`);
+
+            // res.status(200).json({
+            //   message:
+            //     'Establish Connection to your SSH Server, Installing Dokku',
+            // });
           }
         } catch (error) {
           socket.emit(`server-notification-msg-${appId}`, {

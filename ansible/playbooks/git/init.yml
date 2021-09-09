@@ -6,9 +6,9 @@
       ignore_errors: True
 
     - name: Allowing github
-      shell: dokku git:allow-host github.com
+      shell: dokku git:allow-host github.com > /opt/t2d/log.txt
       ignore_errors: True
 
     - name: Setting the branch to main
-      shell: dokku git:set {{ appTitle }} deploy-branch main
+      shell: dokku git:set {{ appTitle }} deploy-branch main > /opt/t2d/log.txt
       ignore_errors: True

@@ -6,7 +6,7 @@
         buildpack_json_contents: "{{ lookup('file', '../../../apps/{{appName}}/{{ file }}.json') }}"
 
     - name: Installing the buildpack {{ item.name }}
-      shell: dokku buildpacks:add {{ appTitle }} {{ item.url }}
+      shell: dokku buildpacks:add {{ appTitle }} {{ item.url }} > /opt/t2d/log.txt
       with_items: "{{ buildpack_json_contents }}"
       ignore_errors: True
       async: 600 # Maximum allowed time in Seconds

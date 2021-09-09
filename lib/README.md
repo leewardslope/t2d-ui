@@ -21,7 +21,7 @@ chmod +x /opt/t2d/websocketd
 #### Start
 
 ```
-/opt/t2d/websocketd -port=4444 tail -f /opt/t2d/log.txt
+/opt/t2d/websocketd -port=4444 tail -f /opt/t2d/log.txt &
 ```
 
 #### Stop
@@ -47,7 +47,7 @@ sudo apt-get install webhook
 The hooks.yml file should be uploaded with the help of Ansible
 
 ```
-webhook -port 4445 -hooks /opt/t2d/webhook/hooks.yml &
+webhook -port 4445 -hooks /opt/t2d/hooks.yml &
 ```
 
 #### Kill
