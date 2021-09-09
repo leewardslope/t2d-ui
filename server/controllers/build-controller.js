@@ -177,6 +177,29 @@ export const establishConnection = async (req, res, next) => {
   // const env = await Env.findOne({ appID: appId });
   await checkSSH(serverKey.host, socket, res, req, next);
   await sendEssentials(serverKey.host, socket, res, req, next);
+  console.log(`ok`);
+  res.status(200).json({
+    message: 'Establish Connection to your SSH Server, Installing Dokku',
+  });
+};
+
+export const send = async (req, res, next) => {
+  const socket = req.app.get('socket');
+  // I can also, simple use this => checkSSH();
+  const appId = req.params.aid;
+  const userId = req.userData.userId;
+  socket.emit(`server-notification-msg-${appId}`, {
+    message: `..... Build Started .....`,
+  });
+  // const app = await App.findById(appId);
+  const user = await User.findById(userId).populate('keys');
+  const serverKey = user.keys[0];
+  // const env = await Env.findOne({ appID: appId });
+  await sendEssentials(serverKey.host, socket, res, req, next);
+  console.log(`ok`);
+  res.status(200).json({
+    message: 'Establish Connection to your SSH Server, Installing Dokku',
+  });
 };
 
 export const installDokku = async (req, res, next) => {

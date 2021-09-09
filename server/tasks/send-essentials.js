@@ -35,9 +35,6 @@ const sendEssentials = async (ip, socket, res, req, next) => {
   socket.emit(`server-notification-msg-${appId}`, {
     message: `Configured basic requirements`,
   });
-  res.status(200).json({
-    message: 'Establish Connection to your SSH Server, Installing Dokku',
-  });
 };
 
 export default sendEssentials;

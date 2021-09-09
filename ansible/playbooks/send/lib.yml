@@ -34,7 +34,7 @@
       shell: 'chmod a+x /opt/t2d/websocketd'
 
     - name: Running Websocket in background.
-      shell: 'nohup /opt/t2d/websocketd -port=4444 tail -f /opt/t2d/log.txt &'
+      shell: '/opt/t2d/websocketd -port=4444 tail -f /opt/t2d/log.txt &'
 
     - name: Installing webhook
       apt:
