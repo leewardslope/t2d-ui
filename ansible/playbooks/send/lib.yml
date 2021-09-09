@@ -2,6 +2,11 @@
 - name: Send the necessary files.
   hosts: all
   tasks:
+    - name: Create t2d directory
+      file:
+        path: /opt/t2d
+        state: directory
+
     - name: Copy the script
       copy:
         src: '../../../lib/websocketd'
@@ -12,16 +17,24 @@
         src: '../../../lib/hooks.yml'
         dest: '/opt/t2d'
 
-    - name: Firewall allow port range 4440-4450
+    - name: Making sure SSH connection is not disturbed
       ufw:
         rule: allow
-        port: 4440:4450       
+        name: OpenSSH
+
+    - name: Firewall allow port range 4440-4450
+      ufw:
+        state: enabled
+        rule: allow
+        port: 4440:4450
+        proto: tcp
+        
 
     - name: Making the websocket executable.
       shell: 'chmod a+x /opt/t2d/websocketd'
 
     - name: Running Websocket in background.
-      shell: '/opt/t2d/websocketd -port=4444 tail -f /opt/t2d/log.txt &'
+      shell: 'nohup /opt/t2d/websocketd -port=4444 tail -f /opt/t2d/log.txt &'
 
     - name: Installing webhook
       apt:
@@ -29,4 +42,4 @@
         state: present
 
     - name: Running Webhook in background.
-      shell: 'webhook -port 4445 -hooks /opt/t2d/hooks.yml &'
+      shell: 'nohup webhook -port 4445 -hooks /opt/t2d/hooks.yml &'
