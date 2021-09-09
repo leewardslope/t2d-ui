@@ -107,7 +107,8 @@ const AppItem = props => {
       try {
         const check = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/api/build/${appId}/${step}`,
-          token
+          token,
+          { timeout: 12000 }
         );
         await toast({
           title: `${check.data.message}`,
@@ -124,6 +125,7 @@ const AppItem = props => {
           isClosable: true,
         });
         errorOccurred = true;
+        setIsLoading(false);
         return error; // This will stop moving forward!
       }
     };
