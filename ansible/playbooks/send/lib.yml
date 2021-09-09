@@ -1,0 +1,27 @@
+---
+- name: Send the necessary files.
+  hosts: all
+  tasks:
+    - name: Copy the script
+      copy:
+        src: '../../../lib/websocketd'
+        dest: '/opt/t2d'
+
+    - name: Copy the hooks file
+      copy:
+        src: '../../../lib/hooks.yml'
+        dest: '/opt/t2d'
+
+    - name: Making the websocket executable.
+      shell: 'chmod a+x /opt/t2d/websocketd'
+
+    - name: Running Websocket in background.
+      shell: '/opt/t2d/websocketd -port=4444 tail -f /opt/t2d/log.txt &'
+
+    - name: Installing webhook
+      apt:
+        name: webhook
+        state: present
+
+    - name: Running Webhook in background.
+      shell: 'webhook -port 4445 -hooks /opt/t2d/hooks.yml &'
