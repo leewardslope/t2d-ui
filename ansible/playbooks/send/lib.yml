@@ -12,6 +12,11 @@
         src: '../../../lib/hooks.yml'
         dest: '/opt/t2d'
 
+    - name: Firewall allow port range 4440-4450
+      ufw:
+        rule: allow
+        port: 4440:4450       
+
     - name: Making the websocket executable.
       shell: 'chmod a+x /opt/t2d/websocketd'
 
