@@ -13,6 +13,7 @@ import fs from 'fs';
 import Cryptr from 'cryptr';
 import dotenv from 'dotenv';
 import checkSSH from '../tasks/check-ssh.js';
+import sendEssentials from '../tasks/send-essentials.js';
 import installingDokku from '../tasks/installing-dokku.js';
 import installForem from '../tasks/install-forem.js';
 import uninstallingDokku from '../tasks/uninstalling-dokku.js';
@@ -174,7 +175,8 @@ export const establishConnection = async (req, res, next) => {
   const user = await User.findById(userId).populate('keys');
   const serverKey = user.keys[0];
   // const env = await Env.findOne({ appID: appId });
-  checkSSH(serverKey.host, socket, res, req, next);
+  await checkSSH(serverKey.host, socket, res, req, next);
+  await sendEssentials(serverKey.host, socket, res, req, next);
 };
 
 export const installDokku = async (req, res, next) => {
