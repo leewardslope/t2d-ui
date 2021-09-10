@@ -52,9 +52,11 @@ const Dashboard = () => {
                 Apps
               </Tab>
             </NavLink>
-            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
-              Activity
-            </Tab>
+            <NavLink to={`/${auth.userId}/activity`}>
+              <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
+                Activity
+              </Tab>
+            </NavLink>
             <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
               Settings
             </Tab>
