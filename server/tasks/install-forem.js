@@ -33,10 +33,6 @@ const installForem = async (ip, res, req, next, socket, appId, app, env) => {
   const appName = app.app; // name of the app, ex: forem, ghost.
   const appTitle = app.title; // name given by the user for his app.
 
-  socket.emit(`server-notification-${appId}`, {
-    message: `Starting Forem Installation`,
-  });
-
   socket.emit(`server-notification-msg-${appId}`, {
     message: `Starting Forem Installation, might take 25-45 minutes, you can check logs for more info`,
   });
