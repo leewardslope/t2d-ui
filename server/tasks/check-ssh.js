@@ -49,13 +49,12 @@ const checkSSH = async (ip, socket, res, req, next) => {
           const data = JSON.parse(jsonString);
           if (data.ping === 'pong') {
             socket.emit(`server-notification-msg-${appId}`, {
-              message: `Establish Connection to your SSH Server`,
+              message: `Established Connection to your SSH Server`,
             });
 
-            // res.status(200).json({
-            //   message:
-            //     'Establish Connection to your SSH Server, Installing Dokku',
-            // });
+            res.status(200).json({
+              message: 'Established Connection to your SSH Server',
+            });
           }
         } catch (error) {
           socket.emit(`server-notification-msg-${appId}`, {
