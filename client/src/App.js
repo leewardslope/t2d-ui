@@ -23,6 +23,7 @@ import MainNavigation from './shared/components/Navigation/MainNavigation';
 import Users from './user/pages/Users';
 import NewApp from './app/pages/NewApp';
 import UserApps from './app/pages/UserApps';
+import ServerActivity from './app/pages/ServerActivity';
 import UpdateApp from './app/pages/UpdateApp';
 import Auth from './user/pages/Auth';
 import Setup from './ssh/Setup';
@@ -31,7 +32,6 @@ import { AuthContext } from './shared/context/auth-context';
 import useAuth from './shared/hooks/auth-hook';
 
 import ShowComponents from './ui-elements/v1-components/ShowComponents';
-
 
 function App() {
   const { userId, token, login, logout } = useAuth();
@@ -52,6 +52,9 @@ function App() {
         </Route>
         <Route path="/:userId/apps" exact>
           <UserApps />
+        </Route>
+        <Route path="/:userId/activity" exact>
+          <ServerActivity />
         </Route>
         <Route path="/app/new" exact>
           <NewApp />

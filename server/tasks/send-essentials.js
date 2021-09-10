@@ -8,7 +8,8 @@ const execAsync = util.promisify(exec);
 const sendEssentials = async (ip, socket, res, req, next) => {
   const appId = req.params.aid;
   try {
-    res.setHeader('Content-Type', 'application/json');
+    res.set('Content-Type', 'application/json; charset=utf-8');
+
     // Step 01 => Sending Files
     const send = await execAsync(
       `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/send/send.yml`
@@ -26,11 +27,7 @@ const sendEssentials = async (ip, socket, res, req, next) => {
         message: `Copying Essentials successful`,
       });
 
-      res.write(
-        JSON.stringify({
-          message: 'Copying Essentials successful',
-        })
-      );
+      res.write('Copying Essentials, ');
     }
 
     // Step 02 => Configuring Websocketd
@@ -50,11 +47,7 @@ const sendEssentials = async (ip, socket, res, req, next) => {
         message: `Configured Websocketd`,
       });
 
-      res.write(
-        JSON.stringify({
-          message: 'Configured Websocketd successful',
-        })
-      );
+      res.write('Websocketd, ');
     }
 
     // Step 03 => Configuring Webhook
@@ -74,11 +67,7 @@ const sendEssentials = async (ip, socket, res, req, next) => {
         message: `Configured Webhook`,
       });
 
-      res.write(
-        JSON.stringify({
-          message: 'Configured Webhook successful',
-        })
-      );
+      res.write('and Webhook ');
     }
   } catch (error) {
     console.log(error);
@@ -104,11 +93,7 @@ const sendEssentials = async (ip, socket, res, req, next) => {
     message: `Configured basic requirements`,
   });
 
-  res.end(
-    JSON.stringify({
-      message: 'Configured Essentials',
-    })
-  );
+  res.end('successfully');
 };
 
 export default sendEssentials;
