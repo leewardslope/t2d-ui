@@ -8,10 +8,78 @@ const execAsync = util.promisify(exec);
 const sendEssentials = async (ip, socket, res, req, next) => {
   const appId = req.params.aid;
   try {
-    // using try catch as, there is a warning message in stderr.
-    const { stdout, stderr } = await execAsync(
-      `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/send/lib.yml`
+    res.setHeader('Content-Type', 'application/json');
+    // Step 01 => Sending Files
+    const send = await execAsync(
+      `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/send/send.yml`
     );
+
+    if (send.stderr) {
+      return next(
+        new HttpError(
+          `Copying Essentials failed, contact us for more info`,
+          403
+        )
+      );
+    } else {
+      socket.emit(`server-notification-msg-${appId}`, {
+        message: `Copying Essentials successful`,
+      });
+
+      res.write(
+        JSON.stringify({
+          message: 'Copying Essentials successful',
+        })
+      );
+    }
+
+    // Step 02 => Configuring Websocketd
+    const websocketd = await execAsync(
+      `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/send/websocketd.yml`
+    );
+
+    if (websocketd.stderr) {
+      return next(
+        new HttpError(
+          `Configuring Websocketd failed, contact us for more info`,
+          403
+        )
+      );
+    } else {
+      socket.emit(`server-notification-msg-${appId}`, {
+        message: `Configured Websocketd`,
+      });
+
+      res.write(
+        JSON.stringify({
+          message: 'Configured Websocketd successful',
+        })
+      );
+    }
+
+    // Step 03 => Configuring Webhook
+    const webhook = await execAsync(
+      `ansible-playbook -i ./ansible_inventory/${ip} ../ansible/playbooks/send/webhook.yml`
+    );
+
+    if (webhook.stderr) {
+      return next(
+        new HttpError(
+          `Configuring Webhook failed, contact us for more info`,
+          403
+        )
+      );
+    } else {
+      socket.emit(`server-notification-msg-${appId}`, {
+        message: `Configured Webhook`,
+      });
+
+      res.write(
+        JSON.stringify({
+          message: 'Configured Webhook successful',
+        })
+      );
+    }
   } catch (error) {
     console.log(error);
 
@@ -35,9 +103,12 @@ const sendEssentials = async (ip, socket, res, req, next) => {
   socket.emit(`server-notification-msg-${appId}`, {
     message: `Configured basic requirements`,
   });
-  res.status(200).json({
-    message: 'Establish Connection to your SSH Server, Installing Dokku',
-  });
+
+  res.end(
+    JSON.stringify({
+      message: 'Configured Essentials',
+    })
+  );
 };
 
 export default sendEssentials;
