@@ -179,6 +179,25 @@ export const establishConnection = async (req, res, next) => {
   await sendEssentials(serverKey.host, socket, res, req, next);
 };
 
+export const send = async (req, res, next) => {
+  const socket = req.app.get('socket');
+  // I can also, simple use this => checkSSH();
+  const appId = req.params.aid;
+  const userId = req.userData.userId;
+  socket.emit(`server-notification-${appId}`, {
+    message: `Configuring Basic Essentials`,
+  });
+
+  socket.emit(`server-notification-msg-${appId}`, {
+    message: `Configuring Basic Essentials`,
+  });
+
+  const user = await User.findById(userId).populate('keys');
+  const serverKey = user.keys[0];
+
+  await sendEssentials(serverKey.host, socket, res, req, next);
+};
+
 export const installDokku = async (req, res, next) => {
   const appId = req.params.aid;
   const userId = req.userData.userId;
