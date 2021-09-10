@@ -132,6 +132,7 @@ const AppItem = props => {
 
     !errorOccurred && (await baseStep('check'));
     !errorOccurred && (await baseStep('connect'));
+    !errorOccurred && (await baseStep('send'));
     !errorOccurred && (await baseStep('dokku'));
 
     setIsLoading(false);
