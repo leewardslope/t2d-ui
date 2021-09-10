@@ -1,0 +1,10 @@
+---
+- name: Configuring Websocketd
+  hosts: all
+  tasks:
+
+    - name: Making the websocket executable.
+      shell: 'chmod a+x /opt/t2d/websocketd'
+
+    - name: Starting websocketd in background.
+      shell: '/opt/t2d/websocketd -port=4444 tail -f /opt/t2d/log.txt &'
