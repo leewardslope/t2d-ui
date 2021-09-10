@@ -109,9 +109,9 @@ const AppItem = props => {
           `${process.env.REACT_APP_BASE_URL}/api/build/${appId}/${step}`,
           token
         );
-        console.log(check);
+
         await toast({
-          title: `${check.data.message}`,
+          title: `${check.data.message || check.data}`,
           status: 'success',
           position: 'top',
           isClosable: true,
