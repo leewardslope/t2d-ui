@@ -176,7 +176,6 @@ export const establishConnection = async (req, res, next) => {
   const serverKey = user.keys[0];
   // const env = await Env.findOne({ appID: appId });
   await checkSSH(serverKey.host, socket, res, req, next);
-  await sendEssentials(serverKey.host, socket, res, req, next);
 };
 
 export const send = async (req, res, next) => {
