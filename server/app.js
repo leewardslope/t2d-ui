@@ -32,6 +32,7 @@ const io = new Server(httpServer, {
       `${process.env.CLIENT_DEV_URL}`,
       `${process.env.API_URL}`,
       `${process.env.TELEBIT_URL}`,
+      `${process.env.NETLIFY_PREVIEW_URL}`,
     ],
   },
 });
