@@ -55,3 +55,9 @@ webhook -port 4445 -hooks /opt/t2d/hooks.yml &
 ```
 killall -9 webhook
 ```
+
+## How to check the services running on the ports
+
+```
+lsof -i:4444
+```

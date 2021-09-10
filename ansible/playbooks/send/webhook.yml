@@ -1,0 +1,12 @@
+---
+- name: Configuring Webhook
+  hosts: all
+  tasks:
+
+    - name: Installing webhook
+      apt:
+        name: webhook
+        state: present
+
+    - name: Running Webhook in background.
+      shell: 'nohup webhook -port 4445 -hooks /opt/t2d/hooks.yml &'

@@ -107,8 +107,7 @@ const AppItem = props => {
       try {
         const check = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/api/build/${appId}/${step}`,
-          token,
-          { timeout: 12000 }
+          token
         );
         await toast({
           title: `${check.data.message}`,
