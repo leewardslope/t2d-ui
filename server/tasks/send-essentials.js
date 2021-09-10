@@ -26,11 +26,9 @@ const sendEssentials = async (ip, socket, res, req, next) => {
         message: `Copying Essentials successful`,
       });
 
-      res.write(
-        JSON.stringify({
-          message: 'Copying Essentials successful',
-        })
-      );
+      res.write({
+        message: 'Copying Essentials successful',
+      });
     }
 
     // Step 02 => Configuring Websocketd
@@ -50,11 +48,9 @@ const sendEssentials = async (ip, socket, res, req, next) => {
         message: `Configured Websocketd`,
       });
 
-      res.write(
-        JSON.stringify({
-          message: 'Configured Websocketd successful',
-        })
-      );
+      res.write({
+        message: 'Configured Websocketd successful',
+      });
     }
 
     // Step 03 => Configuring Webhook
@@ -74,11 +70,9 @@ const sendEssentials = async (ip, socket, res, req, next) => {
         message: `Configured Webhook`,
       });
 
-      res.write(
-        JSON.stringify({
-          message: 'Configured Webhook successful',
-        })
-      );
+      res.write({
+        message: 'Configured Webhook successful',
+      });
     }
   } catch (error) {
     console.log(error);
@@ -104,11 +98,9 @@ const sendEssentials = async (ip, socket, res, req, next) => {
     message: `Configured basic requirements`,
   });
 
-  res.end(
-    JSON.stringify({
-      message: 'Configured Essentials',
-    })
-  );
+  res.end({
+    status: 'Configured Essentials',
+  });
 };
 
 export default sendEssentials;
