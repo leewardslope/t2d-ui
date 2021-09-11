@@ -2,5 +2,5 @@
 - hosts: all
   tasks:
     - name: create an app
-      shell: dokku apps:create {{ appTitle }} > /opt/t2d/log.txt
+      shell: dokku apps:create {{ appTitle }} > /var/lib/dokku/data/storage/t2d
 
