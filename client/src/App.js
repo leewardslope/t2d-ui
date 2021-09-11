@@ -32,6 +32,7 @@ import { AuthContext } from './shared/context/auth-context';
 import useAuth from './shared/hooks/auth-hook';
 
 import ShowComponents from './ui-elements/v1-components/ShowComponents';
+import Home from './user/pages/Home';
 
 function App() {
   const { userId, token, login, logout } = useAuth();
@@ -73,7 +74,7 @@ function App() {
           <ShowComponents></ShowComponents>
         </Route>
         <Route path="/" exact>
-          <Users />
+          <Home />
         </Route>
         <Route path="/:userId/apps" exact>
           <UserApps />
@@ -86,9 +87,6 @@ function App() {
       </Switch>
     );
   }
-
-  // value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
-  // value={{ isLoggedIn, login, logout }}>
 
   return (
     <ChakraProvider theme={theme}>
@@ -103,7 +101,6 @@ function App() {
       >
         <Router>
           <MainNavigation body={routes} />
-          {/* App -> Main Navigation -> Main Header -> Sidebar -> body*/}
         </Router>
       </AuthContext.Provider>
     </ChakraProvider>
