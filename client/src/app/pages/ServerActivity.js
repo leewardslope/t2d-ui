@@ -3,7 +3,7 @@ import React from 'react';
 const ServerActivity = () => {
   const userIP = '134.209.153.62';
 
-  var ws = new WebSocket(`ws://${userIP}:4444/'`);
+  var ws = new WebSocket(`wss://${userIP}:4444/'`);
   // const [log, setLog] = useState('loading ...');
 
   ws.onopen = function () {
