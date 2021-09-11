@@ -3,7 +3,7 @@ import React from 'react';
 const ServerActivity = () => {
   const userWebsocketdURL = 't2d.leewardslope.com'; //Just a placeholder, later it will be unique for each user and with their URL.
 
-  var ws = new WebSocket(`wss://${userWebsocketdURL}'`);
+  var ws = new WebSocket(`wss://${userWebsocketdURL}`);
   // const [log, setLog] = useState('loading ...');
 
   ws.onopen = function () {
