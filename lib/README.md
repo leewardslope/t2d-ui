@@ -24,6 +24,10 @@ chmod +x /opt/t2d/websocketd
 /opt/t2d/websocketd -port=4444 tail -f /opt/t2d/log.txt &
 ```
 
+```
+/opt/t2d/websocketd --port=4444 --ssl --sslcert=/opt/t2d/cert.pem --sslkey=/opt/t2d/server.key tail -f /opt/t2d/log.txt
+```
+
 #### Stop
 
 ```
@@ -60,4 +64,21 @@ killall -9 webhook
 
 ```
 lsof -i:4444
+```
+
+---
+
+# Self Signed SSL manually.
+
+```
+openssl genrsa -out server.key 2048
+openssl rsa -in server.key -out server.key
+openssl req -sha256 -new -key server.key -out server.csr -subj '/CN=localhost'
+openssl x509 -req -sha256 -days 365 -in server.csr -signkey server.key -out server.crt
+```
+
+If we need `pem` file
+
+```
+cat server.crt server.key > cert.pem
 ```
