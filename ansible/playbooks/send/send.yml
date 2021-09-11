@@ -15,6 +15,7 @@
         - websocketd
         - hooks.yml
         - log.txt
+        - docker/Dockerfile
 
     - name: Firewall allow port for ssh, web(http, https), t2d services
       ufw:
