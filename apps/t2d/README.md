@@ -17,10 +17,12 @@ sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
 
 ```
 dokku apps:create t2d
-docker build -t dokku/t2d /opt/t2d/Dockerfile
+docker build -t dokku/t2d /opt/t2d
 dokku domains:set t2d t2d-${userID}.leewardslope.com
 dokku proxy:ports-set t2d http:80:4445 https:443:4445
 ```
+
+<!-- dokku proxy:ports-set t2d http:80:4445 https:443:4445 https:3000:3000 https:4444:4444 -->
 
 ## Mounting storage
 
@@ -28,7 +30,7 @@ dokku proxy:ports-set t2d http:80:4445 https:443:4445
 mkdir /var/lib/dokku/data/storage/t2d
 cp -r /opt/t2d /var/lib/dokku/data/storage
 chown dokku:dokku /var/lib/dokku/data/storage/t2d
-dokku storage:mount t2d-shell /var/lib/dokku/data/storage/t2d:/usr/src/app
+dokku storage:mount t2d /var/lib/dokku/data/storage/t2d:/usr/src/app
 ```
 
 ## Enabling ssl for wss
@@ -49,3 +51,13 @@ dokku tags:deploy t2d latest
 ## usage
 
 use this app-url => `wss://t2d-${userID}.leewardslope.com` in serverActivity, to display the activity of the users dokku instance.
+
+## Working websocketd config
+
+```
+DOKKU_APP_RESTORE:        1
+DOKKU_DOCKERFILE_PORTS:   4445/tcp
+DOKKU_LETSENCRYPT_EMAIL:  admin@leewardslope.com
+DOKKU_PROXY_PORT_MAP:     http:80:4445 https:443:4445
+DOKKU_PROXY_SSL_PORT:     443
+```
