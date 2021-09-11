@@ -16,14 +16,16 @@
         - hooks.yml
         - log.txt
 
-    - name: Making sure SSH connection is not disturbed
-      ufw:
-        rule: allow
-        name: OpenSSH
-
-    - name: Firewall allow port range 4440-4450
+    - name: Firewall allow port for ssh, web(http, https), t2d services
       ufw:
         state: enabled
         rule: allow
-        port: 4440:4450
+        port: "{{ item }}"
         proto: tcp
+        with_items:
+          - 22
+          - 80
+          - 443
+          - 4443
+          - 4444
+          - 4445
