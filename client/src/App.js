@@ -31,8 +31,8 @@ import Setup from './ssh/Setup';
 import { AuthContext } from './shared/context/auth-context';
 import useAuth from './shared/hooks/auth-hook';
 
-import ShowComponents from './ui-elements/v1-components/ShowComponents';
 import Home from './user/pages/Home';
+import { THEME } from './theme';
 
 function App() {
   const { userId, token, login, logout } = useAuth();
@@ -44,9 +44,6 @@ function App() {
       <Switch>
         <Route path="/" exact>
           <Users />
-        </Route>
-        <Route path="/ajit" exact>
-          <ShowComponents></ShowComponents>
         </Route>
         <Route path="/setup" exact>
           <Setup />
@@ -70,9 +67,6 @@ function App() {
   } else {
     routes = (
       <Switch>
-        <Route path="/ajit" exact>
-          <ShowComponents></ShowComponents>
-        </Route>
         <Route path="/" exact>
           <Home />
         </Route>
@@ -89,7 +83,7 @@ function App() {
   }
 
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={THEME}>
       <AuthContext.Provider
         value={{
           isLoggedIn: !!token,

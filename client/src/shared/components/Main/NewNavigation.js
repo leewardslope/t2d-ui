@@ -11,6 +11,7 @@ import {
   useDisclosure,
   Button,
   Image,
+  Container
 } from '@chakra-ui/react';
 
 import { useViewportScroll } from 'framer-motion';
@@ -44,121 +45,123 @@ export default function Header(props) {
 
   return (
     <React.Fragment>
+
+
       <chakra.header
         ref={ref}
         shadow={y > height ? 'sm' : undefined}
         transition="box-shadow 0.2s"
         bg={bg}
-        borderTop="6px solid"
         borderTopColor="teal.400"
         w="full"
         overflowY="hidden"
-        borderBottomWidth={2}
-        borderBottomColor={useColorModeValue('gray.200', 'gray.900')}
+        boxShadow="base"
       >
-        <chakra.div h="3.5rem" mx="8">
-          <Flex
-            w="full"
-            h="full"
-            // px="4"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Flex align="flex-start">
-              <Link to="/">
-                <HStack>
-                  <Image width="10" src="/logo.svg"></Image>
-                </HStack>
-              </Link>
-            </Flex>
-            <Flex>
-              <HStack spacing="5" display={{ base: 'none', md: 'flex' }}>
-                {!auth.isLoggedIn && (
-                  <Popover>
-                    <PopoverTrigger>
-                      <Button
-                        bg={bg}
-                        color="gray.500"
-                        display="inline-flex"
-                        alignItems="center"
-                        fontSize="md"
-                        _hover={{ color: cl }}
-                        _focus={{ boxShadow: 'none' }}
-                        rightIcon={<IoIosArrowDown />}
+        <Container paddingY="1" maxW="container.xl">
+          <chakra.div h="3.5rem" mx="8">
+            <Flex
+              w="full"
+              h="full"
+              // px="4"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Flex align="flex-start">
+                <Link to="/">
+                  <HStack>
+                    <Image width="10" src="/logo.svg"></Image>
+                  </HStack>
+                </Link>
+              </Flex>
+              <Flex>
+                <HStack spacing="5" display={{ base: 'none', md: 'flex' }}>
+                  {!auth.isLoggedIn && (
+                    <Popover>
+                      <PopoverTrigger>
+                        <Button
+                          bg={bg}
+                          color="gray.500"
+                          display="inline-flex"
+                          alignItems="center"
+                          fontSize="md"
+                          _hover={{ color: cl }}
+                          _focus={{ boxShadow: 'none' }}
+                          rightIcon={<IoIosArrowDown />}
+                        >
+                          Features
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        w="100vw"
+                        maxW="md"
+                        _focus={{ boxShadow: 'md' }}
                       >
-                        Features
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      w="100vw"
-                      maxW="md"
-                      _focus={{ boxShadow: 'md' }}
+                        <Features />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                  {!auth.isLoggedIn && (
+                    <Button
+                      bg={bg}
+                      color="gray.500"
+                      display="inline-flex"
+                      alignItems="center"
+                      fontSize="md"
+                      _hover={{ color: cl }}
+                      _focus={{ boxShadow: 'none' }}
                     >
-                      <Features />
-                    </PopoverContent>
-                  </Popover>
-                )}
-                {!auth.isLoggedIn && (
-                  <Button
-                    bg={bg}
-                    color="gray.500"
-                    display="inline-flex"
-                    alignItems="center"
-                    fontSize="md"
-                    _hover={{ color: cl }}
-                    _focus={{ boxShadow: 'none' }}
-                  >
-                    Blog
-                  </Button>
-                )}
-                {!auth.isLoggedIn && (
-                  <Button
-                    bg={bg}
-                    color="gray.500"
-                    display="inline-flex"
-                    alignItems="center"
-                    fontSize="md"
-                    _hover={{ color: cl }}
-                    _focus={{ boxShadow: 'none' }}
-                  >
-                    Pricing
-                  </Button>
-                )}
-              </HStack>
-            </Flex>
-            <Flex justify="flex-end" align="center" color="gray.400">
-              <HStack spacing="5" display={{ base: 'none', md: 'flex' }}>
-                {!auth.isLoggedIn && (
-                  <Link to="/auth">
-                    <Button colorScheme="teal" variant="ghost" size="sm">
-                      Sign in
+                      Blog
                     </Button>
-                  </Link>
-                )}
-                {!auth.isLoggedIn && (
-                  <Link to="/auth">
-                    <Button colorScheme="teal" variant="solid" size="sm">
-                      Sign up
+                  )}
+                  {!auth.isLoggedIn && (
+                    <Button
+                      bg={bg}
+                      color="gray.500"
+                      display="inline-flex"
+                      alignItems="center"
+                      _hover={{ color: cl }}
+                      _focus={{ boxShadow: 'none' }}
+                    >
+                      Pricing
                     </Button>
-                  </Link>
-                )}
-              </HStack>
+                  )}
+                </HStack>
+              </Flex>
+              <Flex justify="flex-end" align="center" color="gray.400">
+                <HStack spacing="5" display={{ base: 'none', md: 'flex' }}>
+                  {!auth.isLoggedIn && (
+                    <Link to="/auth">
+                      <Button colorScheme="teal" variant="ghost" size="md">
+                        Sign in
+                      </Button>
+                    </Link>
+                  )}
+                  {!auth.isLoggedIn && (
+                    <Link to="/auth">
+                      <Button colorScheme="teal" variant="solid" size="md">
+                        Sign up
+                      </Button>
+                    </Link>
+                  )}
+                </HStack>
 
-              <IconButton
-                isRound="true"
-                display={{ base: 'flex', md: 'none' }}
-                aria-label="Open menu"
-                fontSize="20px"
-                color={useColorModeValue('gray.800', 'inherit')}
-                variant="ghost"
-                icon={<AiOutlineMenu />}
-                onClick={mobileNav.onOpen}
-              />
+                <IconButton
+                  isRound="true"
+                  display={{ base: 'flex', md: 'none' }}
+                  aria-label="Open menu"
+                  fontSize="20px"
+                  color={useColorModeValue('gray.800', 'inherit')}
+                  variant="ghost"
+                  icon={<AiOutlineMenu />}
+                  onClick={mobileNav.onOpen}
+                />
+              </Flex>
             </Flex>
-          </Flex>
-          {MobileNavContent(mobileNav)}
-        </chakra.div>
+            {MobileNavContent(mobileNav)}
+          </chakra.div>
+        </Container>
       </chakra.header>
+
     </React.Fragment>
   );
 }

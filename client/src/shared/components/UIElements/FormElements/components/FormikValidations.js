@@ -8,6 +8,17 @@ export function validateRequire(value) {
   return error;
 }
 
+export function validateConfirmPassword(value, password) {
+  let error;
+  if (!value) {
+    error = 'Required';
+  } else if (value !== password) {
+    error = "Passwords don't match";
+  }
+  return error;
+}
+
+
 export function validateName(value) {
   let error;
   if (!value) {
@@ -35,7 +46,7 @@ export function validatePassword(value) {
   if (!value) {
     error = 'Required';
   } else if (value.length <= 7) {
-    error = 'minimum 8 letters';
+    error = 'Password should be minimum 8 letters';
   }
   return error;
 }
