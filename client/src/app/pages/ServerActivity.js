@@ -12,7 +12,7 @@ const ServerActivity = () => {
     };
 
     ws.onmessage = function (event) {
-      setLog((log) => event.data + '<br>' + log)
+      setLog((log) => log + '<br>' + event.data)
       console.log(event.data)
     };
     return () => {

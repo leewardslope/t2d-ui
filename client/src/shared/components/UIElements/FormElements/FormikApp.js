@@ -3,10 +3,13 @@ import {
   Button,
   VStack,
   Flex,
-  Spacer,
   Heading,
   useToast,
+  SimpleGrid,
+  useBreakpointValue,
+
 } from '@chakra-ui/react';
+// import {useBreakpointValue} from '@chara'
 import { Formik, Form } from 'formik';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -16,6 +19,7 @@ import { validateRequire } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
 // import FormikRadio from './components/FormikRadio';
 import FormikSelect from './components/FormikSelect';
+import FormikTextArea from './components/FormikTextArea';
 
 const FormikApp = () => {
   const toast = useToast();
@@ -23,6 +27,7 @@ const FormikApp = () => {
 
   const history = useHistory();
   const redirectTo = `/${auth.userId}/apps`;
+  const buttonSize = useBreakpointValue(['100%', '80%', '50%', '30%'])
 
   return (
     <Formik
@@ -69,36 +74,32 @@ const FormikApp = () => {
     >
       {props => (
         <Form>
+
           <Flex>
-            <Spacer />
             <VStack
-              p="4"
-              m="8"
-              boxShadow="md"
-              // borderColor="gray.200"
-              // borderWidth="2px"
-              borderRadius="xl"
-              // w="50%"
-              w="500px"
-              // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
-              alignItems="stretch"
+              marginY="3"
+              maxWidth="1100px"
+              w="100%"
+              marginX="auto"
+              spacing="6"
+            // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
             >
-              <Heading align="center" size="lg">
-                New App
+              <Heading marginY="5" size="lg">
+                Create New App
               </Heading>
+              <SimpleGrid mt="8" columns={[1, 1, 1, 2]} spacing="4" width="full">
+                <FormikInput
+                  validation={validateRequire}
+                  uniqueField="title"
+                  label="App Name"
+                  placeholder="Name your App"
+                  formHelper=""
+                />
 
-              <FormikInput
-                validation={validateRequire}
-                uniqueField="title"
-                label="App Name"
-                placeholder="Name your App"
-                formHelper=""
-              />
-
-              {/* <Field type="radio" name="picked" value="One" />
+                {/* <Field type="radio" name="picked" value="One" />
               <Field type="radio" name="picked" value="Two" /> */}
 
-              {/* <FormikRadio
+                {/* <FormikRadio
                 uniqueField="app"
                 label="Choose an App"
                 radioValues={['Forem', 'Wordpress']}
@@ -106,48 +107,46 @@ const FormikApp = () => {
                 formHelper="Choose an App to install in your server"
               /> */}
 
-              <FormikSelect
-                validation={validateRequire}
-                uniqueField="app"
-                label="Choose an App"
-                placeholder="Choose an App"
-                options={['Forem', 'Wordpress']}
-                formHelper="Choose an App to install on your server"
-              />
+                <FormikSelect
+                  validation={validateRequire}
+                  uniqueField="app"
+                  label="Choose an App"
+                  placeholder="Choose an App"
+                  options={['Forem', 'Wordpress']}
+                />
+                <FormikInput
+                  validation={validateRequire}
+                  uniqueField="domain"
+                  label="Domain Name"
+                  placeholder="https://app.example.com"
+                  formHelper="If not provided, we will create a subdomain for you"
+                />
+                <FormikInput
+                  // validation={validateRequire}
+                  uniqueField="repo"
+                  label="Github Repo"
+                  placeholder="https://github.com/username/projectname"
+                  formHelper="If not provided, we will default it to official repo"
+                />
+              </SimpleGrid>
 
-              <FormikInput
+              <FormikTextArea
                 validation={validateRequire}
                 uniqueField="description"
                 label="Description"
-                placeholder="Let's Rock and Roll"
+
                 formHelper=""
               />
-
-              <FormikInput
-                validation={validateRequire}
-                uniqueField="domain"
-                label="Domain Name"
-                placeholder="https://app.example.com"
-                formHelper="If not provided, we will create a subdomain for you"
-              />
-
-              <FormikInput
-                // validation={validateRequire}
-                uniqueField="repo"
-                label="Github Repo"
-                placeholder="https://github.com/username/projectname"
-                formHelper="If not provided, we will default it to official repo"
-              />
-
-              <Button
-                colorScheme="teal"
-                isLoading={props.isSubmitting}
-                type="submit"
-              >
-                Submit
-              </Button>
+                <Button
+                  colorScheme="teal"
+                  isLoading={props.isSubmitting}
+                  type="submit"
+                  width={buttonSize}
+                  mt="8"
+                >
+                  Submit
+                </Button>
             </VStack>
-            <Spacer />
           </Flex>
         </Form>
       )}

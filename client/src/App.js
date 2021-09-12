@@ -20,7 +20,7 @@ import {
 
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 
-import Users from './user/pages/Users';
+// import Users from './user/pages/Users';
 import NewApp from './app/pages/NewApp';
 import UserApps from './app/pages/UserApps';
 import ServerActivity from './app/pages/ServerActivity';
@@ -33,6 +33,7 @@ import useAuth from './shared/hooks/auth-hook';
 
 import Home from './user/pages/Home';
 import { THEME } from './theme';
+import DashboardBody from './user/pages/Dashboard';
 
 function App() {
   const { userId, token, login, logout } = useAuth();
@@ -43,7 +44,7 @@ function App() {
     routes = (
       <Switch>
         <Route path="/" exact>
-          <Users />
+          <DashboardBody />
         </Route>
         <Route path="/setup" exact>
           <Setup />

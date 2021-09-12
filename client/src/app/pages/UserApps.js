@@ -22,7 +22,8 @@ const UserApps = props => {
         const getData = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/api/apps/user/${userId}/`
         );
-        setLoadedApps(getData.data.apps);
+        setLoadedApps(getData.data.apps || []);
+
       } catch (error) {
         toast({
           title: `${error.response.data.message}`,

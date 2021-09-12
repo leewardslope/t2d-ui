@@ -7,15 +7,13 @@ const InfoCard = props => {
       <VStack
         mx="4"
         my="2"
-        p="2"
+        p="10"
         // w="100%"
         // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '20vw' }}
         alignItems="stretch"
-        boxShadow="base"
         borderColor="gray.400"
         borderRadius="xl"
         _hover={{
-          boxShadow: 'md',
           borderRadius: 'xl',
           borderColor: 'grey.800',
         }}

@@ -57,15 +57,15 @@ const Dashboard = () => {
                 Activity
               </Tab>
             </NavLink>
-            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
+            {/* <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
               Settings
-            </Tab>
-            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
+            </Tab> */}
+            {/* <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
               Billing
             </Tab>{' '}
             <Tab isDisabled py={4} m={0}>
               Advanced
-            </Tab>
+            </Tab> */}
           </TabList>
         </Tabs>
       </Flex>

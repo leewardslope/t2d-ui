@@ -186,7 +186,7 @@ export default function Swibc(props) {
           </InputGroup> */}
           <Link to="/app/new">
             <Box>
-              <Button color="teal" variant="ghost"  m={2}>Create New App</Button>
+              <Button color="teal" variant="ghost"  m={2}> + Create new app</Button>
             </Box>
           </Link>
 
@@ -214,7 +214,7 @@ export default function Swibc(props) {
                   variant="solid"
                   size="sm"
                 >
-                  Sign Out
+                  Sign Oubt
                 </MenuItem>
               </MenuList>
             </Menu>

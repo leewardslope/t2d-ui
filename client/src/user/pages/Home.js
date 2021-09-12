@@ -12,7 +12,7 @@ import {
     Container,
 } from "@chakra-ui/react"
 
-export default function Hero({
+export default function Home({
     title,
     subtitle,
     image,
@@ -86,7 +86,7 @@ export default function Hero({
     )
 }
 
-Hero.propTypes = {
+Home.propTypes = {
     title: PropTypes.string,
     subtitle: PropTypes.string,
     image: PropTypes.string,
@@ -94,7 +94,7 @@ Hero.propTypes = {
     ctaLink: PropTypes.string,
 }
 
-Hero.defaultProps = {
+Home.defaultProps = {
     title: "Get your own forem in minutes",
     subtitle:
         "Do you want to create a community don't worry about software worry about the commutnity",

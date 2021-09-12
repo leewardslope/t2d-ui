@@ -6,6 +6,8 @@ import {
   Spacer,
   Heading,
   useToast,
+  useBreakpointValue,
+  SimpleGrid
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
 import axios from 'axios';
@@ -19,6 +21,8 @@ import FormikInput from './components/FormikInput';
 const FormikSSH = () => {
   const toast = useToast();
   const auth = useContext(AuthContext);
+  const buttonSize = useBreakpointValue(['100%', '80%','50%','30%'])
+
 
   const history = useHistory();
   // const redirectTo = `/${auth.userId}/apps`;
@@ -71,21 +75,16 @@ const FormikSSH = () => {
           <Flex>
             <Spacer />
             <VStack
-              p="4"
-              m="8"
-              boxShadow="md"
-              // borderColor="gray.200"
-              // borderWidth="2px"
-              borderRadius="xl"
-              // w="50%"
-              w="500px"
-              // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
-              alignItems="stretch"
+              marginY="3"
+              maxWidth="1100px"
+              w="100%"
+              marginX="auto"
+              spacing="5"
             >
-              <Heading align="center" size="lg">
+              <Heading marginY="5" size="lg">
                 Add SSH Key
               </Heading>
-
+              <SimpleGrid mt="8" columns={[1, 1, 1, 2]} spacing="4" width="full">
               <FormikInput
                 validation={validateRequire}
                 uniqueField="username"
@@ -109,6 +108,7 @@ const FormikSSH = () => {
                 placeholder="Name your SSH Key"
                 formHelper="Any Name, this will be useful when managing multiple keys"
               />
+              </SimpleGrid>
 
               {/* <Field type="radio" name="picked" value="One" />
               <Field type="radio" name="picked" value="Two" /> */}
@@ -133,6 +133,8 @@ const FormikSSH = () => {
                 colorScheme="teal"
                 isLoading={props.isSubmitting}
                 type="submit"
+                width={buttonSize}
+                mt="8"  
               >
                 Submit
               </Button>
