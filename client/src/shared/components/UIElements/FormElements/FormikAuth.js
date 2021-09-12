@@ -5,8 +5,6 @@ import {
   Flex,
   Spacer,
   Heading,
-  Divider,
-  Box,
   useToast,
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
