@@ -12,7 +12,8 @@ const encrypt = new Cryptr(process.env.CRYPTR_SECRET);
 
 export const getKeys = async (req, res, next) => {
   try {
-    const config = await Ssh.findById(req.userData.userId);
+    // const config = await Ssh.findById(req.userData.userId);
+    const config = await Ssh.findOne({ creator: req.userData.userId });
     res.json(config);
   } catch (error) {
     console.log(error);
@@ -68,7 +69,7 @@ export const postKeys = async (req, res, next) => {
 
 export const updateKeys = async (req, res, next) => {
   try {
-    const config = await Ssh.findById(req.userData.userId);
+    const config = await Ssh.findOne({ creator: req.userData.userId });
     res.json(config);
   } catch (error) {
     console.log(error);
@@ -82,6 +83,7 @@ export const deleteKeys = async (req, res, next) => {
 
   let key;
   try {
+    // const config = await Ssh.findOne({ creator: req.userData.userId });
     key = await Ssh.findById(keyId).populate('creator'); // in order to use populate we need to configure ref first
   } catch (err) {
     return next(

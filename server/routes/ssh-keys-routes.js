@@ -34,6 +34,6 @@ router.patch(
   updateKeys
 );
 
-router.delete('/update', deleteKeys);
+router.delete('/delete', deleteKeys);
 
 export default router;
