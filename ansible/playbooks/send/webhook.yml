@@ -9,4 +9,4 @@
         state: present
 
     - name: Running Webhook in background.
-      shell: 'webhook -port 4445 -hooks /opt/t2d/hooks.yml > /opt/t2d/webhook.log &'
+      shell: 'nohup webhook -port 4445 -hooks /opt/t2d/hooks.yml > /opt/t2d/webhook.log &'
