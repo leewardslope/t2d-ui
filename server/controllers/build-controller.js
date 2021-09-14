@@ -178,24 +178,26 @@ export const establishConnection = async (req, res, next) => {
   await checkSSH(serverKey.host, socket, res, req, next);
 };
 
-export const send = async (req, res, next) => {
-  const socket = req.app.get('socket');
-  // I can also, simple use this => checkSSH();
-  const appId = req.params.aid;
-  const userId = req.userData.userId;
-  socket.emit(`server-notification-${appId}`, {
-    message: `Configuring Basic Essentials`,
-  });
+// For now, I clubbed this dokku installation; as later I will move this and start installing during server setup.
 
-  socket.emit(`server-notification-msg-${appId}`, {
-    message: `Configuring Basic Essentials`,
-  });
+// export const send = async (req, res, next) => {
+//   const socket = req.app.get('socket');
+//   // I can also, simple use this => checkSSH();
+//   const appId = req.params.aid;
+//   const userId = req.userData.userId;
+//   socket.emit(`server-notification-${appId}`, {
+//     message: `Configuring Basic Essentials`,
+//   });
 
-  const user = await User.findById(userId).populate('keys');
-  const serverKey = user.keys[0];
+//   socket.emit(`server-notification-msg-${appId}`, {
+//     message: `Configuring Basic Essentials`,
+//   });
 
-  await sendEssentials(serverKey.host, socket, res, req, next);
-};
+//   const user = await User.findById(userId).populate('keys');
+//   const serverKey = user.keys[0];
+
+//   await sendEssentials(serverKey.host, socket, res, req, next);
+// };
 
 export const installDokku = async (req, res, next) => {
   const appId = req.params.aid;
@@ -207,6 +209,12 @@ export const installDokku = async (req, res, next) => {
   const user = await User.findById(userId).populate('keys');
   const serverKey = user.keys[0];
   const env = await Env.findOne({ appID: appId });
+
+  res.status(200).json({
+    message: `It might take upto 30-45 minutes, so keep an eye at logs and activity for more info`,
+  });
+
+  await sendEssentials(serverKey.host, socket, res, req, next);
 
   // SSH Details
   const sshconfig = {
@@ -231,9 +239,7 @@ export const installDokku = async (req, res, next) => {
     socket.emit(`server-notification-msg-${appId}`, {
       message: `It might take upto 5 to 10 minutes to install dokku`,
     });
-    res.status(200).json({
-      message: `It might take upto 5 to 10 minutes to install dokku`,
-    });
+
     installingDokku(serverKey.host, res, req, next, socket, appId, app, env);
   } else {
     socket.emit(`server-notification-msg-${appId}`, {
