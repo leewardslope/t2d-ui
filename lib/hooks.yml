@@ -5,9 +5,16 @@
     - source: string
       name: apps:list
   trigger-rule:
-    match:
-      type: ip-whitelist
-      ip-range: 75.119.143.54/32
+    or:
+      - match:
+          type: ip-whitelist
+          ip-range: 75.119.143.54/32
+      - match:
+          type: value
+          value: 't2d'
+          parameter:
+            source: url
+            name: token
 
 - id: config
   execute-command: dokku
@@ -18,9 +25,16 @@
     - source: url
       name: app
   trigger-rule:
-    match:
-      type: ip-whitelist
-      ip-range: 75.119.143.54/32
+    or:
+      - match:
+          type: ip-whitelist
+          ip-range: 75.119.143.54/32
+      - match:
+          type: value
+          value: 't2d'
+          parameter:
+            source: url
+            name: token
 
 - id: dokku
   execute-command: dokku
@@ -35,6 +49,13 @@
     - source: url
       name: arg2
   trigger-rule:
-    match:
-      type: ip-whitelist
-      ip-range: 75.119.143.54/32
+    or:
+      - match:
+          type: ip-whitelist
+          ip-range: 75.119.143.54/32
+      - match:
+          type: value
+          value: 't2d'
+          parameter:
+            source: url
+            name: token
