@@ -16,5 +16,5 @@ EXPOSE 4444
 # EXPOSE 4444
 # CMD [ "webhook", "-port", "4444", "-hooks", "hooks.yml", "&" ]
 
-CMD ./websocketd --port=4444 tail -f log.txt
+CMD nohup ./websocketd --port=4444 tail -f log.txt
 # CMD [ "./websocketd" "--port=4445" "tail" "-f" "log.txt" ]
