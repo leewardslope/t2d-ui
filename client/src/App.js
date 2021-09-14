@@ -86,6 +86,8 @@ function App() {
   return (
     <ChakraProvider theme={THEME}>
       <AuthContext.Provider
+        // value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+        // value={{ isLoggedIn, login, logout }}>
         value={{
           isLoggedIn: !!token,
           token: token,
@@ -96,6 +98,7 @@ function App() {
       >
         <Router>
           <MainNavigation body={routes} />
+          {/* App -> Main Navigation -> Main Header -> Sidebar -> body*/}
         </Router>
       </AuthContext.Provider>
     </ChakraProvider>
