@@ -4,8 +4,11 @@
   tasks:
     - name: Create t2d directory
       file:
-        path: /opt/t2d
+        path: "{{ item }}"
         state: directory
+      with_items:
+        - /opt/t2d
+        - /opt/t2d/docker
 
     - name: Uploading files to users server
       copy:
@@ -23,10 +26,10 @@
         rule: allow
         port: "{{ item }}"
         proto: tcp
-        with_items:
-          - 22
-          - 80
-          - 443
-          - 4443
-          - 4444
-          - 4445
+      with_items:
+        - 22
+        - 80
+        - 443
+        - 4443
+        - 4444
+        - 4445
