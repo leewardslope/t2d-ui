@@ -19,7 +19,7 @@ sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
 dokku apps:create t2d
 docker build -t dokku/t2d /opt/t2d
 dokku domains:set t2d t2d-${userID}.leewardslope.com
-dokku proxy:ports-set t2d http:80:4445 https:443:4445
+dokku proxy:ports-set t2d http:80:4444 https:443:4444
 ```
 
 <!-- dokku proxy:ports-set t2d http:80:4445 https:443:4445 https:3000:3000 https:4444:4444 -->
@@ -56,8 +56,8 @@ use this app-url => `wss://t2d-${userID}.leewardslope.com` in serverActivity, to
 
 ```
 DOKKU_APP_RESTORE:        1
-DOKKU_DOCKERFILE_PORTS:   4445/tcp
+DOKKU_DOCKERFILE_PORTS:   4444/tcp
 DOKKU_LETSENCRYPT_EMAIL:  admin@leewardslope.com
-DOKKU_PROXY_PORT_MAP:     http:80:4445 https:443:4445
+DOKKU_PROXY_PORT_MAP:     http:80:4444 https:443:4444
 DOKKU_PROXY_SSL_PORT:     443
 ```
