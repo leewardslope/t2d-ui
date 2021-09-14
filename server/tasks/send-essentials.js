@@ -7,8 +7,12 @@ const execAsync = util.promisify(exec);
 
 const sendEssentials = async (ip, socket, res, req, next) => {
   const appId = req.params.aid;
+
+  socket.emit(`server-notification-msg-${appId}`, {
+    message: `Configuring Basic Essentials`,
+  });
   try {
-    res.set('Content-Type', 'application/json; charset=utf-8');
+    // res.set('Content-Type', 'application/json; charset=utf-8');
 
     // Step 01 => Sending Files
     const send = await execAsync(
@@ -26,8 +30,6 @@ const sendEssentials = async (ip, socket, res, req, next) => {
       socket.emit(`server-notification-msg-${appId}`, {
         message: `Copying Essentials successful`,
       });
-
-      res.write('Copying Essentials, ');
     }
 
     // Step 02 => Configuring Websocketd
@@ -46,8 +48,6 @@ const sendEssentials = async (ip, socket, res, req, next) => {
       socket.emit(`server-notification-msg-${appId}`, {
         message: `Configured Websocketd`,
       });
-
-      res.write('Websocketd, ');
     }
 
     // Step 03 => Configuring Webhook
@@ -67,7 +67,8 @@ const sendEssentials = async (ip, socket, res, req, next) => {
         message: `Configured Webhook`,
       });
 
-      res.write('and Webhook ');
+      // res.status(202).write('and Webhook ');
+      // res.status(202);
     }
   } catch (error) {
     console.log(error);
@@ -86,14 +87,18 @@ const sendEssentials = async (ip, socket, res, req, next) => {
       )
     );
   }
-  socket.emit(`server-notification-${appId}`, {
-    message: `Configured basic requirements`,
-  });
-  socket.emit(`server-notification-msg-${appId}`, {
+
+  await socket.emit(`server-notification-${appId}`, {
     message: `Configured basic requirements`,
   });
 
-  res.end('successfully');
+  await socket.emit(`server-notification-msg-${appId}`, {
+    message: `Configured basic requirements`,
+  });
+
+  // res.status(200).json({
+  //   message: 'Configured basic requirements',
+  // });
 };
 
 export default sendEssentials;

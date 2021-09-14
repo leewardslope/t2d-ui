@@ -204,6 +204,9 @@ const installForem = async (ip, res, req, next, socket, appId, app, env) => {
     installationFailed('Building App');
   }
 
+  socket.emit(`server-notification-${appId}`, {
+    message: `done`,
+  });
   socket.disconnect();
 };
 
