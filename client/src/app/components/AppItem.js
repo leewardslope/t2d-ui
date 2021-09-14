@@ -82,7 +82,9 @@ const AppItem = props => {
 
     const appId = props.id; // can be used to confirm and extract ENV data
     const token = {
-      headers: { Authorization: `Bearer ${auth.token}` },
+      headers: {
+        Authorization: `Bearer ${auth.token}`,
+      },
     };
     const socket = io(`${process.env.REACT_APP_BASE_URL}/`);
 
@@ -91,6 +93,9 @@ const AppItem = props => {
     });
 
     await socket.on(`server-notification-${appId}`, notification => {
+      if (notification.message === 'done') {
+        setIsLoading(false);
+      }
       toast({
         title: `${notification.message}`,
         status: 'info',
@@ -104,38 +109,47 @@ const AppItem = props => {
     // Base Step
     let errorOccurred = false;
     const baseStep = async step => {
+      let check;
       try {
-        const check = await axios.get(
+        check = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/api/build/${appId}/${step}`,
           token
         );
 
         await toast({
-          title: `${check.data.message || check.data}`,
+          title: `${check.data.message}`,
           status: 'success',
           position: 'top',
           isClosable: true,
         });
+
         return;
       } catch (error) {
-        toast({
-          title: `${error.response.data.message}`,
-          status: 'error',
-          position: 'top',
-          isClosable: true,
-        });
-        errorOccurred = true;
-        setIsLoading(false);
-        return error; // This will stop moving forward!
+        console.log(error);
+
+        if (error.response.data.message) {
+          setIsLoading(false);
+          toast({
+            title: `${error.response.data.message}`,
+            status: 'error',
+            position: 'top',
+            isClosable: true,
+          });
+
+          errorOccurred = true;
+          return error;
+        }
+
+        // This will stop moving forward!
       }
     };
 
     !errorOccurred && (await baseStep('check'));
     !errorOccurred && (await baseStep('connect'));
-    !errorOccurred && (await baseStep('send'));
+    // !errorOccurred && (await baseStep('send'));
     !errorOccurred && (await baseStep('dokku'));
 
-    setIsLoading(false);
+    // setIsLoading(false);
   };
 
   const btn = useDisclosure();
