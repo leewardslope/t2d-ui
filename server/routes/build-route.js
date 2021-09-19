@@ -5,7 +5,7 @@ import { check } from 'express-validator';
 import {
   checkConnection,
   establishConnection,
-  send,
+  // send,
   installDokku,
 } from '../controllers/build-controller.js';
 import checkAuth from '../middleware/check-auth.js';
@@ -15,7 +15,7 @@ const router = express.Router();
 router.use(checkAuth);
 router.get('/:aid/check', checkConnection);
 router.get('/:aid/connect', establishConnection);
-router.get('/:aid/send', send);
+// router.get('/:aid/send', send);
 router.get('/:aid/dokku', installDokku);
 
 export default router;

@@ -2,7 +2,7 @@
 - hosts: all
   tasks:
     - name: Setting domain name to the App
-      shell: dokku domains:set {{ appTitle }} {{ domainName }} > /opt/t2d/log.txt
+      shell: dokku domains:set {{ appTitle }} {{ domainName }} > /var/lib/dokku/data/storage/t2d
       ignore_errors: True
       async: 3600 # Maximum allowed time in Seconds
       poll: 10
