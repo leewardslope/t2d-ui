@@ -5,8 +5,6 @@ import {
   Flex,
   Spacer,
   Heading,
-  Divider,
-  Box,
   useToast,
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
@@ -16,6 +14,7 @@ import {
   validatePassword,
   validateEmail,
   validateName,
+  validateConfirmPassword,
 } from './components/FormikValidations';
 import FormikInput from './components/FormikInput';
 import { AuthContext } from '../../../context/auth-context';
@@ -36,14 +35,16 @@ const FormikAuth = () => {
         name: '',
         email: '',
         password: '',
+        confirmPassword: ''
       }}
       onSubmit={(values, actions) => {
         const sendDetails = async () => {
           if (isLoginMode) {
             try {
+              const { confirmPassword, ...newValues } = values;
               const receivedDetails = await axios.post(
                 `${process.env.REACT_APP_BASE_URL}/api/users/login`,
-                values
+                newValues
               );
 
               // { headers: { Authorization: `Bearer ${auth.token}` } }
@@ -111,23 +112,25 @@ const FormikAuth = () => {
     >
       {props => (
         <Form>
+          <Heading my="8" align="center" size="lg">
+            Welcome to t2d
+          </Heading>
           <Flex>
             <Spacer />
             <VStack
-              p="4"
-              m="8"
+              px="8"
+              py="12"
               boxShadow="md"
+              backgroundColor="white"
               // borderColor="gray.200"
               // borderWidth="2px"
               borderRadius="xl"
               // w="50%"
+              spacing="4"
               w="500px"
               // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
               alignItems="stretch"
             >
-              <Heading align="center" size="lg">
-                Welcome to t2d
-              </Heading>
 
               {!isLoginMode && (
                 <FormikInput
@@ -153,7 +156,15 @@ const FormikAuth = () => {
                 type="password"
                 placeholder="Enter Your Password"
               />
-
+              {!isLoginMode && (
+                <FormikInput
+                  validation={(value) => validateConfirmPassword(value, props.values.password)}
+                  uniqueField="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  placeholder="Re-enter Your Password"
+                />
+              )}
               <Button
                 colorScheme="teal"
                 isLoading={props.isSubmitting}
@@ -161,10 +172,7 @@ const FormikAuth = () => {
               >
                 {isLoginMode ? 'Sign In' : 'Sign Up'}
               </Button>
-              <Box p="2">
-                <Divider />
-              </Box>
-              <Button onClick={switchModeHandler}>
+              <Button color="teal" variant="outline" onClick={switchModeHandler}>
                 Click Here To {isLoginMode ? 'Sign Up' : 'Sign In'}
               </Button>
             </VStack>

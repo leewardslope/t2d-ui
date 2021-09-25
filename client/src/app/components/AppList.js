@@ -3,17 +3,26 @@ import InfoCard from '../../shared/components/UIElements/InfoCard';
 import { Button } from '@chakra-ui/react';
 import AppItem from './AppItem';
 import { Link } from 'react-router-dom';
+import { Box, Flex } from '@chakra-ui/layout'
 
 const AppList = props => {
-  if (!props.items || props.items.length === 0) {
+  console.log(props)
+  if (!props.items) {
+    return (
+      <Box textAlign="center" fontSize="x-large ">Loading</Box>
+    )
+  }
+  if (props.items.length === 0) {
     const anotherItem = (
-      <Link to="/app/new">
-        <Button>Create New App</Button>
-      </Link>
+      <Flex justifyContent="center">
+        <Link to="/app/new">
+          <Button color="teal" variant="link">Create New App</Button>
+        </Link>
+      </Flex>
     );
     return (
       <>
-        <InfoCard message="No Apps" anotherItem={anotherItem} />
+        <InfoCard message="No Apps found" anotherItem={anotherItem} />
       </>
     );
   }

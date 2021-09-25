@@ -1,17 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { useParams, Link, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import {
   Button,
   VStack,
-  HStack,
   Flex,
-  Spacer,
   Heading,
   useToast,
-  Divider,
   SimpleGrid,
   Box,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
 
@@ -26,6 +24,8 @@ import FormikENV from './FormikENV';
 const FormikAppUpdate = () => {
   // Getting the userId from the react routes: <Route path="/apps/:appsId" exact> from App.js
   const appId = useParams().appsId;
+  const buttonSize = useBreakpointValue(['100%', '80%', '50%', '30%'])
+
 
   const toast = useToast();
   const auth = useContext(AuthContext);
@@ -60,7 +60,7 @@ const FormikAppUpdate = () => {
   }, [toast, appId]);
 
   return (
-    <SimpleGrid columns={[1, 1, 2, 2]} spacing="0px">
+    <>
       <Formik
         enableReinitialize
         initialValues={{ ...appData }}
@@ -104,73 +104,61 @@ const FormikAppUpdate = () => {
         {props => (
           <Form>
             <Flex>
-              <Spacer />
               <VStack
-                p="4"
-                m="8"
-                boxShadow="md"
-                // borderColor="gray.200"
-                // borderWidth="2px"
-                borderRadius="xl"
-                // w="50%"
-                w="500px"
-                // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
-                alignItems="stretch"
+                marginY="3"
+                maxWidth="1100px"
+                w="100%"
+                marginX="auto"
+                spacing="6"
               >
-                <Heading align="center" size="lg">
-                  Editing App
+                <Heading marginY="5"  size="lg">
+                  Editing {appData.title}
                 </Heading>
+                <SimpleGrid mt="8" columns={[1, 1, 1, 2]} spacing="4" width="full">
+                  <FormikInput
+                    validation={validateRequire}
+                    uniqueField="title"
+                    label="App Name"
+                    placeholder={appData.title}
+                    formHelper="Place Holder contains your previous value"
+                  />
 
-                <FormikInput
-                  validation={validateRequire}
-                  uniqueField="title"
-                  label="App Name"
-                  placeholder={appData.title}
-                  formHelper="Place Holder contains your previous value"
-                />
+                  <FormikInput
+                    validation={validateRequire}
+                    uniqueField="description"
+                    label="Description"
+                    placeholder={appData.description}
+                    formHelper="Place Holder contains your previous value"
+                  />
 
-                <FormikInput
-                  validation={validateRequire}
-                  uniqueField="description"
-                  label="Description"
-                  placeholder={appData.description}
-                  formHelper="Place Holder contains your previous value"
-                />
+                  <FormikInput
+                    validation={validateRequire}
+                    uniqueField="domain"
+                    label="Domain Name"
+                    placeholder={appData.domain}
+                    formHelper="Place Holder contains your previous value"
+                  />
 
-                <FormikInput
-                  validation={validateRequire}
-                  uniqueField="domain"
-                  label="Domain Name"
-                  placeholder={appData.domain}
-                  formHelper="Place Holder contains your previous value"
-                />
+                  <FormikInput
+                    // validation={validateRequire}
+                    uniqueField="repo"
+                    label="Github URL"
+                    placeholder={appData.repo}
+                    formHelper="Place Holder contains your previous value"
+                  />
+                </SimpleGrid>
+                <Button
+                  colorScheme="teal"
+                  isLoading={props.isSubmitting}
+                  type="submit"
+                  width={buttonSize}
+                  mt='8'
 
-                <FormikInput
-                  // validation={validateRequire}
-                  uniqueField="repo"
-                  label="Github URL"
-                  placeholder={appData.repo}
-                  formHelper="Place Holder contains your previous value"
-                />
-                <Divider />
-                <HStack>
-                  <Spacer />
+                >
+                  Submit
+                </Button>
 
-                  <Link to={redirectTo}>
-                    <Button>Cancel</Button>
-                  </Link>
-                  <Spacer />
-                  <Button
-                    colorScheme="teal"
-                    isLoading={props.isSubmitting}
-                    type="submit"
-                  >
-                    Submit
-                  </Button>
-                  <Spacer />
-                </HStack>
               </VStack>
-              <Spacer />
             </Flex>
           </Form>
         )}
@@ -178,7 +166,7 @@ const FormikAppUpdate = () => {
       <Box>
         <FormikENV />
       </Box>
-    </SimpleGrid>
+    </>
   );
 };
 

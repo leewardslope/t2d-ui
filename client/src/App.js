@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChakraProvider, theme } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import {
   BrowserRouter as Router,
   Route,
@@ -20,7 +20,7 @@ import {
 
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 
-import Users from './user/pages/Users';
+// import Users from './user/pages/Users';
 import NewApp from './app/pages/NewApp';
 import UserApps from './app/pages/UserApps';
 import ServerActivity from './app/pages/ServerActivity';
@@ -31,7 +31,10 @@ import Setup from './ssh/Setup';
 import { AuthContext } from './shared/context/auth-context';
 import useAuth from './shared/hooks/auth-hook';
 
-import ShowComponents from './ui-elements/v1-components/ShowComponents';
+import Home from './user/pages/Home';
+import { THEME } from './theme';
+import DashboardBody from './user/pages/Dashboard';
+import Settings from './app/pages/Settings';
 
 function App() {
   const { userId, token, login, logout } = useAuth();
@@ -42,14 +45,15 @@ function App() {
     routes = (
       <Switch>
         <Route path="/" exact>
-          <Users />
+          <DashboardBody />
         </Route>
-        <Route path="/ajit" exact>
-          <ShowComponents></ShowComponents>
+        <Route path="/settings" exact>
+          <Settings />
         </Route>
         <Route path="/setup" exact>
           <Setup />
         </Route>
+        
         <Route path="/:userId/apps" exact>
           <UserApps />
         </Route>
@@ -62,18 +66,14 @@ function App() {
         <Route path="/apps/:appsId" exact>
           <UpdateApp />
         </Route>
-
         <Redirect to="/" />
       </Switch>
     );
   } else {
     routes = (
       <Switch>
-        <Route path="/ajit" exact>
-          <ShowComponents></ShowComponents>
-        </Route>
         <Route path="/" exact>
-          <Users />
+          <Home />
         </Route>
         <Route path="/:userId/apps" exact>
           <UserApps />
@@ -87,12 +87,11 @@ function App() {
     );
   }
 
-  // value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
-  // value={{ isLoggedIn, login, logout }}>
-
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={THEME}>
       <AuthContext.Provider
+        // value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+        // value={{ isLoggedIn, login, logout }}>
         value={{
           isLoggedIn: !!token,
           token: token,

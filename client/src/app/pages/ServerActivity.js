@@ -1,22 +1,28 @@
-import React from 'react';
+import { Box } from '@chakra-ui/layout';
+import React, { useEffect, useState } from 'react';
 
 const ServerActivity = () => {
-  const userWebsocketdURL = 't2d.leewardslope.com'; //Just a placeholder, later it will be unique for each user and with their URL.
+  const userWebsocketdURL = 't2d.leewardslope.com';
+  const [log, setLog] = useState('');
 
-  var ws = new WebSocket(`wss://${userWebsocketdURL}`);
-  // const [log, setLog] = useState('loading ...');
+  useEffect(() => {
+    var ws = new WebSocket(`wss://${userWebsocketdURL}`);
 
-  ws.onopen = function () {
-    console.log('CONNECT');
-  };
-  ws.onclose = function () {
-    console.log('DISCONNECT');
-  };
-  ws.onmessage = function (event) {
-    console.log(event.data);
-  };
+    ws.onopen = function () {
+    };
 
-  return <div>check your console log</div>;
+    ws.onmessage = function (event) {
+      setLog((log) => log + '<br>' + event.data)
+    };
+    return () => {
+      ws.onclose = function () {
+      };
+    }
+  }, []);
+
+
+
+  return <Box backgroundColor="black" color="white" borderRadius="lg" paddingX="6" paddingBottom="6"  dangerouslySetInnerHTML={{ __html: log }}></Box>;
 };
 
 export default ServerActivity;
