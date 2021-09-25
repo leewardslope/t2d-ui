@@ -10,7 +10,9 @@ import {
     Stack,
     Text,
     Container,
+    Divider
 } from "@chakra-ui/react"
+import Payment from "../components/Payment"
 
 export default function Home({
     title,
@@ -82,6 +84,8 @@ export default function Home({
                     <Image src={image} size="100%" rounded="1rem" />
                 </Box>
             </Flex>
+            <Divider/>
+            <Payment/>
         </Container>
     )
 }

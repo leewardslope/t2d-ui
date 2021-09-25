@@ -1,7 +1,7 @@
-import { Flex, Heading } from "@chakra-ui/layout"
+import { Box, Heading } from "@chakra-ui/layout"
 
 const Card = ({ children, ...restProps }) => {
-    return (<Flex
+    return (<Box
         p="4"
         boxShadow="md"
         borderRadius="md"
@@ -10,7 +10,7 @@ const Card = ({ children, ...restProps }) => {
         {...restProps}
     >
         {children}
-    </Flex>)
+    </Box>)
 }
 
 Card.Title = ({ children, ...restProps }) => {
