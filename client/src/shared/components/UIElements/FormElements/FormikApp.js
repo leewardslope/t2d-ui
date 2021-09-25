@@ -12,7 +12,7 @@ import {
 // import {useBreakpointValue} from '@chara'
 import { Formik, Form } from 'formik';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 import { AuthContext } from '../../../context/auth-context';
 import { validateRequire } from './components/FormikValidations';
@@ -26,8 +26,8 @@ const FormikApp = () => {
   const toast = useToast();
   const auth = useContext(AuthContext);
 
-  const history = useHistory();
-  const redirectTo = `/${auth.userId}/apps`;
+  // const history = useHistory();
+  // const redirectTo = `/${auth.userId}/apps`;
   const buttonSize = useBreakpointValue(['100%', '80%', '50%', '30%'])
 
   return (
