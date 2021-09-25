@@ -1,8 +1,9 @@
 // import { Button } from '@chakra-ui/button';
-import { Box, Flex, Heading, SimpleGrid } from '@chakra-ui/layout';
+import { Box,  Heading, SimpleGrid, VStack } from '@chakra-ui/layout';
 import { useToast } from '@chakra-ui/toast';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import FormikSSH from '../../shared/components/UIElements/FormElements/FormikSSH';
 import { AuthContext } from '../../shared/context/auth-context';
 
@@ -15,7 +16,7 @@ const DashboardBody = () => {
         username: '',
         sshName: '',
         identity: '',
-      })
+    })
     const toast = useToast();
     const auth = useContext(AuthContext);
     useEffect(() => {
@@ -61,37 +62,35 @@ const DashboardBody = () => {
         return (
             <>
                 <Heading size="lg" textAlign="center" my="5">Add New Apps</Heading>
-                <SimpleGrid mt="8" alignItems="center" justifyContent="center" maxWidth="1400px" marginX="auto" columns={[1, 1, 2, 3]} gap={8}>
-                    <Flex
-                        borderRadius="md"
-                        fontWeight="500"
-                        fontSize="lg"
-                        color="gray.600"
-                        justifyContent="center"
-                        borderWidth="1px"
-                        py="20"
-                        px="4"
-                        backgroundColor="blackAlpha.50"
-                        alignItems="center"
-                        cursor="pointer"
-                        _hover={{
-                            boxShadow: 'md',
-                        }}
-                    >
-                        <Box
+                <SimpleGrid mt="8" alignItems="center" justifyContent="center" maxWidth="1400px" marginX="auto" columns={[1, 1, 2, 4]} gap={8}>
+                    <Link to="/app/new">
+                        <VStack
+                            borderRadius="md"
+                            overflow="hidden"
+                            fontWeight="500"
+                            fontSize="lg"
+                            color="gray.600"
                             justifyContent="center"
-                            borderColor="blackAlpha.300"
                             borderWidth="1px"
-                            px="2"
-                            fontSize="xl"
-                            marginRight="2"
-                            bg="white"
-                            borderRadius="sm"
+                            alignItems="center"
+                            cursor="pointer"
+                            _hover={{
+                                boxShadow: 'md',
+                            }}
                         >
-                            +
-                        </Box>{' '}
-                        Add new forem
-                    </Flex>
+                            <Box height="200px" backgroundPosition="center" width="100%" backgroundImage="https://forem.dev/images/OOj6V9EW_qwSfvCWiRvu1glK-F66cF7I6qplZ8om5pk/rs:fill:320:320/mb:500000/aHR0cHM6Ly9mb3Jl/bS5kZXYvcmVtb3Rl/aW1hZ2VzL3VwbG9h/ZHMvb3JnYW5pemF0/aW9uL3Byb2ZpbGVf/aW1hZ2UvMS8wNzc0/NDI3NC04OGQ1LTQx/MzEtOWY2Ni1iYjY0/MzAwMWFmZTEucG5n">
+                                {/* <Image
+                                src="
+                                alt="Segun Adebayo"
+                                objectFit="contain"
+                            /> */}
+                            </Box>
+                            <Box w="100%" p="4" mt="0">
+                                <Heading>Title</Heading>
+                                <Box>Description</Box>
+                            </Box>
+                        </VStack>
+                    </Link>
                 </SimpleGrid>
                 <Heading size="lg" textAlign="center" my="5">Server Status</Heading>
                 <Box px="2"
@@ -100,7 +99,7 @@ const DashboardBody = () => {
                     display="grid"
                     justifyContent="center"
                     borderRadius="sm">
-                        
+
                     <Box>Server Status: Connected</Box>
                     <Box>Server Host Name: {sshData.username}</Box>
                     <Box>Server IP: {sshData.host}</Box>
