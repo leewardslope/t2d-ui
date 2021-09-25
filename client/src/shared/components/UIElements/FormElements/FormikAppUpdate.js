@@ -1,15 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { useParams, Link, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import {
   Button,
   VStack,
-  HStack,
   Flex,
-  Spacer,
   Heading,
   useToast,
-  Divider,
   SimpleGrid,
   Box,
   useBreakpointValue

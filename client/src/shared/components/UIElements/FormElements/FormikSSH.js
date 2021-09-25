@@ -55,7 +55,7 @@ const FormikSSH = () => {
       }
     };
     getData();
-  }, [toast]);
+  }, [toast, auth.token]);
 
 
   return (

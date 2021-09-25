@@ -40,7 +40,7 @@ const DashboardBody = () => {
             }
         };
         getData();
-    }, [toast]);
+    }, [toast, auth.token]);
 
 
     if (loading) {
