@@ -86,6 +86,7 @@ const DashboardBody = () => {
               m="2"
               borderRadius="md"
               // borderWidth="1px"
+              backgroundColor="white"
               color="gray.600"
               boxShadow="sm"
               _hover={{
@@ -117,6 +118,7 @@ const DashboardBody = () => {
               p="4"
               m="2"
               borderRadius="md"
+              backgroundColor="white"
               // borderWidth="1px"
               color="gray.600"
               boxShadow="sm"
