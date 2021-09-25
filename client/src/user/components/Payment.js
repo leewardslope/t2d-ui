@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/button"
-import { Box, Divider, Heading, SimpleGrid, Spacer } from "@chakra-ui/layout"
+import { Box, Divider, Heading, SimpleGrid } from "@chakra-ui/layout"
 import { Link } from "react-router-dom"
 import Card from "../../ui-elements/v1-components/Card"
 
