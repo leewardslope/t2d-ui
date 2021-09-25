@@ -57,7 +57,6 @@ const FormikApp = () => {
                 isClosable: true,
               });
 
-              history.push(redirectTo);
               // Redirect the user to different page
             } catch (error) {
               toast({

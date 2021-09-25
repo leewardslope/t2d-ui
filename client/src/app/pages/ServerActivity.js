@@ -9,16 +9,13 @@ const ServerActivity = () => {
     var ws = new WebSocket(`wss://${userWebsocketdURL}`);
 
     ws.onopen = function () {
-      console.log('CONNECT');
     };
 
     ws.onmessage = function (event) {
       setLog((log) => log + '<br>' + event.data)
-      console.log(event.data)
     };
     return () => {
       ws.onclose = function () {
-        console.log('DISCONNECT');
       };
     }
   }, []);

@@ -3,7 +3,6 @@ import { Box, Flex, Heading, SimpleGrid } from '@chakra-ui/layout';
 import { useToast } from '@chakra-ui/toast';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import FormikSSH from '../../shared/components/UIElements/FormElements/FormikSSH';
 import { AuthContext } from '../../shared/context/auth-context';
 
@@ -11,6 +10,12 @@ const DashboardBody = () => {
 
     const [ssh, setssh] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [sshData, setSSHData] = useState({
+        host: '',
+        username: '',
+        sshName: '',
+        identity: '',
+      })
     const toast = useToast();
     const auth = useContext(AuthContext);
     useEffect(() => {
@@ -23,8 +28,10 @@ const DashboardBody = () => {
                     }
                 );
                 setLoading(false)
+
                 if (loadedData.data) {
                     setssh(false)
+                    setSSHData(loadedData.data)
                 } else {
                     setssh(true)
                 }
@@ -90,18 +97,14 @@ const DashboardBody = () => {
                 <Box px="2"
                     fontSize="xl"
                     marginRight="2"
+                    display="grid"
                     justifyContent="center"
                     borderRadius="sm">
-                    No Information present please <NavLink to="/setup">
-                        <Button
-                            mx="1"
-                            fontSize="xl"
-                            colorScheme="teal"
-                            variant="link"
-                        >
-                            setup
-                        </Button>
-                    </NavLink> you server
+                        
+                    <Box>Server Status: Connected</Box>
+                    <Box>Server Host Name: {sshData.username}</Box>
+                    <Box>Server IP: {sshData.host}</Box>
+                    <Box>Server Key Name: {sshData.sshName}</Box>
                 </Box>
 
             </>
