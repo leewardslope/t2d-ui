@@ -1,5 +1,12 @@
 // import { Button } from '@chakra-ui/button';
-import { Box, Heading, SimpleGrid, VStack } from '@chakra-ui/layout';
+import {
+  Box,
+  Heading,
+  SimpleGrid,
+  VStack,
+  HStack,
+  Text,
+} from '@chakra-ui/layout';
 import { useToast } from '@chakra-ui/toast';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
@@ -62,6 +69,81 @@ const DashboardBody = () => {
     return (
       <>
         <Heading size="lg" textAlign="center" my="5">
+          Server Status
+        </Heading>
+        <Box
+          px="2"
+          fontSize="xl"
+          marginRight="2"
+          display="grid"
+          justifyContent="center"
+          borderRadius="sm"
+          columns={[1, 1, 2, 3]}
+        >
+          <HStack>
+            <VStack
+              p="4"
+              m="2"
+              borderRadius="md"
+              // borderWidth="1px"
+              color="gray.600"
+              boxShadow="sm"
+              _hover={{
+                boxShadow: 'md',
+              }}
+            >
+              {/* <Box>Server Status: Connected</Box>
+              <Box>Server Host Name: {sshData.username}</Box>
+              <Box>Server IP: {sshData.host}</Box>
+              <Box>Server Key Name: {sshData.sshName}</Box> */}
+              <HStack>
+                <Text color="teal">Server Status:</Text>
+                <Text color="green">Connected</Text>
+              </HStack>
+              <HStack>
+                <Text color="teal">Host Name:</Text>
+                <Text>{sshData.username}</Text>
+              </HStack>
+              <HStack>
+                <Text color="teal">Server IP:</Text>
+                <Text>{sshData.host}</Text>
+              </HStack>
+              <HStack>
+                <Text color="teal">Server Key Name:</Text>
+                <Text>{sshData.sshName}</Text>
+              </HStack>
+            </VStack>
+            <VStack
+              p="4"
+              m="2"
+              borderRadius="md"
+              // borderWidth="1px"
+              color="gray.600"
+              boxShadow="sm"
+              _hover={{
+                boxShadow: 'md',
+              }}
+            >
+              <HStack>
+                <Text color="teal">Number of Apps:</Text>
+                <Text>Coming Soon</Text>
+              </HStack>
+              <HStack>
+                <Text color="teal">RAM Usage:</Text>
+                <Text>Coming Soon</Text>
+              </HStack>
+              <HStack>
+                <Text color="teal">Disk Usage:</Text>
+                <Text>Coming Soon</Text>
+              </HStack>
+              <HStack>
+                <Text color="teal">SSH Key:</Text>
+                <Text color="green">Encrypted</Text>
+              </HStack>
+            </VStack>
+          </HStack>
+        </Box>
+        <Heading size="lg" textAlign="center" my="5">
           Add New Apps
         </Heading>
         <SimpleGrid
@@ -110,22 +192,6 @@ const DashboardBody = () => {
             </VStack>
           </Link>
         </SimpleGrid>
-        <Heading size="lg" textAlign="center" my="5">
-          Server Status
-        </Heading>
-        <Box
-          px="2"
-          fontSize="xl"
-          marginRight="2"
-          display="grid"
-          justifyContent="center"
-          borderRadius="sm"
-        >
-          <Box>Server Status: Connected</Box>
-          <Box>Server Host Name: {sshData.username}</Box>
-          <Box>Server IP: {sshData.host}</Box>
-          <Box>Server Key Name: {sshData.sshName}</Box>
-        </Box>
       </>
     );
   }
