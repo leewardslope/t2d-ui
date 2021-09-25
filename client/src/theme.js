@@ -8,7 +8,7 @@ export const THEME = extendTheme({
                 'background': '#F8F9F9'
             },
             '#root': {
-                'min-height': "100vh",
+                // 'min-height': "100vh",
                 height: '100%'
             },
         },

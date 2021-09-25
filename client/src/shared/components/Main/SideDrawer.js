@@ -140,7 +140,7 @@ export default function Swibc(props) {
         <NavItem icon={FaClipboardCheck}>Checklists</NavItem>
         <NavItem icon={HiCode}>Integrations</NavItem>
         <NavItem icon={AiFillGift}>Changelog</NavItem>
-        <NavItem icon={BsGearFill}>Settings</NavItem>
+        <NavItem icon={BsGearFill}><Link to="/settings">Settings</Link></NavItem>
       </Flex>
     </Box>
   );
@@ -206,7 +206,7 @@ export default function Swibc(props) {
                 <Avatar size={'sm'} name={USER.name} src={USER.image} />
               </MenuButton>
               <MenuList>
-                <MenuItem>Settings</MenuItem>
+                <Link to="/settings"><MenuItem>Settings</MenuItem></Link>
                 {/* <MenuItem onClick={toggleMode} icon={<SwitchIcon />}>
                   Switch to {text} mode
                 </MenuItem> */}

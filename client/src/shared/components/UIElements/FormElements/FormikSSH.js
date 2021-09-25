@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   VStack,
@@ -21,21 +21,47 @@ import FormikInput from './components/FormikInput';
 const FormikSSH = () => {
   const toast = useToast();
   const auth = useContext(AuthContext);
-  const buttonSize = useBreakpointValue(['100%', '80%','50%','30%'])
+  const buttonSize = useBreakpointValue(['100%', '80%', '50%', '30%'])
 
 
   const history = useHistory();
   // const redirectTo = `/${auth.userId}/apps`;
   const redirectTo = `/app/new`;
 
+  const [appData, setAppData] = useState({
+    host: '',
+    username: '',
+    sshName: '',
+    identity: '',
+  });
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const loadedData = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/api/ssh`,
+          {
+            headers: { Authorization: `Bearer ${auth.token}` },
+          }
+        );
+        setAppData(loadedData.data);
+      } catch (error) {
+        toast({
+          title: `${error.response.data.message}`,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        });
+      }
+    };
+    getData();
+  }, [toast]);
+
+
   return (
     <Formik
-      initialValues={{
-        host: '',
-        username: '',
-        sshName: '',
-        identity: '',
-      }}
+      enableReinitialize
+      initialValues={{ ...appData }}
       onSubmit={(values, actions) => {
         const sendData = async () => {
           try {
@@ -85,29 +111,29 @@ const FormikSSH = () => {
                 Add SSH Key
               </Heading>
               <SimpleGrid mt="8" columns={[1, 1, 1, 2]} spacing="4" width="full">
-              <FormikInput
-                validation={validateRequire}
-                uniqueField="username"
-                label="Server Host Name"
-                placeholder="ubuntu"
-                formHelper="Comparison ref => ssh ubuntu@176.52.63.112"
-              />
+                <FormikInput
+                  validation={validateRequire}
+                  uniqueField="username"
+                  label="Server Host Name"
+                  placeholder="ubuntu"
+                  formHelper="Comparison ref => ssh ubuntu@176.52.63.112"
+                />
 
-              <FormikInput
-                validation={validateRequire}
-                uniqueField="host"
-                label="IP Address of Your Server"
-                placeholder="176.52.63.112"
-                formHelper="Comparison ref => ssh ubuntu@176.52.63.112"
-              />
+                <FormikInput
+                  validation={validateRequire}
+                  uniqueField="host"
+                  label="IP Address of Your Server"
+                  placeholder="176.52.63.112"
+                  formHelper="Comparison ref => ssh ubuntu@176.52.63.112"
+                />
 
-              <FormikInput
-                validation={validateRequire}
-                uniqueField="sshName"
-                label="SSH Key Name"
-                placeholder="Name your SSH Key"
-                formHelper="Any Name, this will be useful when managing multiple keys"
-              />
+                <FormikInput
+                  validation={validateRequire}
+                  uniqueField="sshName"
+                  label="SSH Key Name"
+                  placeholder="Name your SSH Key"
+                  formHelper="Any Name, this will be useful when managing multiple keys"
+                />
               </SimpleGrid>
 
               {/* <Field type="radio" name="picked" value="One" />
@@ -134,7 +160,7 @@ const FormikSSH = () => {
                 isLoading={props.isSubmitting}
                 type="submit"
                 width={buttonSize}
-                mt="8"  
+                mt="8"
               >
                 Submit
               </Button>

@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/layout';
 import React, { useEffect, useState } from 'react';
 
 const ServerActivity = () => {
@@ -24,7 +25,7 @@ const ServerActivity = () => {
 
 
 
-  return <div dangerouslySetInnerHTML={{ __html: log }}></div>;
+  return <Box backgroundColor="black" color="white" borderRadius="lg" paddingX="6" paddingBottom="6"  dangerouslySetInnerHTML={{ __html: log }}></Box>;
 };
 
 export default ServerActivity;

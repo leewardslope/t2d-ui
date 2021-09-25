@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { Button, VStack, HStack, Heading, useToast } from '@chakra-ui/react';
+import { Button, VStack, HStack, Heading, useToast, useBreakpointValue } from '@chakra-ui/react';
 import { Formik, Form, FieldArray } from 'formik';
 
 // import { validateRequire } from './components/FormikValidations';
@@ -13,6 +13,9 @@ import { AuthContext } from '../../../context/auth-context';
 const FormikAppUpdate = () => {
   // Getting the userId from the react routes: <Route path="/apps/:appsId" exact> from App.js
   const appId = useParams().appsId;
+
+  const buttonSize = useBreakpointValue(['100%', '80%', '50%', '30%'])
+
 
   const toast = useToast();
   const auth = useContext(AuthContext);
@@ -107,19 +110,14 @@ const FormikAppUpdate = () => {
 
   return (
     <VStack
-      p="4"
-      m="8"
-      boxShadow="md"
-      // borderColor="gray.200"
-      // borderWidth="2px"
-      borderRadius="xl"
-      // w="50%"
-      // w="700px"
-      // maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
-      alignItems="stretch"
+      marginY="3"
+      maxWidth="1100px"
+      w="100%"
+      marginX="auto"
+      spacing="6"
     >
-      <Heading align="center" size="lg">
-        Add ENV Variables
+      <Heading marginY="5" size="lg">
+        Environment Variables
       </Heading>
 
       <Formik
@@ -171,18 +169,18 @@ const FormikAppUpdate = () => {
         }}
       >
         {({ values }) => (
-          <Form>
+          <Form style={{ width: "100%" }}>
             <FieldArray name="env">
               {({ insert, remove, push }) => (
-                <VStack>
+                <VStack spacing="6" w="100%">
                   {values.env.length > 0 &&
                     values.env.map((env, index) => (
-                      <HStack key={index}>
+                      <HStack width="100%" key={index}>
                         <FormikInput
                           uniqueField={`env.${index}.var`}
                           // validation={validateRequire}
                           // label="Name"
-                          placeholder="ENV_VAR"
+                          placeholder="Environment Variable"
                           type="text"
                         />
 
@@ -190,12 +188,12 @@ const FormikAppUpdate = () => {
                           uniqueField={`env.${index}.val`}
                           // validation={validateRequire}
                           // label="Email"
-                          placeholder="ENV_VALUE"
+                          placeholder="Environment Value"
                           type="text"
                         />
                         <Button
                           type="button"
-                          className="secondary"
+                          colorScheme="teal"   variant="outline"
                           onClick={() => push({ var: '', val: '' })}
                         >
                           +
@@ -204,7 +202,7 @@ const FormikAppUpdate = () => {
                         {values.env.length !== 1 && (
                           <Button
                             type="button"
-                            className="secondary"
+                            colorScheme="red"
                             onClick={() => remove(index)}
                           >
                             x
@@ -212,10 +210,15 @@ const FormikAppUpdate = () => {
                         )}
                       </HStack>
                     ))}
+                  <Button colorScheme="teal"
+                    type="submit"
+                    width={buttonSize}
+                    mt='8'>Save</Button>
                 </VStack>
+
               )}
             </FieldArray>
-            <Button type="submit">Save</Button>
+
           </Form>
         )}
       </Formik>

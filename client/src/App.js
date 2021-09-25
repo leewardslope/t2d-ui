@@ -34,6 +34,7 @@ import useAuth from './shared/hooks/auth-hook';
 import Home from './user/pages/Home';
 import { THEME } from './theme';
 import DashboardBody from './user/pages/Dashboard';
+import Settings from './app/pages/Settings';
 
 function App() {
   const { userId, token, login, logout } = useAuth();
@@ -46,9 +47,13 @@ function App() {
         <Route path="/" exact>
           <DashboardBody />
         </Route>
+        <Route path="/settings" exact>
+          <Settings />
+        </Route>
         <Route path="/setup" exact>
           <Setup />
         </Route>
+        
         <Route path="/:userId/apps" exact>
           <UserApps />
         </Route>
@@ -61,7 +66,6 @@ function App() {
         <Route path="/apps/:appsId" exact>
           <UpdateApp />
         </Route>
-
         <Redirect to="/" />
       </Switch>
     );
